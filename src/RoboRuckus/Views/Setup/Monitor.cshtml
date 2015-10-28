@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Monitor";
+}
+
+@section scripts
+{
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript" src=@Url.Content("~/Scripts/monitor.js")></script>
+}
+<h2>Number of players: @ViewBag.players</h2>
+<div id="board" class="left">
+    @for(int i = ViewBag.board_y; i >= 0; i--)
+    {
+        <div class="boardRow" id="y_@i">
+            @for (int j = 0; j <= ViewBag.board_x; j++)
+            {
+                <div class="boardSquare" id="@(j)_@i"></div>
+            }
+        </div>
+    }
+</div>
+<div class="left">
+    <h2>Player Status</h2>
+    <div id="botStatus"></div>
+</div>
+<div class="left">
+    <h2>Player Moves</h2>
+    <div class="ui-widget ui-helper-clearfix">
+        <ul id="cardsContainer" class="cards ui-helper-reset ui-helper-clearfix"></ul>
+    </div>
+</div>
+<div class="clear"></div>
+<a id="reset" href="#">Reset Game</a>

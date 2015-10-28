@@ -1,0 +1,141 @@
+﻿body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.clear {
+    clear: both;
+}
+
+/* jQueryUI fixes */
+.ui-state-active {
+    background: rgba(255, 234, 0, 0.61) !important;
+}
+
+/* Card stuff*/
+#cardsContainer {
+    min-height: 525px; 
+}
+
+#cardsContainer li { 
+    display: inline-block;
+    margin-left: 0 auto;
+}
+
+.cardBody {
+    position: relative;
+    font-family: "Courier New", Courier, monospace
+}
+
+.cards.custom-state-active {
+       background: #e9edbc;
+  }
+
+.cards li {  
+      cursor: move;
+  }
+ 
+.slot, #sendcards { 
+      height: 548px;
+      width: 352px;
+      padding: 0.25%;
+      margin: 0.25%;
+      float: left;
+  }
+
+#sendcards {
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 0;
+}
+
+#sendcards img {
+    width: 100%;
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.slot ul {
+    list-style: none;
+    padding: 0;
+    margin-top: -3px;
+}
+
+.slot li {
+    cursor: move;
+}
+
+ .slot h4 { 
+      line-height: 16px; 
+      margin: 0 0 0.4em; 
+  }
+ 
+ .order {
+    position: absolute;
+    top: -0.8%;
+    right: 40%;
+    font-size: 2.15em;
+    color: #8bbe7c;
+    font-weight: bold; 
+ }
+
+ .face {
+     position: absolute;
+     right: 30%;
+     top: -25%;
+     font-size: 11.8em;
+     color: #8bbe7c;
+     font-weight: bold;
+ }
+
+ .details {
+     position: absolute;
+     right: 28%;
+     top: 45%;
+     font-size: 2.5em;
+     color: #8bbe7c;
+     font-weight: bold;
+ }
+
+ .locked {
+     color: red;
+ }
+
+ /* Damage stuff */
+.damageBox {
+    display: inline-block;
+    border: 1px solid orange;
+    height: 0.7em;
+    width: 0.7em;
+    border-radius: 0.7em;
+}
+
+#damage {
+    display: inline-block;
+}
+
+ /* Setup stuff*/
+ #board {
+     padding-top: 1.5em;
+ }
+
+.boardRow {
+    height: 2em;
+    margin-bottom: 0.4em;
+}
+
+ .boardSquare {
+     height: 2em;
+     width: 2em;
+     border: 1px solid black;
+     display: inline-block;
+     vertical-align: top;
+ }
+
+ .left {
+     float: left;
+     margin-right: 1em;
+ }

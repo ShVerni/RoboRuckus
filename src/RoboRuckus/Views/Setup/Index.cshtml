@@ -1,0 +1,28 @@
+﻿@model RoboWebRally.Models.setupViewModel
+
+@{
+    ViewBag.Title = "Setup";
+}
+<div class="row">
+    @using (Html.BeginForm("startGame", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+    {
+        <h4>Setup Game</h4>
+        @Html.ValidationSummary(true, "Please enter an integer between 1 and 12", new { @class = "" })
+        <div class="">
+            @Html.LabelFor(m => m.numberOfPlayers, new { @class = "" })
+            <div class="">
+                @Html.TextBoxFor(m => m.numberOfPlayers, new { @class = "", type = "number", max = "12", min = "1" })
+                @Html.ValidationMessageFor(m => m.numberOfPlayers, "", new { @class = "" })
+            </div>
+        </div>
+        <div class="">
+            <div class="">
+                <input type="submit" value="Setup" class="" />
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    <script src="@Url.Content("~/lib/jquery-validation/jquery.validate.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>
+}

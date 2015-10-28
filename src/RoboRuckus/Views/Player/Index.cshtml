@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Player Page";
+}
+
+@section scripts
+{
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript" src=@Url.Content("~/Scripts/player.js")></script>
+}
+<h2 id="playerNum" data-player="@ViewBag.player">You are player number @ViewBag.player</h2>
+<div>
+    <h3 id="damage" data-damage="@ViewBag.damage">Robot damage: </h3>
+    @for (int i = 1; i <= 10; i++)
+    {
+        <span class="damageBox" id="damageBox_@i"></span>
+    }
+</div>
+<div class="row">
+    <div class="ui-widget ui-helper-clearfix">
+        <ul id="cardsContainer" class="cards ui-helper-reset ui-helper-clearfix">                    
+        </ul>
+    </div>
+</div>
+<br />
+<div id="slots" class="row">
+    @for (int j = 0; j < 5; j++)
+    {
+        <div id="slot@(j + 1)" class="slot ui-widget ui-widget-content">
+            <h4 class="ui-widget-header">Slot @(j + 1)</h4>
+            <ul class="slotList">               
+            </ul>
+        </div>
+    }
+    <div id="sendcards" class="ui-widget ui-widget-content">
+        <img src=@Url.Content("~/images/cards/submit.png") alt="submt" />
+    </div>
+</div>
+<input type="checkbox" id="shutdown"><label id="shutdownLabel" for="shutdown">Shutdown</label>

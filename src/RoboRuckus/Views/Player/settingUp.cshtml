@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Setting Up";
+}
+<h2>The game is being set up</h2>
+<h3>Please be patient and refresh the page when the game is ready, or push this button</h3>
+<button name="refresh" id="refresh">
+    Join the game
+</button>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#refresh").click(function () {
+                location.reload();
+            });
+        });
+    </script>
+}
