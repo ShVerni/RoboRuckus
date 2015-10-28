@@ -196,7 +196,7 @@ namespace RoboRuckus.RuckusCode
         }
 
         /// <summary>
-        /// Updates the heath of every player
+        /// Updates the health of every player
         /// </summary>
         public void updateHealth()
         {
