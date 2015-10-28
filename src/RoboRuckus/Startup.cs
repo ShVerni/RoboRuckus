@@ -18,7 +18,7 @@ namespace RoboRuckus
             configBuilder.AddEnvironmentVariables();
             Configuration = configBuilder.Build();
 
-            serviceHelpers.appEnviroment = appEnvironment;
+            serviceHelpers.appEnvironment = appEnvironment;
         }
 
         public IConfiguration Configuration { get; set; }

@@ -36,7 +36,7 @@ namespace RoboRuckus.RuckusCode
         static gameStatus()
         {
             // Load the movement cards
-            string path = serviceHelpers.appEnviroment.ApplicationBasePath + _cardPath;
+            string path = serviceHelpers.appEnvironment.ApplicationBasePath + _cardPath;
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
                 StreamReader sr = new StreamReader(fs);

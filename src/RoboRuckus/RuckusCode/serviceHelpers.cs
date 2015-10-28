@@ -9,7 +9,7 @@ namespace RoboRuckus.RuckusCode
     public static class serviceHelpers
     {
         private static volatile IHubContext _playerHubContext = null;
-        private static volatile IApplicationEnvironment _appEnviroment = null;
+        private static volatile IApplicationEnvironment _appEnvironment = null;
 
         /// <summary>
         /// The player hub context
@@ -32,17 +32,17 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// The application enviroment
         /// </summary>
-        public static IApplicationEnvironment appEnviroment
+        public static IApplicationEnvironment appEnvironment
         {
             get
             {
-                return _appEnviroment;
+                return _appEnvironment;
             }
             set
             {
-                if (_appEnviroment == null)
+                if (_appEnvironment == null)
                 {
-                    _appEnviroment = value;
+                    _appEnvironment = value;
                 }
             }
         }
