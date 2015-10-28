@@ -1,2 +1,2 @@
 # RoboRuckus
-Roboruckus game. In progress.
+RoboRuckus game. In progress.
