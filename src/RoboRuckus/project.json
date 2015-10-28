@@ -20,7 +20,6 @@
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta8"
   },
   "commands": {
-    "web": "Microsoft.AspNet.Server.Kestrel",
     "kestrel": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.Kestrel --server.urls http://*:8082"
   },
   "frameworks": {
