@@ -37,12 +37,10 @@ namespace RoboRuckus.RuckusCode
         {
             // Load the movement cards
             string path = serviceHelpers.appEnvironment.ApplicationBasePath + _cardPath;
-            using (FileStream fs = new FileStream(path, FileMode.Open))
+            using (StreamReader sr = new StreamReader(path))
             {
-                StreamReader sr = new StreamReader(fs);
                 string cards = sr.ReadToEnd();
                 movementCards = Array.ConvertAll(cards.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), p => p.Trim());
-                sr.Close();
             }
             // TODO: Add ability to load boards from file        
         }
