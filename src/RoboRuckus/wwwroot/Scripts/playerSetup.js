@@ -5,6 +5,8 @@
     var player = $("#playerNum").data("player");
     var direction = 0;
     $(".boardSquare").css({"cursor": "pointer", "user-select": "none"}).attr('unselectable', 'on').on('selectstart', false);
+
+    // Lets a user select a starting position for their bot. TODO: Restrict selection to predefined starting squares.
     $(".boardSquare").click(function () {
         if (!$(this).hasClass("occupied")) {
             $("#button").prop("disabled", false);
@@ -51,6 +53,7 @@
         }
     });
 
+    // Receives the locations of all bots that have selected starting squares.
     function processData(data) {
         $.each($.parseJSON(data), function () {
             $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " damage: " + this.damage + "</p>");

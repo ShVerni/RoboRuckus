@@ -19,6 +19,7 @@
     var cardControl = $.connection.playerHub;
     $.connection.hub.start();
 
+    // Shows the current move being executed
     cardControl.client.showMove = (function (cards, player) {
         $("#cardsContainer").empty();
         var card = $.parseJSON(cards);
@@ -64,6 +65,7 @@
         }
     });
 
+    // Display a message from the server
     cardControl.client.displayMessage = (function (message, sound) {
         $("#cardsContainer").html("<h2>" + message + "</h2>");
     });

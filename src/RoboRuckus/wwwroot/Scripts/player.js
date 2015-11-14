@@ -10,10 +10,21 @@
         src: ['/sounds/laser.ogg', '/sounds/laser.mp3']
     });
 
-    $("#shutdown").button();
+    $("#shutdown").button().click.(function () {
+        if ($('#shutdown').is(":checked"))
+        {
+            $("#shutdownLabel").html("Shutdown On");
+        }
+        else
+        {
+            $("#shutdownLabel").html("Shutdown Off");
+        }
+    });
+
     $("#shutdownLabel").hover(function () {
         $(this).removeClass("ui-state-hover");
     });
+
 
     var faces = new Array();
     faces["right"] = "R";
@@ -291,6 +302,7 @@
         }
     });
 
+    // Receives the robot's current health from the server
     function updateHealth(damage)
     {
         if (damage > curDamage)
@@ -316,7 +328,7 @@
     function sendCards () {
         if ($(".slot").has("li").length != $(".slot").length)
         {
-            alert("Please fill all slots");
+            alert("Please fill all movement slots");
         }
         else
         {
