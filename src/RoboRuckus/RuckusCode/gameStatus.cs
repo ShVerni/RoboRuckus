@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Linq;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace RoboRuckus.RuckusCode
 {
@@ -13,36 +14,49 @@ namespace RoboRuckus.RuckusCode
         public static int numPlayers = 0;
         private static int numPlayersInGame = 0;
         public static bool gameReady = false;
-        public static List<robot> robots = new List<robot>();
+        public static List<Robot> robots = new List<Robot>();
         public static List<player> players = new List<player>();
         public static List<byte> deltCards = new List<byte>();
         public static List<byte> lockedCards = new List<byte>();
         public static string[] movementCards;
-        
+        public static Board gameBoard;
+        public static List<Board> boards = new List<Board>();
+
         // Zero ordered board size
-        // TODO: make this setable for various board sizes (or pulled from board file)
-        public static int boardSizeX = 3;
-        public static int boardSizeY = 3;
+        public static int boardSizeX;
+        public static int boardSizeY;
 
         // Static object for global locks and thread control
         public static readonly object locker = new object();
 
         // Path to configuration files
         private static readonly string _cardPath = System.IO.Path.DirectorySeparatorChar + "GameConfig" + System.IO.Path.DirectorySeparatorChar + "movementCards.txt";
-        
+
+        // Path to the game board file
+        private static readonly string _boardPath = System.IO.Path.DirectorySeparatorChar + "GameConfig" + System.IO.Path.DirectorySeparatorChar + "Boards";
+
         /// <summary>
         /// Sets up some global settings and the game enviroment
         /// </summary>
         static gameStatus()
         {
+            // Load the game boards
+            string path = serviceHelpers.appEnvironment.ApplicationBasePath + _boardPath;
+            foreach (string boardFile in Directory.GetFiles(path))
+            {
+                using (StreamReader file = File.OpenText(boardFile))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    boards.Add((Board)serializer.Deserialize(file, typeof(Board)));
+                }
+            }
             // Load the movement cards
-            string path = serviceHelpers.appEnvironment.ApplicationBasePath + _cardPath;
+            path = serviceHelpers.appEnvironment.ApplicationBasePath + _cardPath;
             using (StreamReader sr = new StreamReader(path))
             {
                 string cards = sr.ReadToEnd();
                 movementCards = Array.ConvertAll(cards.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), p => p.Trim());
-            }
-            // TODO: Add ability to load boards from file        
+            }     
         }
 
         /// <summary>
@@ -88,12 +102,12 @@ namespace RoboRuckus.RuckusCode
                 // Check if robot is already in game
                 int botNum;
                 IPAddress botAddress = IPAddress.Parse(botIP);
-                robot bot = robots.FirstOrDefault(r => r.robotAddress.Equals(botAddress));
+                Robot bot = robots.FirstOrDefault(r => r.robotAddress.Equals(botAddress));
                 if (bot == null)
                 {
                     // Add new robot to game
                     botNum = robots.Count;
-                    robots.Add(new robot { robotNum = (byte)botNum, robotAddress = botAddress });
+                    robots.Add(new Robot { robotNum = (byte)botNum, robotAddress = botAddress });
                     // TODO: Make robot location setable at startup
                     robots[botNum].x_pos = -1;
                     robots[botNum].y_pos = -1;      

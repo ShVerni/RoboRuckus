@@ -3,7 +3,7 @@ using System.Net;
 
 namespace RoboRuckus.RuckusCode
 {
-    public class robot
+    public class Robot
     {
         public int x_pos = -1;
         public int y_pos = -1;
@@ -41,7 +41,18 @@ namespace RoboRuckus.RuckusCode
             {
                 lock (gameStatus.locker)
                 {
-                    _damage = value;
+                    if (value < 0)
+                    {
+                        _damage = 0;
+                    }
+                    else if (value > 10)
+                    {
+                        _damage = 10;
+                    }
+                    else
+                    {
+                        _damage = value;
+                    }
                     // Check for a need to modify locked cards
                     if (_damage > 4)
                     {

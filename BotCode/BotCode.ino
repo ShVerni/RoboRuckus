@@ -58,6 +58,8 @@ String connection = "AT+CIPSTART=1,\"TCP\",\"" + server + "\"," + port;
 
 bool started = false;
 
+IntervalTimer timeout;
+
 #define wifi Serial2
 
 void setup()
@@ -362,7 +364,7 @@ bool startup()
   // Initialize radio
   Serial.println(sendCommand(F("AT+CWMODE=1"), F("\nOK")));
   //Join WiFi network
-  Serial.println(sendCommand(F("AT+CWJAP=\"RoboWebRally\","), F("\nOK")));
+  Serial.println(sendCommand(F("AT+CWJAP=\"RoboRuckus\","), F("\nOK")));
 
   // Enable multiplexing (necessary for server opperation)
   Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));

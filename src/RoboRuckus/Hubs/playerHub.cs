@@ -1,9 +1,7 @@
-﻿using System;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.AspNet.SignalR.Hubs;
 using RoboRuckus.RuckusCode;
-//using Newtonsoft.Json;
 
 namespace RoboRuckus.Hubs
 {
@@ -107,17 +105,10 @@ namespace RoboRuckus.Hubs
     /// </summary>
     public class cardModel
     {
-        //[JsonProperty("direction")]
-        public string direction { get; set; }
-
-        //[JsonProperty("priority")]
-        public int priority { get; set; }
-
-        //[JsonProperty("magnitude")]
-        public int magnitude { get; set; }
-
-        //[JsonProperty("cardNumber")]
-        public byte cardNumber { get; set; }
+        public string direction;
+        public int priority;
+        public int magnitude;
+        public byte cardNumber;
 
         /// <summary>
         /// A string representaion of a card that matches

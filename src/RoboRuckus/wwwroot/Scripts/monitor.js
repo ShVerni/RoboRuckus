@@ -12,6 +12,8 @@
     detail["uturn"] = "U-Turn";
     detail["forward"] = "Move";
 
+    $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
+ 
     // Start a timer to check the game status every second
     setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
 

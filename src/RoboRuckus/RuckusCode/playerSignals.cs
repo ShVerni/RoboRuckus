@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Threading;
 using System.Linq;
 using Microsoft.AspNet.SignalR.Hubs;
 using System.Security.Cryptography;
+using RoboRuckus.RuckusCode.Movement;
 
 namespace RoboRuckus.RuckusCode
 {
@@ -61,80 +61,59 @@ namespace RoboRuckus.RuckusCode
                     {
                         return;
                     }
-                    moveCalculator.executeMoves();
-
-                    // Reset for next round
-                    foreach (player inGame in gameStatus.players)
-                    {
-                        inGame.cards = null;
-                        inGame.move = null;
-                        if (inGame.willShutdown && !inGame.dead)
-                        {
-                            inGame.shutdown = true;
-                            inGame.playerRobot.damage = 0;
-                            inGame.willShutdown = false;
-                        }
-                        else
-                        {
-                            inGame.shutdown = false;
-                        }
-                    }
-                    gameStatus.deltCards.Clear();
-                    Clients.All.displayMessage("", "");
-
-                    // Check if all players are shutdown
-                    if (gameStatus.players.All(p => p.shutdown))
-                    {
-                        gameStatus.players.Select(p => p.shutdown = false);
-                        foreach (player inGame in gameStatus.players)
-                        {
-                            inGame.shutdown = false;
-                            inGame.playerRobot.damage = 0;
-                        }
-                    }
-
-                    // Have player clients request a deal
-                    Clients.All.requestdeal();
                 }
+                // Execute player moves
+                moveCalculator.executeRegisters();
+                // Reset for next round
+                nextRound();
             }
         }
 
         /// <summary>
-        /// Fires robot lasers and calculates damage
+        /// Sends a message to the player screens
         /// </summary>
-        /// <returns>Wheter a robot was hit</returns>
-        public bool fireLasers()
+        /// <param name="message">The message to send</param>
+        /// <param name="sound">An optional sound effect to play</param>
+        public void showMessage(string message, string sound = "")
         {
-            bool hit = false;
-            lock (gameStatus.locker)
+            Clients.All.displayMessage(message, sound);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void nextRound()
+        {
+            foreach (player inGame in gameStatus.players)
             {
-                Clients.All.displayMessage("Firing lasers!", "laser");
-                Timer watchDog;
-                foreach (player shooter in gameStatus.players)
+                inGame.cards = null;
+                inGame.move = null;
+                if (inGame.willShutdown && !inGame.dead)
                 {
-                    if (!shooter.shutdown && !shooter.dead)
-                    {
-                        robot bot = shooter.playerRobot;
-                        int shot = moveCalculator.botLoS(new int[] { bot.x_pos, bot.y_pos }, bot.currentDirection, botNumber: bot.robotNum);
-                        if (shot != -1)
-                        {
-                            hit = true;
-                            gameStatus.robots[shot].damage++;
-
-                            // Start watch dog to skip bots that don't respond in 5 seconds
-                            bool timeout = false;
-                            watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
-
-                            // Wait for bot to acknowledge receipt of updated value
-                            SpinWait.SpinUntil(() => botSignals.sendDamage(shot, gameStatus.robots[shot].damage) == "OK" || timeout);
-
-                            // Dispose the watch dog
-                            watchDog.Dispose();
-                        }
-                    }
+                    inGame.shutdown = true;
+                    inGame.playerRobot.damage = 0;
+                    inGame.willShutdown = false;
+                }
+                else
+                {
+                    inGame.shutdown = false;
                 }
             }
-            return hit;
+            gameStatus.deltCards.Clear();
+            showMessage("");
+
+            // Check if all players are shutdown
+            if (gameStatus.players.All(p => p.shutdown))
+            {
+                gameStatus.players.Select(p => p.shutdown = false);
+                foreach (player inGame in gameStatus.players)
+                {
+                    inGame.shutdown = false;
+                    inGame.playerRobot.damage = 0;
+                }
+            }
+            // Have player clients request a deal
+            Clients.All.requestdeal();
         }
 
         /// <summary>
@@ -236,7 +215,7 @@ namespace RoboRuckus.RuckusCode
                     p.move = null;
                     p.cards = null;
                 }
-                foreach (robot r in gameStatus.robots)
+                foreach (Robot r in gameStatus.robots)
                 {
                     r.y_pos = -1;
                     r.x_pos = -1;

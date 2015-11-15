@@ -17,7 +17,8 @@
     "Microsoft.Framework.Logging.Console": "1.0.0-beta8",
     "Microsoft.AspNet.SignalR.Server": "3.0.0-beta8",
     "Microsoft.Framework.DependencyInjection": "1.0.0-beta8",
-    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta8"
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta8",
+    "Newtonsoft.Json": "7.0.1"
   },
   "commands": {
     "kestrel": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.Kestrel --server.urls http://*:8082"

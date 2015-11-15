@@ -1,4 +1,5 @@
-﻿@model RoboWebRally.Models.setupViewModel
+﻿@model RoboRuckus.Models.setupViewModel
+@using RoboRuckus.RuckusCode;
 
 @{
     ViewBag.Title = "Setup";
@@ -14,6 +15,19 @@
                 @Html.TextBoxFor(m => m.numberOfPlayers, new { @class = "", type = "number", max = "12", min = "1" })
                 @Html.ValidationMessageFor(m => m.numberOfPlayers, "", new { @class = "" })
             </div>
+        </div>
+        <br />
+        <div class="">
+            @{                 
+                List<Board> _boards = gameStatus.boards;
+                IEnumerable<SelectListItem> boards = _boards.OrderBy(b => b.name).Select(b => new SelectListItem
+                {
+                    Text = b.name,
+                    Value = b.name
+                });
+            }
+            @Html.DropDownList("selBoard", boards, "Choose a Board")
+            @Html.ValidationMessageFor(m => m.selBoard, "", new { @class = "" })
         </div>
         <div class="">
             <div class="">

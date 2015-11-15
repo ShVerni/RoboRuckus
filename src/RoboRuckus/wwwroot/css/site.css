@@ -119,20 +119,21 @@
 
  /* Setup stuff*/
  #board {
-     padding-top: 1.5em;
+     margin-top: 1.5em;
+     background-size: 100% auto;
  }
 
 .boardRow {
-    height: 2em;
-    margin-bottom: 0.4em;
 }
 
  .boardSquare {
-     height: 2em;
-     width: 2em;
-     border: 1px solid black;
+     height: 2.6em;
+     width: 2.6em;
+     border: 0.05em solid black;
      display: inline-block;
      vertical-align: top;
+     margin-right: -0.23em;
+   
  }
 
  .left {

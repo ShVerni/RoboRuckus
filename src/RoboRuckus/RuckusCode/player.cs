@@ -5,7 +5,7 @@ namespace RoboRuckus.RuckusCode
     public class player
     {
         public byte playerNumber;
-        public robot playerRobot;
+        public Robot playerRobot;
         public byte[] cards = null;
         public Hubs.cardModel[] move = null;
         public List<byte> lockedCards = new List<byte>();
@@ -40,7 +40,7 @@ namespace RoboRuckus.RuckusCode
             }
         }
 
-        public player(byte Number, robot Robot)
+        public player(byte Number, Robot Robot)
         {
             playerNumber = Number;
             playerRobot = Robot;

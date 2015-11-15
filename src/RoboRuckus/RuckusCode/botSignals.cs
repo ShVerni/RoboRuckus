@@ -2,6 +2,7 @@
 using System.Text;
 using System.Net.Sockets;
 using System.Threading;
+using RoboRuckus.RuckusCode.Movement;
 
 namespace RoboRuckus.RuckusCode
 {
@@ -52,7 +53,7 @@ namespace RoboRuckus.RuckusCode
         private static string sendDataToRobot(int botNumber, string data, int port = 8080)
         {
             byte[] response = new byte[2];
-            robot bot = gameStatus.robots[botNumber];
+            Robot bot = gameStatus.robots[botNumber];
             using (Socket socketConnection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 Byte[] bytesToSend = Encoding.ASCII.GetBytes(data);

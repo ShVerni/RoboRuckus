@@ -61,7 +61,8 @@ namespace RoboRuckus.Controllers
                 // Success!
                 ViewBag.board_x = gameStatus.boardSizeX;
                 ViewBag.board_y = gameStatus.boardSizeY;
-                ViewBag.player = playerNumber;                
+                ViewBag.player = playerNumber;
+                ViewBag.board = gameStatus.gameBoard.name.Replace(" ", "");
                 return View();
             }
         }
@@ -88,7 +89,7 @@ namespace RoboRuckus.Controllers
                     player sender = gameStatus.players[player - 1];
                     sender.playerRobot.x_pos = botX;
                     sender.playerRobot.y_pos = botY;
-                    sender.playerRobot.currentDirection = (robot.orientation)botDir;
+                    sender.playerRobot.currentDirection = (Robot.orientation)botDir;
                     return RedirectToAction("Index", new { player = player });
                 }
             }

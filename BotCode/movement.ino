@@ -1,3 +1,5 @@
+bool timeUp = false;
+
 void driveForward(uint8_t spaces)
 {
   int Z_threshold = 0;
@@ -19,11 +21,14 @@ void driveForward(uint8_t spaces)
   }
   Y_calibration /= 10;
   Z_threshold = (Z_threshold / 10) - Z_offset;
+  
+  timeUp = false;
+  timeout.begin(timedOut, 2000000 * spaces);
    
   mils = 0;
   left.write(leftForwardSpeed);
   right.write(rightForwardSpeed);
-  while (countdown > 0)
+  while (countdown > 0 && timeUp)
   {
     gyro.getEvent(&event2);
     turn_drift += ((event2.gyro.z - 0.015) / 1000) * mils;
@@ -97,6 +102,7 @@ void driveForward(uint8_t spaces)
     }
     delay(5);
   }
+  timeout.end();
   left.write(90);
   right.write(90);
 }
@@ -123,11 +129,14 @@ void driveBackward(uint8_t spaces)
   }
   X_calibration /= 10;
   Z_threshold = (Z_threshold / 10) - Z_offset;
+
+  timeUp = false;
+  timeout.begin(timedOut, 2000000 * spaces);
    
   mils = 0;
   left.write(leftBackwardSpeed);
   right.write(rightBackwardSpeed);
-  while (countdown > 0)
+  while (countdown > 0 && timeUp)
   {
     gyro.getEvent(&event2);
     turn_drift += ((event2.gyro.z - 0.015) / 1000) * mils;
@@ -201,6 +210,7 @@ void driveBackward(uint8_t spaces)
     }
     delay(5);
   }
+  timeout.end();
   left.write(90);
   right.write(90);
 }
@@ -236,220 +246,7 @@ void turn(uint8_t dir, uint8_t magnitude)
   right.write(90);
 }
 
-/*
- * Old code for magnetometer only based turning
-void turn(uint8_t dir, uint8_t magnitude)
+void timedOut()
 {
-  sensors_event_t event;
-  mag.getEvent(&event);
-  int count;
-  int z_count;
-  bool z_trigger = false;
-  float previous_y = event.magnetic.y;
-  float previous_z = event.magnetic.z;
-  #ifdef debug
-    int counter = 0;
-  #endif
-  if (dir == 1)
-  {
-    left.write(leftBackwardSpeed);
-    right.write(rightForwardSpeed);
-    // Make sure we're on the upward slope
-    do
-    {
-      delay(10);
-      mag.getEvent(&event);
-      if (event.magnetic.y > previous_y)
-      {
-        previous_z = event.magnetic.z;
-        break;
-      }
-      #ifdef debug
-        Serial.print(counter); Serial.print(","); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-        counter++;
-      #endif
-      previous_y = event.magnetic.y;
-    } while (true);
-    for (int i = 0; i < magnitude; i++)
-    {
-      delay(50);
-      count = 0;
-      z_count = 0;
-      z_trigger = false;
-      do
-      {
-        delay(10);
-        mag.getEvent(&event);
-        if (event.magnetic.y < previous_y)
-        {
-          count++;
-        }
-        
-        if (!z_trigger)
-        {
-          if (event.magnetic.z < previous_z)
-          {
-             z_trigger = true;   
-          }
-          previous_z = event.magnetic.z;         
-        }
-        else
-        {
-          z_count++;
-        }
-   
-        #ifdef debug
-          Serial.print(counter); Serial.print(","); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-          counter++;
-        #endif
-        previous_y = event.magnetic.y;
-      } while (count < turnCount && z_count < z_turnCount);
-
-      #ifdef debug
-        Serial.print(counter); Serial.print(",,"); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-        counter++;
-      #endif
-
-      count = 0;
-      z_count = 0;
-      z_trigger = false;
-      do
-      {
-        delay(10);
-        mag.getEvent(&event);
-        if (event.magnetic.y > previous_y)
-        {
-          count++;
-        }
-        
-        if (!z_trigger)
-        {
-          if (event.magnetic.z > previous_z)
-          {
-             z_trigger = true;   
-          }
-          previous_z = event.magnetic.z;         
-        }
-        else
-        {
-          z_count++;
-        }
-        
-        #ifdef debug
-          Serial.print(counter); Serial.print(","); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-          counter++;
-        #endif
-        previous_y = event.magnetic.y;
-      } while (count < turnCount && z_count < z_turnCount);
-
-      #ifdef debug
-        Serial.print(counter); Serial.print(",,,"); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-        counter++;
-      #endif
-    }
-  }
-  else if (dir == 0)
-  {
-    left.write(leftForwardSpeed);
-    right.write(rightBackwardSpeed);
-    // Make sure we're on the downward slope
-    do
-    {
-      delay(10);
-      mag.getEvent(&event);
-      if (event.magnetic.y < previous_y)
-      {
-        previous_z = event.magnetic.z;
-        break;
-      }
-      #ifdef debug
-        Serial.print(counter); Serial.print(","); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-        counter++;
-      #endif
-      previous_y = event.magnetic.y;
-    } while (true);
-
-    for (int i = 0; i < magnitude; i++)
-    {
-      delay(50);
-      count = 0;
-      z_count = 0;
-      z_trigger = false;
-      do
-      {
-        delay(10);
-        mag.getEvent(&event);
-        if (event.magnetic.y > previous_y)
-        {
-          count++;
-        }
-        
-        if (!z_trigger)
-        {
-          if (event.magnetic.z > previous_z)
-          {
-             z_trigger = true;   
-          }
-          previous_z = event.magnetic.z;         
-        }
-        else
-        {
-          z_count++;
-        }
-        
-        #ifdef debug
-          Serial.print(counter); Serial.print(","); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-          counter++;
-        #endif
-        previous_y = event.magnetic.y;
-      } while (count < turnCount && z_count < z_turnCount);
-
-      #ifdef debug
-        Serial.print(counter); Serial.print(",,"); Serial.println(event.magnetic.y); Serial.print(","); Serial.println(event.magnetic.z);
-        counter++;
-      #endif
-      delay(50);
-      
-      count = 0;
-      z_count = 0;
-      z_trigger = false;
-      do
-      {
-        delay(10);
-        mag.getEvent(&event);
-        if (event.magnetic.y < previous_y)
-        {
-          count++;
-        }
-        
-        if (!z_trigger)
-        {
-          if (event.magnetic.z < previous_z)
-          {
-             z_trigger = true;   
-          }
-          previous_z = event.magnetic.z;         
-        }
-        else
-        {
-          z_count++;
-        }
-        
-        #ifdef debug
-          Serial.print(counter); Serial.print(","); Serial.println(event.magnetic.y);
-          counter++;
-        #endif
-        previous_y = event.magnetic.y;
-      } while (count < turnCount && z_count < z_turnCount);
-
-      #ifdef debug
-        Serial.print(counter); Serial.print(",,,"); Serial.println(event.magnetic.y);
-        counter++;
-      #endif
-    }
-  }
-  delay(turnDealy);
-  left.write(90);
-  right.write(90);
+  timeUp = true;
 }
-*/

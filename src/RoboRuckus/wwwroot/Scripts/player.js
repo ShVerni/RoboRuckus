@@ -10,21 +10,20 @@
         src: ['/sounds/laser.ogg', '/sounds/laser.mp3']
     });
 
-    $("#shutdown").button().click.(function () {
+    $("#shutdown").button().click(function () {
         if ($('#shutdown').is(":checked"))
         {
-            $("#shutdownLabel").html("Shutdown On");
+            $("#labelText").html("Shutdown On");
         }
         else
         {
-            $("#shutdownLabel").html("Shutdown Off");
+            $("#labelText").html("Shutdown Off");
         }
     });
 
     $("#shutdownLabel").hover(function () {
         $(this).removeClass("ui-state-hover");
     });
-
 
     var faces = new Array();
     faces["right"] = "R";

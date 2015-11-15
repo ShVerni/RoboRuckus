@@ -6,6 +6,8 @@
     var direction = 0;
     $(".boardSquare").css({"cursor": "pointer", "user-select": "none"}).attr('unselectable', 'on').on('selectstart', false);
 
+    $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
+
     // Lets a user select a starting position for their bot. TODO: Restrict selection to predefined starting squares.
     $(".boardSquare").click(function () {
         if (!$(this).hasClass("occupied")) {

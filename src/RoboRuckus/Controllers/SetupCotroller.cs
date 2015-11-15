@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc;
 using RoboRuckus.RuckusCode;
+using System.Linq;
 
 namespace RoboRuckus.Controllers
 {
@@ -20,12 +21,19 @@ namespace RoboRuckus.Controllers
         /// <param name="numberOfPlayers">The number of players in the game</param>
         /// <returns>The startGame view</returns>
         [HttpPost]
-        public IActionResult startGame(int numberOfPlayers = 0)
+        public IActionResult startGame(string selBoard, int numberOfPlayers = 0)
         {
             if (numberOfPlayers > 0)
             {
                 gameStatus.numPlayers = numberOfPlayers;
-                gameStatus.gameReady = true;
+                Board _board = gameStatus.boards.FirstOrDefault(b => b.name == selBoard);
+                if (_board != null)
+                {
+                    gameStatus.gameBoard = _board;
+                    gameStatus.boardSizeX = _board.size[0];
+                    gameStatus.boardSizeY = _board.size[1];
+                    gameStatus.gameReady = true;
+                }
             }
             return RedirectToAction("Monitor");
         }
@@ -40,6 +48,7 @@ namespace RoboRuckus.Controllers
             ViewBag.players = gameStatus.numPlayers;
             ViewBag.board_x = gameStatus.boardSizeX;
             ViewBag.board_y = gameStatus.boardSizeY;
+            ViewBag.board = gameStatus.gameBoard.name.Replace(" ", "");
             return View();
         }
 
