@@ -345,7 +345,10 @@ if (movement <= 3)
 void takeDamage(int damage)
 {
   tone(piezo, 250, 400);
-  updateShiftRegister(numbers[damage]);
+  if (damage < 10 && damage >= 0)
+  {
+    updateShiftRegister(numbers[damage]);
+  }
   delay(800);
   tone(piezo, 250, 400);
   delay(200);    
@@ -366,7 +369,7 @@ bool startup()
   //Join WiFi network
   Serial.println(sendCommand(F("AT+CWJAP=\"RoboRuckus\","), F("\nOK")));
 
-  // Enable multiplexing (necessary for server opperation)
+  // Enable multiplexing (necessary for server operations)
   Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));
 
   // Get assigned IP address

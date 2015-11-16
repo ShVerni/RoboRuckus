@@ -39,7 +39,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <summary>
         /// Fires all lasers
         /// </summary>
-        /// <returns>True if a bot was hit</returns>
+        /// <returns>True if a bot was hit with any laser</returns>
         public static bool fireLasers()
         {
             lock (gameStatus.locker)
@@ -115,15 +115,16 @@ namespace RoboRuckus.RuckusCode.Movement
         }
 
         /// <summary>
-        /// Fires robot lasers and calculates damage
+        /// Fires robot lasers and applies damage
         /// </summary>
         /// <returns>Wheter a robot was hit</returns>
         private static bool fireBotLasers()
         {
             lock (gameStatus.locker)
             {
-                bool hit = false;
+                Dictionary<int, byte> hit = new Dictionary<int, byte>();
                 Timer watchDog;
+                // Find robots that were hit
                 foreach (player shooter in gameStatus.players)
                 {
                     if (!shooter.shutdown && !shooter.dead)
@@ -132,55 +133,75 @@ namespace RoboRuckus.RuckusCode.Movement
                         int shot = LoS(new int[] { bot.x_pos, bot.y_pos }, bot.currentDirection, botNumber: bot.robotNum);
                         if (shot != -1)
                         {
-                            hit = true;
-                            gameStatus.robots[shot].damage++;
-
-                            // Start watch dog to skip bots that don't respond in 5 seconds
-                            bool timeout = false;
-                            watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
-
-                            // Wait for bot to acknowledge receipt of updated value
-                            SpinWait.SpinUntil(() => botSignals.sendDamage(shot, gameStatus.robots[shot].damage) == "OK" || timeout);
-
-                            // Dispose the watch dog
-                            watchDog.Dispose();
+                            if (hit.ContainsKey(shot))
+                            {
+                                hit[shot]++;
+                            }
+                            else
+                            {
+                                hit.Add(shot, 1);
+                            }
                         }
                     }
                 }
-                return hit;
+                // Add damage to hit robots
+                foreach (KeyValuePair<int, byte> bot in hit)
+                {
+                    gameStatus.robots[bot.Key].damage += bot.Value;
+                    // Start watch dog to skip bots that don't respond in 5 seconds
+                    bool timeout = false;
+                    watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
+
+                    // Wait for bot to acknowledge receipt of updated value
+                    SpinWait.SpinUntil(() => botSignals.sendDamage(bot.Key, gameStatus.robots[bot.Key].damage) == "OK" || timeout);
+
+                    // Dispose the watch dog
+                    watchDog.Dispose();
+                }
+                return hit.Count > 0;
             }
         }
 
         /// <summary>
-        /// Fires the board lasers
+        /// Fires the board lasers and applies damage
         /// </summary>
         /// <returns>True if a bot was hit</returns>
         private static bool fireBoardLasers()
         {
             lock (gameStatus.locker)
             {
-                bool hit = false;
+                Dictionary<int, byte> hit = new Dictionary<int, byte>();
                 Timer watchDog;
                 foreach (laser shooter in gameStatus.gameBoard.lasers)
                 {
                     int shot = LoS(shooter.start, shooter.facing, shooter.end);
                     if (shot != -1)
                     {
-                        hit = true;
-                        gameStatus.robots[shot].damage += shooter.strength;
-
-                        // Start watch dog to skip bots that don't respond in 5 seconds
-                        bool timeout = false;
-                        watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
-
-                        // Wait for bot to acknowledge receipt of updated value
-                        SpinWait.SpinUntil(() => botSignals.sendDamage(shot, gameStatus.robots[shot].damage) == "OK" || timeout);
-
-                        // Dispose the watch dog
-                        watchDog.Dispose();
+                        if (hit.ContainsKey(shot))
+                        {
+                            hit[shot]++;
+                        }
+                        else
+                        {
+                            hit.Add(shot, 1);
+                        }
                     }
                 }
-                return hit;
+                // Add damage to hit robots
+                foreach (KeyValuePair<int, byte> bot in hit)
+                {
+                    gameStatus.robots[bot.Key].damage += bot.Value;
+                    // Start watch dog to skip bots that don't respond in 5 seconds
+                    bool timeout = false;
+                    watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
+
+                    // Wait for bot to acknowledge receipt of updated value
+                    SpinWait.SpinUntil(() => botSignals.sendDamage(bot.Key, gameStatus.robots[bot.Key].damage) == "OK" || timeout);
+
+                    // Dispose the watch dog
+                    watchDog.Dispose();
+                }
+                return hit.Count > 0;
             }
         }
 
