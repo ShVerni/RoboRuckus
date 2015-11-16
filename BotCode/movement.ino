@@ -28,7 +28,7 @@ void driveForward(uint8_t spaces)
   mils = 0;
   left.write(leftForwardSpeed);
   right.write(rightForwardSpeed);
-  while (countdown > 0 && timeUp)
+  while (countdown > 0 && !timeUp)
   {
     gyro.getEvent(&event2);
     turn_drift += ((event2.gyro.z - 0.015) / 1000) * mils;
@@ -136,7 +136,7 @@ void driveBackward(uint8_t spaces)
   mils = 0;
   left.write(leftBackwardSpeed);
   right.write(rightBackwardSpeed);
-  while (countdown > 0 && timeUp)
+  while (countdown > 0 && !timeUp)
   {
     gyro.getEvent(&event2);
     turn_drift += ((event2.gyro.z - 0.015) / 1000) * mils;

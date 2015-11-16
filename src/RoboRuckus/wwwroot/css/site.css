@@ -123,17 +123,13 @@
      background-size: 100% auto;
  }
 
-.boardRow {
-}
-
  .boardSquare {
      height: 2.6em;
      width: 2.6em;
      border: 0.05em solid black;
      display: inline-block;
      vertical-align: top;
-     margin-right: -0.23em;
-   
+     margin-right: -0.23em;   
  }
 
  .left {

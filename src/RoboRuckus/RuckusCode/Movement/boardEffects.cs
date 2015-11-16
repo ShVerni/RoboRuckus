@@ -45,7 +45,9 @@ namespace RoboRuckus.RuckusCode.Movement
             lock (gameStatus.locker)
             {
                 playerSignals.Instance.showMessage("Firing lasers!", "laser");
-                return boardEffects.fireBotLasers() || boardEffects.fireBoardLasers();
+                bool botHit = boardEffects.fireBotLasers();
+                bool boardHit = boardEffects.fireBoardLasers();
+                return botHit || boardHit;
             }
         }
 
