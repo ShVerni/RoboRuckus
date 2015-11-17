@@ -27,35 +27,47 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Loop through each register
                 for (int i = 0; i < 5; i++)
                 {
-
+                    // Move robots
                     executePlayerMoves(i);
                     playerSignals.Instance.updateHealth();
+                    Thread.Sleep(1000);
+
+                    // Move express conveyors
+                    boardEffects.moveConveyors(true);
+                    playerSignals.Instance.updateHealth();
+                    Thread.Sleep(1000);
+
+                    // Move all conveyors
+                    boardEffects.moveConveyors(false);
+                    playerSignals.Instance.updateHealth();
+                    Thread.Sleep(1000);
 
                     // Rotate turntables
                     boardEffects.executeTurnTables();
+                    Thread.Sleep(1000);
 
                     // Fire lasers
                     if (boardEffects.fireLasers())
-                    {
-                        Thread.Sleep(800);
-                        playerSignals.Instance.updateHealth();
-                        Thread.Sleep(2000);
-                    }
-                    else
-                    {
-                        Thread.Sleep(800);
-                    }
+                     {
+                         Thread.Sleep(800);
+                         playerSignals.Instance.updateHealth();
+                         Thread.Sleep(2000);
+                     }
+                     else
+                     {
+                         Thread.Sleep(800);
+                     }
 
-                    // Heal from wrenches
-                    Robot[] healed = boardEffects.wrenches();
-                    if (healed.Length > 0)
-                    {
-                        foreach (Robot bot in healed)
-                        {
-                            bot.damage--;
-                        }
-                        playerSignals.Instance.updateHealth();
-                    }
+                     // Heal from wrenches
+                     Robot[] healed = boardEffects.wrenches();
+                     if (healed.Length > 0)
+                     {
+                         foreach (Robot bot in healed)
+                         {
+                             bot.damage--;
+                         }
+                         playerSignals.Instance.updateHealth();
+                     }
                 }
             }
         }
@@ -232,9 +244,9 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <param name="magnitude">The number of spaces being moved</param>
         /// <param name="orders">A reference to the list of move orders to modify</param>
         /// <param name="outOfTurn">True if it's not the turn of the bot whose move is being resolved</param>
-        /// <param name="conveyor">True if the movement is caused by a conveyor belt</param>
+        /// <param name="onConveyor">True if the movement is caused by a conveyor belt</param>
         /// <returns>The total number of spaces the bot will actually be moving (i.e. is able to move)</returns>
-        private static int resolveMove(Robot bot, Robot.orientation direction, int magnitude, ref List<orderModel> orders, bool OutOfTurn, bool conveyor = false)
+        public static int resolveMove(Robot bot, Robot.orientation direction, int magnitude, ref List<orderModel> orders, bool OutOfTurn, bool onConveyor = false)
         {
             int newCordX = -1;
             int newCordY = -1;
@@ -286,33 +298,46 @@ namespace RoboRuckus.RuckusCode.Movement
             }
             else
             {
-                // Check for, and resolve movements of, other robots in the way
-                int remaining = magnitude;
-                Robot botFound = null;
-                for (int i = 1; i <= magnitude; i++)
+                int remaining;
+                Robot botFound;
+
+                // Robots on conveyors should have already been cleared of bumping into other robots
+                if (!onConveyor)
+                { 
+                    // Check for, and resolve movements of, other robots in the way
+                    remaining = magnitude;
+                    botFound = null;
+                    for (int i = 1; i <= magnitude; i++)
+                    {
+                        switch (direction)
+                        {
+                            case Robot.orientation.X:
+                                destination = new int[] { bot.x_pos + i, bot.y_pos };
+                                break;
+                            case Robot.orientation.Y:
+                                destination = new int[] { bot.x_pos, newCordY = bot.y_pos + i };
+                                break;
+                            case Robot.orientation.NEG_X:
+                                destination = new int[] { newCordX = bot.x_pos - i, bot.y_pos };
+                                break;
+                            case Robot.orientation.NEG_Y:
+                                destination = new int[] { bot.x_pos, newCordY = bot.y_pos - i };
+                                break;
+                        }
+                        // Check for any other bots on that space
+                        botFound = gameStatus.robots.FirstOrDefault(r => (r.robotNum != bot.robotNum && r.x_pos == destination[0] && r.y_pos == destination[1]));
+                        if (botFound != null)
+                        {
+                            break;
+                        }
+                        remaining--;
+                    }
+                }
+                // Robot is on a conveyor, other bots should already have been factored in
+                else
                 {
-                    switch (direction)
-                    {
-                        case Robot.orientation.X:
-                            destination = new int[] { bot.x_pos + i, bot.y_pos };
-                            break;
-                        case Robot.orientation.Y:
-                            destination = new int[] { bot.x_pos, newCordY = bot.y_pos + i };
-                            break;
-                        case Robot.orientation.NEG_X:
-                            destination = new int[] { newCordX = bot.x_pos - i, bot.y_pos };
-                            break;
-                        case Robot.orientation.NEG_Y:
-                            destination = new int[] { bot.x_pos, newCordY = bot.y_pos - i };
-                            break;
-                    }
-                    // Check for any other bots on that space
-                    botFound = gameStatus.robots.FirstOrDefault(r => (r.robotNum != bot.robotNum && r.x_pos == destination[0] && r.y_pos == destination[1]));
-                    if (botFound != null)
-                    {
-                        break;
-                    }
-                    remaining--;
+                    remaining = 0;
+                    botFound = null;
                 }
 
                 bool rotated = false;
@@ -333,13 +358,29 @@ namespace RoboRuckus.RuckusCode.Movement
                         case -1:
                             orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, outOfTurn = OutOfTurn });
                             orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn });
-                            rotated = true;
+                            // Robots on conveyors need to handle rotation correction separately in the conveyor method
+                            if (onConveyor)
+                            {
+                                bot.currentDirection = direction;
+                            }
+                            else
+                            {
+                                rotated = true;
+                            }
                             break;
                         case -3:
                         case 1:
                             orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, outOfTurn = OutOfTurn });
                             orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn });
-                            rotated = true;
+                            // Robots on conveyors need to handle rotation correction separately in the conveyor method
+                            if (onConveyor)
+                            {
+                                bot.currentDirection = direction;
+                            }
+                            else
+                            {
+                                rotated = true;
+                            }
                             break;
                     }
                 }
@@ -420,8 +461,8 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <summary>
         /// Checks for obstacles on the baord that block bot movement
         /// </summary>
-        /// <param name="fromCord">{ X, Y } The coordinate the bot will be moving from</param>
-        /// <param name="toCord">{ X, Y } The coordinate the bot will be moving to</param>
+        /// <param name="fromCord">[x,y] The coordinate the bot will be moving from</param>
+        /// <param name="toCord">[x,y] The coordinate the bot will be moving to</param>
         /// <returns>True if there's a non-bot obstacle between those two spaces</returns>
         private static bool isObstacle(int[] fromCord, int[] toCord, Robot.orientation direction)
         {

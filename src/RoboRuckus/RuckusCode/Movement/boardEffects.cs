@@ -16,10 +16,10 @@ namespace RoboRuckus.RuckusCode.Movement
             lock (gameStatus.locker)
             {
                 playerSignals.Instance.showMessage("Turntables Rotating");
-                Robot[] bots = gameStatus.robots.Where(r => gameStatus.gameBoard.turntables.Any(t => (t.coord[0] == r.x_pos && t.coord[1] == r.y_pos))).ToArray();
+                Robot[] bots = gameStatus.robots.Where(r => gameStatus.gameBoard.turntables.Any(t => (t.location[0] == r.x_pos && t.location[1] == r.y_pos))).ToArray();
                 foreach (Robot _bot in bots)
                 {
-                    turntable table = gameStatus.gameBoard.turntables.Single(t => (t.coord[0] == _bot.x_pos && t.coord[1] == _bot.y_pos));
+                    turntable table = gameStatus.gameBoard.turntables.Single(t => (t.location[0] == _bot.x_pos && t.location[1] == _bot.y_pos));
                     moveModel movement = new moveModel
                     {
                         card = new Hubs.cardModel
@@ -57,14 +57,15 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <returns>An array of robots on a wrench space</returns>
         public static Robot[] wrenches()
         {
+            playerSignals.Instance.showMessage("Wrenches healing");
             return gameStatus.robots.Where(r => !r.controllingPlayer.dead && (gameStatus.gameBoard.wrenches.Any(w => w[0] == r.x_pos && w[1] == r.y_pos))).ToArray();
         }
 
         /// <summary>
-        /// Determines if a given coordinate contains a bit
+        /// Determines if a given coordinate contains a pit
         /// </summary>
         /// <param name="coordinate">The [x, y] coordinate to check</param>
-        /// <returns>True if the coordinate contains a bit</returns>
+        /// <returns>True if the coordinate contains a pit</returns>
         public static bool onPit(int[] coordinate)
         {
             return gameStatus.gameBoard.pits.Any(p => (p[0] == coordinate[0] && p[1] == coordinate[1]));
@@ -115,9 +116,194 @@ namespace RoboRuckus.RuckusCode.Movement
         }
 
         /// <summary>
+        /// Moves all robots on conveyors
+        /// </summary>
+        /// <param name="express">True indicates only express conveyors should move</param>
+        public static void moveConveyors(bool express)
+        {
+            Robot[] onConveyors;
+            List<orderModel> orders = new List<orderModel>();
+            // Check if express conveyor movement, then find all robots on the conveyors
+            if (express)
+            {
+                playerSignals.Instance.showMessage("Express conveyors moving");
+                onConveyors = gameStatus.robots.Where(r => gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))).ToArray();
+            }
+            else
+            {
+                playerSignals.Instance.showMessage("All conveyors moving");
+                onConveyors = gameStatus.robots.Where(r => (gameStatus.gameBoard.conveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))) || (gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1])))).ToArray();
+            }
+            List<conveyorModel> moved = new List<conveyorModel>();
+            
+            // Check whether each robot will be able to move, or if it is blocked by another robot
+            foreach (Robot moving in onConveyors)
+            {
+                canMoveOnConveyor(moving, onConveyors, ref moved);
+            }
+
+            // Check to see if any robots are trying to move into the same space
+            conveyorModel[] collisions = moved.Where(r => (moved.Any(p => (r != p && p.destination[0] == r.destination[0])) && moved.Any(p => (r != p && p.destination[0] == r.destination[0])))).ToArray();
+            foreach (conveyorModel collided in collisions)
+            {
+                moved.Remove(collided);
+            }
+
+            // REsolve the movement of each bot that is moving
+            foreach (conveyorModel findMove in moved)
+            {
+                Robot.orientation oldFacing = findMove.bot.currentDirection;
+                moveCalculator.resolveMove(findMove.bot, findMove.space.exit, 1, ref orders, false, true);
+                Robot.orientation desiredFacing = oldFacing;
+
+                // Check if a robot is being moved onto a space that contains a conveyor
+                conveyor entering = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
+                if (entering == null)
+                {
+                    entering = gameStatus.gameBoard.expressConveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
+                }
+                if (entering != null)
+                {
+                    // Determine if the conveyor space is a corner, and rotate the bot accordingly
+                    switch (entering.entrance - entering.exit)
+                    {
+                        case 1:
+                        case -3:
+                            if (oldFacing == Robot.orientation.NEG_Y)
+                            {
+                                desiredFacing = Robot.orientation.X;
+                            }
+                            else
+                            {
+                                desiredFacing = oldFacing + 1;
+                            }
+                            break;
+                        case -1:
+                        case 3:
+                            if (oldFacing == Robot.orientation.X)
+                            {
+                                desiredFacing = Robot.orientation.NEG_Y;
+                            }
+                            else
+                            {
+                                desiredFacing = oldFacing - 1;
+                            }
+                            break;
+                    }
+                }
+                // Ensure the robot is facing in the correct directon after moving
+                switch (desiredFacing - findMove.bot.currentDirection)
+                {
+                    case 3:
+                    case -1:
+                        orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Right, magnitude = 1, outOfTurn = false });
+                        findMove.bot.currentDirection = desiredFacing;
+                        break;
+                    case -3:
+                    case 1:
+                        orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Left, magnitude = 1, outOfTurn = false });
+                        findMove.bot.currentDirection = desiredFacing;
+                        break;
+                    case 2:
+                    case -2:
+                        Random rand = new Random();
+                        orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = (moveCalculator.movement)rand.Next(0, 2), magnitude = 2, outOfTurn = false });
+                        findMove.bot.currentDirection = desiredFacing;
+                        break;
+
+                }
+            }
+            // Send move orders to bots
+            foreach (orderModel order in orders)
+            {
+                moveCalculator.processMoveOrder(order);
+            }
+        }
+
+        /// <summary>
+        /// Helper method for conveyor movement. Checks to see if a robot on a conveyor is able to move
+        /// </summary>
+        /// <param name="moving">The robot that is moving</param>
+        /// <param name="onCoveyors">An array of all robots that are on conveyors</param>
+        /// <param name="movable">A reference to a list of robots on conveyors that are able to move</param>
+        /// <returns>True if the robot can move</returns>
+        private static bool canMoveOnConveyor(Robot moving, Robot[] onCoveyors, ref List<conveyorModel> movable)
+        {
+            // See if robot has already been cleared to move
+            if (movable.Any(m => m.bot == moving))
+            {
+                return true;
+            }
+            int[] destination;
+            // Get the conveyor space the robot is on
+            conveyor space = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == moving.x_pos && c.location[1] == moving.y_pos));
+            if (space == null)
+            {
+                space = gameStatus.gameBoard.expressConveyors.First(c => (c.location[0] == moving.x_pos && c.location[1] == moving.y_pos));
+            }
+            // Find the robot's destination
+            switch (space.exit)
+            {
+                case Robot.orientation.X:
+                    destination = new int[] { moving.x_pos + 1, moving.y_pos };
+                    break;
+                case Robot.orientation.Y:
+                    destination = new int[] { moving.x_pos, moving.y_pos + 1 };
+                    break;
+                case Robot.orientation.NEG_X:
+                    destination = new int[] { moving.x_pos - 1, moving.y_pos };
+                    break;
+                case Robot.orientation.NEG_Y:
+                    destination = new int[] { moving.x_pos, moving.y_pos - 1 };
+                    break;
+                // This default should never execute
+                default:
+                    destination = new int[0];
+                    break;
+            }
+            // See if there's a robot on the space the bot is trying to move to
+            Robot inWay = gameStatus.robots.FirstOrDefault(r => (r.x_pos == destination[0] && r.y_pos == destination[1] && !r.controllingPlayer.dead));
+            if (inWay != null)
+            {
+                // Check if the robot in the way is also on a conveyor
+                if (onCoveyors.Contains(inWay))
+                {
+                    // Recursively check if the robot in the way is able to move
+                    if (canMoveOnConveyor(inWay, onCoveyors, ref movable))
+                    {
+                        // The robot can move
+                        movable.Add(
+                            new conveyorModel
+                            {
+                                space = space,
+                                destination = destination,
+                                bot = moving
+                            });
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                // No bot in the way, the robot can move              
+                movable.Add(
+                    new conveyorModel
+                    {
+                        space = space,
+                        destination = destination,
+                        bot = moving
+                    });
+                return true;
+            }
+        }
+
+
+
+        /// <summary>
         /// Fires robot lasers and applies damage
         /// </summary>
-        /// <returns>Wheter a robot was hit</returns>
+        /// <returns>True if a bot was hit</returns>
         private static bool fireBotLasers()
         {
             lock (gameStatus.locker)
@@ -179,11 +365,11 @@ namespace RoboRuckus.RuckusCode.Movement
                     {
                         if (hit.ContainsKey(shot))
                         {
-                            hit[shot]++;
+                            hit[shot] += shooter.strength;
                         }
                         else
                         {
-                            hit.Add(shot, 1);
+                            hit.Add(shot, shooter.strength);
                         }
                     }
                 }

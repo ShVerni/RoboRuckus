@@ -56,7 +56,7 @@ namespace RoboRuckus.RuckusCode
             {
                 string cards = sr.ReadToEnd();
                 movementCards = Array.ConvertAll(cards.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), p => p.Trim());
-            }     
+            }
         }
 
         /// <summary>

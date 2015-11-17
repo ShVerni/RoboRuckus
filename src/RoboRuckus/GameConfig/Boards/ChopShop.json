@@ -17,31 +17,31 @@
   ],
   "turntables": [
     {
-      "coord": [ 5, 2 ],
+      "location": [ 5, 2 ],
       "dir": "right"
     },
     {
-      "coord": [ 6, 2 ],
+      "location": [ 6, 2 ],
       "dir": "left"
     },
     {
-      "coord": [ 8, 4 ],
+      "location": [ 8, 4 ],
       "dir": "right"
     },
     {
-      "coord": [ 8, 5 ],
+      "location": [ 8, 5 ],
       "dir": "left"
     },
     {
-      "coord": [ 4, 6 ],
+      "location": [ 4, 6 ],
       "dir": "left"
     },
     {
-      "coord": [ 5, 8 ],
+      "location": [ 5, 8 ],
       "dir": "right"
     },
     {
-      "coord": [ 8, 8 ],
+      "location": [ 8, 8 ],
       "dir": "left"
     }
   ],
@@ -81,6 +81,250 @@
       "end": [ 4, 8 ],
       "strength": 1,
       "facing": "NEG_X"
+    }
+  ],
+  "conveyors": [
+    {
+      "location": [ 5, 0 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 6, 0 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 5, 1 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 6, 1 ],
+      "entrance": "NEG_Y",
+      "exit": "X"
+    },
+    {
+      "location": [ 7, 1 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 8, 1 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 9, 1 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 11, 1 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 9, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 10, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 11, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 4, 5 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 0, 6 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 1, 6 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 2, 6 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 3, 6 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 5, 6 ],
+      "entrance": "Y",
+      "exit": "X"
+    },
+    {
+      "location": [ 6, 6 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 7, 6 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+     {
+      "location": [ 5, 7 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 0, 8 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 1, 8 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 2, 8 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 9, 8 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 10, 8 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 11, 8 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 1, 9 ],
+      "entrance": "Y",
+      "exit": "X"
+    },
+    {
+      "location": [ 2, 9 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 5, 9 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 8, 9 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 1, 10 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 5, 10 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 8, 10 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 1, 11 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 5, 11 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 8, 11 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    }
+  ],
+  "expressConveyors": [
+    {
+      "location": [ 0, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 1, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 2, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 3, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 4, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 5, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 6, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 7, 3 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 2, 4 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 0, 5 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 1, 5 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 2, 5 ],
+      "entrance": "NEG_X",
+      "exit": "NEG_Y"
     }
   ],
   "walls": [
