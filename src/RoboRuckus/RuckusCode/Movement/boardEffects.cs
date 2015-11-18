@@ -6,6 +6,10 @@ using System.Threading;
 
 namespace RoboRuckus.RuckusCode.Movement
 {
+    /// <summary>
+    /// Controls all board effects.
+    /// Wrapping public methods in lock statements is probably overkill, but doesn't hurt, and might help.
+    /// </summary>
     public static class boardEffects
     {
         /// <summary>
@@ -16,9 +20,11 @@ namespace RoboRuckus.RuckusCode.Movement
             lock (gameStatus.locker)
             {
                 playerSignals.Instance.showMessage("Turntables Rotating");
+                // Find all bots on turntables
                 Robot[] bots = gameStatus.robots.Where(r => gameStatus.gameBoard.turntables.Any(t => (t.location[0] == r.x_pos && t.location[1] == r.y_pos))).ToArray();
                 foreach (Robot _bot in bots)
                 {
+                    // Determine in which direction to rotate that bot, and craft the movement
                     turntable table = gameStatus.gameBoard.turntables.Single(t => (t.location[0] == _bot.x_pos && t.location[1] == _bot.y_pos));
                     moveModel movement = new moveModel
                     {
@@ -31,23 +37,44 @@ namespace RoboRuckus.RuckusCode.Movement
                         },
                         bot = _bot
                     };
+                    // Rotate the robot
                     moveCalculator.processMoveOrder(moveCalculator.calculateMove(movement)[0]);
                 }
             }
         }
 
         /// <summary>
-        /// Fires all lasers
+        /// Fires all lasers and adds the damage to robots
         /// </summary>
         /// <returns>True if a bot was hit with any laser</returns>
         public static bool fireLasers()
         {
             lock (gameStatus.locker)
             {
+                Dictionary<int, byte> botsHit = new Dictionary<int, byte>();
                 playerSignals.Instance.showMessage("Firing lasers!", "laser");
-                bool botHit = boardEffects.fireBotLasers();
-                bool boardHit = boardEffects.fireBoardLasers();
-                return botHit || boardHit;
+                bool botHit = boardEffects.fireBotLasers(ref botsHit);
+                bool boardHit = boardEffects.fireBoardLasers(ref botsHit);
+                if (botHit || boardHit)
+                {
+                    Timer watchDog;
+                    // Add damage to hit robots
+                    foreach (KeyValuePair<int, byte> bot in botsHit)
+                    {
+                        gameStatus.robots[bot.Key].damage += bot.Value;
+                        // Start watch dog to skip bots that don't respond in 5 seconds
+                        bool timeout = false;
+                        watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
+
+                        // Wait for bot to acknowledge receipt of updated value
+                        SpinWait.SpinUntil(() => botSignals.sendDamage(bot.Key, gameStatus.robots[bot.Key].damage) == "OK" || timeout);
+
+                        // Dispose the watch dog
+                        watchDog.Dispose();
+                    }
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -57,8 +84,11 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <returns>An array of robots on a wrench space</returns>
         public static Robot[] wrenches()
         {
-            playerSignals.Instance.showMessage("Wrenches healing");
-            return gameStatus.robots.Where(r => !r.controllingPlayer.dead && (gameStatus.gameBoard.wrenches.Any(w => w[0] == r.x_pos && w[1] == r.y_pos))).ToArray();
+            lock (gameStatus.locker)
+            {
+                playerSignals.Instance.showMessage("Wrenches healing");
+                return gameStatus.robots.Where(r => !r.controllingPlayer.dead && (gameStatus.gameBoard.wrenches.Any(w => w[0] == r.x_pos && w[1] == r.y_pos))).ToArray();
+            }
         }
 
         /// <summary>
@@ -68,7 +98,10 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <returns>True if the coordinate contains a pit</returns>
         public static bool onPit(int[] coordinate)
         {
-            return gameStatus.gameBoard.pits.Any(p => (p[0] == coordinate[0] && p[1] == coordinate[1]));
+            lock (gameStatus.locker)
+            {
+                return gameStatus.gameBoard.pits.Any(p => (p[0] == coordinate[0] && p[1] == coordinate[1]));
+            }
         }
 
         /// <summary>
@@ -80,39 +113,42 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <returns>The furthest coordinate along the direction something can move before hitting the wall, or null if no wall was found</returns>
         public static int[] findWall(int[] fromCord, int[] toCord, Robot.orientation direction)
         {
-            int[] wall = null;
-            switch (direction)
+            lock(gameStatus.locker)
             {
-                case Robot.orientation.X:
-                    int[][] found = gameStatus.gameBoard.walls.OrderBy(w => w[0][0]).ThenBy(w => w[1][0]).FirstOrDefault(w => ((w[0][0] >= fromCord[0] && w[0][0] <= toCord[0]) && (w[1][0] >= fromCord[0] && w[1][0] <= toCord[0]) && (w[0][1] == fromCord[1] && w[1][1] == fromCord[1])));
-                    if (found != null)
-                    {
-                        wall = new int[] { found[0][0] < found[1][0] ? found[0][0] : found[1][0], found[0][1] };
-                    }
-                    break;
-                case Robot.orientation.Y:
-                    found = gameStatus.gameBoard.walls.OrderBy(w => w[0][1]).ThenBy(w => w[1][1]).FirstOrDefault(w => ((w[0][1] >= fromCord[1] && w[0][1] <= toCord[1]) && (w[1][1] >= fromCord[1] && w[1][1] <= toCord[1]) && (w[0][0] == fromCord[0] && w[1][0] == fromCord[0])));
-                    if (found != null)
-                    {
-                        wall = new int[] { found[0][1] < found[1][1] ? found[0][1] : found[1][1], found[0][0] };
-                    }
-                    break;
-                case Robot.orientation.NEG_X:
-                    found = gameStatus.gameBoard.walls.OrderByDescending(w => w[0][0]).ThenByDescending(w => w[1][0]).FirstOrDefault(w => ((w[0][0] <= fromCord[0] && w[0][0] >= toCord[0]) && (w[1][0] <= fromCord[0] && w[1][0] >= toCord[0]) && (w[0][1] == fromCord[1] && w[1][1] == fromCord[1])));
-                    if (found != null)
-                    {
-                        wall = new int[] { found[0][0] > found[1][0] ? found[0][0] : found[1][0], found[0][1] };
-                    }
-                    break;
-                case Robot.orientation.NEG_Y:
-                    found = gameStatus.gameBoard.walls.OrderByDescending(w => w[0][1]).ThenByDescending(w => w[1][1]).FirstOrDefault(w => ((w[0][1] <= fromCord[1] && w[0][1] >= toCord[1]) && (w[1][1] <= fromCord[1] && w[1][1] >= toCord[1]) && (w[0][0] == fromCord[0] && w[1][0] == fromCord[0])));
-                    if (found != null)
-                    {
-                        wall = new int[] { found[0][1] > found[1][1] ? found[0][1] : found[1][1], found[0][0] };
-                    }
-                    break;
+                int[] wall = null;
+                switch (direction)
+                {
+                    case Robot.orientation.X:
+                        int[][] found = gameStatus.gameBoard.walls.OrderBy(w => w[0][0]).ThenBy(w => w[1][0]).FirstOrDefault(w => ((w[0][0] >= fromCord[0] && w[0][0] <= toCord[0]) && (w[1][0] >= fromCord[0] && w[1][0] <= toCord[0]) && (w[0][1] == fromCord[1] && w[1][1] == fromCord[1])));
+                        if (found != null)
+                        {
+                            wall = new int[] { found[0][0] < found[1][0] ? found[0][0] : found[1][0], found[0][1] };
+                        }
+                        break;
+                    case Robot.orientation.Y:
+                        found = gameStatus.gameBoard.walls.OrderBy(w => w[0][1]).ThenBy(w => w[1][1]).FirstOrDefault(w => ((w[0][1] >= fromCord[1] && w[0][1] <= toCord[1]) && (w[1][1] >= fromCord[1] && w[1][1] <= toCord[1]) && (w[0][0] == fromCord[0] && w[1][0] == fromCord[0])));
+                        if (found != null)
+                        {
+                            wall = new int[] { found[0][1] < found[1][1] ? found[0][1] : found[1][1], found[0][0] };
+                        }
+                        break;
+                    case Robot.orientation.NEG_X:
+                        found = gameStatus.gameBoard.walls.OrderByDescending(w => w[0][0]).ThenByDescending(w => w[1][0]).FirstOrDefault(w => ((w[0][0] <= fromCord[0] && w[0][0] >= toCord[0]) && (w[1][0] <= fromCord[0] && w[1][0] >= toCord[0]) && (w[0][1] == fromCord[1] && w[1][1] == fromCord[1])));
+                        if (found != null)
+                        {
+                            wall = new int[] { found[0][0] > found[1][0] ? found[0][0] : found[1][0], found[0][1] };
+                        }
+                        break;
+                    case Robot.orientation.NEG_Y:
+                        found = gameStatus.gameBoard.walls.OrderByDescending(w => w[0][1]).ThenByDescending(w => w[1][1]).FirstOrDefault(w => ((w[0][1] <= fromCord[1] && w[0][1] >= toCord[1]) && (w[1][1] <= fromCord[1] && w[1][1] >= toCord[1]) && (w[0][0] == fromCord[0] && w[1][0] == fromCord[0])));
+                        if (found != null)
+                        {
+                            wall = new int[] { found[0][1] > found[1][1] ? found[0][1] : found[1][1], found[0][0] };
+                        }
+                        break;
+                }
+                return wall;
             }
-            return wall;
         }
 
         /// <summary>
@@ -121,102 +157,105 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <param name="express">True indicates only express conveyors should move</param>
         public static void moveConveyors(bool express)
         {
-            Robot[] onConveyors;
-            List<orderModel> orders = new List<orderModel>();
-            // Check if express conveyor movement, then find all robots on the conveyors
-            if (express)
+            lock(gameStatus.locker)
             {
-                playerSignals.Instance.showMessage("Express conveyors moving");
-                onConveyors = gameStatus.robots.Where(r => gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))).ToArray();
-            }
-            else
-            {
-                playerSignals.Instance.showMessage("All conveyors moving");
-                onConveyors = gameStatus.robots.Where(r => (gameStatus.gameBoard.conveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))) || (gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1])))).ToArray();
-            }
-            List<conveyorModel> moved = new List<conveyorModel>();
-            
-            // Check whether each robot will be able to move, or if it is blocked by another robot
-            foreach (Robot moving in onConveyors)
-            {
-                canMoveOnConveyor(moving, onConveyors, ref moved);
-            }
-
-            // Check to see if any robots are trying to move into the same space
-            conveyorModel[] collisions = moved.Where(r => (moved.Any(p => (r != p && p.destination[0] == r.destination[0])) && moved.Any(p => (r != p && p.destination[0] == r.destination[0])))).ToArray();
-            foreach (conveyorModel collided in collisions)
-            {
-                moved.Remove(collided);
-            }
-
-            // REsolve the movement of each bot that is moving
-            foreach (conveyorModel findMove in moved)
-            {
-                Robot.orientation oldFacing = findMove.bot.currentDirection;
-                moveCalculator.resolveMove(findMove.bot, findMove.space.exit, 1, ref orders, false, true);
-                Robot.orientation desiredFacing = oldFacing;
-
-                // Check if a robot is being moved onto a space that contains a conveyor
-                conveyor entering = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
-                if (entering == null)
+                Robot[] onConveyors;
+                List<orderModel> orders = new List<orderModel>();
+                // Check if express conveyor movement, then find all robots on the conveyors
+                if (express)
                 {
-                    entering = gameStatus.gameBoard.expressConveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
+                    playerSignals.Instance.showMessage("Express conveyors moving");
+                    onConveyors = gameStatus.robots.Where(r => gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))).ToArray();
                 }
-                if (entering != null)
+                else
                 {
-                    // Determine if the conveyor space is a corner, and rotate the bot accordingly
-                    switch (entering.entrance - entering.exit)
+                    playerSignals.Instance.showMessage("All conveyors moving");
+                    onConveyors = gameStatus.robots.Where(r => (gameStatus.gameBoard.conveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))) || (gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1])))).ToArray();
+                }
+                List<conveyorModel> moved = new List<conveyorModel>();
+
+                // Check whether each robot will be able to move, or if it is blocked by another robot
+                foreach (Robot moving in onConveyors)
+                {
+                    canMoveOnConveyor(moving, onConveyors, ref moved);
+                }
+
+                // Check to see if any robots are trying to move into the same space
+                conveyorModel[] collisions = moved.Where(r => (moved.Any(p => (r != p && p.destination[0] == r.destination[0])) && moved.Any(p => (r != p && p.destination[0] == r.destination[0])))).ToArray();
+                foreach (conveyorModel collided in collisions)
+                {
+                    moved.Remove(collided);
+                }
+
+                // REsolve the movement of each bot that is moving
+                foreach (conveyorModel findMove in moved)
+                {
+                    Robot.orientation oldFacing = findMove.bot.currentDirection;
+                    moveCalculator.resolveMove(findMove.bot, findMove.space.exit, 1, ref orders, false, true);
+                    Robot.orientation desiredFacing = oldFacing;
+
+                    // Check if a robot is being moved onto a space that contains a conveyor
+                    conveyor entering = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
+                    if (entering == null)
                     {
-                        case 1:
-                        case -3:
-                            if (oldFacing == Robot.orientation.NEG_Y)
-                            {
-                                desiredFacing = Robot.orientation.X;
-                            }
-                            else
-                            {
-                                desiredFacing = oldFacing + 1;
-                            }
-                            break;
-                        case -1:
+                        entering = gameStatus.gameBoard.expressConveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
+                    }
+                    if (entering != null)
+                    {
+                        // Determine if the conveyor space is a corner, and rotate the bot accordingly
+                        switch (entering.entrance - entering.exit)
+                        {
+                            case 1:
+                            case -3:
+                                if (oldFacing == Robot.orientation.NEG_Y)
+                                {
+                                    desiredFacing = Robot.orientation.X;
+                                }
+                                else
+                                {
+                                    desiredFacing = oldFacing + 1;
+                                }
+                                break;
+                            case -1:
+                            case 3:
+                                if (oldFacing == Robot.orientation.X)
+                                {
+                                    desiredFacing = Robot.orientation.NEG_Y;
+                                }
+                                else
+                                {
+                                    desiredFacing = oldFacing - 1;
+                                }
+                                break;
+                        }
+                    }
+                    // Ensure the robot is facing in the correct directon after moving
+                    switch (desiredFacing - findMove.bot.currentDirection)
+                    {
                         case 3:
-                            if (oldFacing == Robot.orientation.X)
-                            {
-                                desiredFacing = Robot.orientation.NEG_Y;
-                            }
-                            else
-                            {
-                                desiredFacing = oldFacing - 1;
-                            }
+                        case -1:
+                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Right, magnitude = 1, outOfTurn = false });
+                            findMove.bot.currentDirection = desiredFacing;
                             break;
+                        case -3:
+                        case 1:
+                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Left, magnitude = 1, outOfTurn = false });
+                            findMove.bot.currentDirection = desiredFacing;
+                            break;
+                        case 2:
+                        case -2:
+                            Random rand = new Random();
+                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = (moveCalculator.movement)rand.Next(0, 2), magnitude = 2, outOfTurn = false });
+                            findMove.bot.currentDirection = desiredFacing;
+                            break;
+
                     }
                 }
-                // Ensure the robot is facing in the correct directon after moving
-                switch (desiredFacing - findMove.bot.currentDirection)
+                // Send move orders to bots
+                foreach (orderModel order in orders)
                 {
-                    case 3:
-                    case -1:
-                        orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Right, magnitude = 1, outOfTurn = false });
-                        findMove.bot.currentDirection = desiredFacing;
-                        break;
-                    case -3:
-                    case 1:
-                        orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Left, magnitude = 1, outOfTurn = false });
-                        findMove.bot.currentDirection = desiredFacing;
-                        break;
-                    case 2:
-                    case -2:
-                        Random rand = new Random();
-                        orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = (moveCalculator.movement)rand.Next(0, 2), magnitude = 2, outOfTurn = false });
-                        findMove.bot.currentDirection = desiredFacing;
-                        break;
-
+                    moveCalculator.processMoveOrder(order);
                 }
-            }
-            // Send move orders to bots
-            foreach (orderModel order in orders)
-            {
-                moveCalculator.processMoveOrder(order);
             }
         }
 
@@ -301,15 +340,13 @@ namespace RoboRuckus.RuckusCode.Movement
 
 
         /// <summary>
-        /// Fires robot lasers and applies damage
+        /// Fires robot lasers and adds the damage to a dictionary
         /// </summary>
         /// <returns>True if a bot was hit</returns>
-        private static bool fireBotLasers()
+        private static bool fireBotLasers(ref Dictionary<int, byte> hit)
         {
             lock (gameStatus.locker)
             {
-                Dictionary<int, byte> hit = new Dictionary<int, byte>();
-                Timer watchDog;
                 // Find robots that were hit
                 foreach (player shooter in gameStatus.players)
                 {
@@ -330,34 +367,18 @@ namespace RoboRuckus.RuckusCode.Movement
                         }
                     }
                 }
-                // Add damage to hit robots
-                foreach (KeyValuePair<int, byte> bot in hit)
-                {
-                    gameStatus.robots[bot.Key].damage += bot.Value;
-                    // Start watch dog to skip bots that don't respond in 5 seconds
-                    bool timeout = false;
-                    watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
-
-                    // Wait for bot to acknowledge receipt of updated value
-                    SpinWait.SpinUntil(() => botSignals.sendDamage(bot.Key, gameStatus.robots[bot.Key].damage) == "OK" || timeout);
-
-                    // Dispose the watch dog
-                    watchDog.Dispose();
-                }
                 return hit.Count > 0;
             }
         }
 
         /// <summary>
-        /// Fires the board lasers and applies damage
+        /// Fires the board lasers and adds the damage to a dictionary
         /// </summary>
         /// <returns>True if a bot was hit</returns>
-        private static bool fireBoardLasers()
+        private static bool fireBoardLasers(ref Dictionary<int, byte> hit)
         {
             lock (gameStatus.locker)
             {
-                Dictionary<int, byte> hit = new Dictionary<int, byte>();
-                Timer watchDog;
                 foreach (laser shooter in gameStatus.gameBoard.lasers)
                 {
                     int shot = LoS(shooter.start, shooter.facing, shooter.end);
@@ -372,20 +393,6 @@ namespace RoboRuckus.RuckusCode.Movement
                             hit.Add(shot, shooter.strength);
                         }
                     }
-                }
-                // Add damage to hit robots
-                foreach (KeyValuePair<int, byte> bot in hit)
-                {
-                    gameStatus.robots[bot.Key].damage += bot.Value;
-                    // Start watch dog to skip bots that don't respond in 5 seconds
-                    bool timeout = false;
-                    watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge damage value update"); timeout = true; }, null, 5000, Timeout.Infinite);
-
-                    // Wait for bot to acknowledge receipt of updated value
-                    SpinWait.SpinUntil(() => botSignals.sendDamage(bot.Key, gameStatus.robots[bot.Key].damage) == "OK" || timeout);
-
-                    // Dispose the watch dog
-                    watchDog.Dispose();
                 }
                 return hit.Count > 0;
             }
