@@ -8,7 +8,7 @@
     @using (Html.BeginForm("startGame", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
     {
         <h4>Setup Game</h4>
-        @Html.ValidationSummary(true, "Please enter an integer between 1 and 12", new { @class = "" })
+        @Html.ValidationSummary(true, "Please enter an integer between 1 and 6", new { @class = "" })
         <div class="">
             @Html.LabelFor(m => m.numberOfPlayers, new { @class = "" })
             <div class="">

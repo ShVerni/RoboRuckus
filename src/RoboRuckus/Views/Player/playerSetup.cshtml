@@ -11,7 +11,7 @@
 <div id="board" class="left" data-board="@ViewBag.board">
     @for (int i = ViewBag.board_y; i >= 0; i--)
     {
-        <div class="boardRow" id="y_@i" style="min-width: @((ViewBag.board_x * 2.6) + (0.38 * ViewBag.board_x))em">
+        <div class="boardRow" id="y_@i">
             @for (int j = 0; j <= ViewBag.board_x; j++)
             {
                 <div class="boardSquare" data-x="@j" data-y="@i" id="@(j)_@i"></div>
@@ -20,7 +20,7 @@
     }
 </div>
 <div class="clear"></div>
-</div>@using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+@using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
 {
     <div id="form" class="hidden">
         @Html.TextBoxFor(m => m.botX, new { @class = "", @id = "botX", type = "number" })

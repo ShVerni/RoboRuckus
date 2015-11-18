@@ -1,5 +1,4 @@
 ﻿$(function () {
-    Howler._enableiOSAudio();
     var curDamage = parseInt($("#damage").data("damage"));
 
     var damageSound = new Howl({

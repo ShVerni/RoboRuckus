@@ -45,7 +45,6 @@
 
 #sendcards {
     border: 1px solid black;
-    font-size: 1.05vw;
     text-align: center;
 }
 
@@ -80,7 +79,7 @@
  
  .order {
     position: absolute;
-    top: -10.5%;
+    top: -11%;
     right: 32%;
     font-size: 4em;
     color: #8bbe7c;
@@ -123,19 +122,24 @@
 }
 
  /* Setup stuff*/
- #board {
-     margin-top: 1.5em;
-     background-size: 100% auto;
- }
+#board {
+    margin-top: 1.5em;
+    background-size: 100% auto;
+}
 
  .boardSquare {
      height: 2.6em;
      width: 2.6em;
      border: 0.05em solid black;
-     display: inline-block;
-     vertical-align: top;
-     margin-right: -0.25em;   
+     float: left;
+     opacity: 0.8;
  }
+
+.boardSquare p {
+    text-align: center;
+    font-size: 1.3em;
+    line-height: 0.2vh;
+}
 
  .left {
      float: left;

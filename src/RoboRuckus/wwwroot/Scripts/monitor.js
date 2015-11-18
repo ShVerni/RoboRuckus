@@ -93,7 +93,7 @@
                     orientation = "&#x2193;";
                     break;
             }
-            $("#" + this.x.toString() + "_" + this.y.toString()).html((this.number + 1).toString() + orientation).css("background", "yellow");
+            $("#" + this.x.toString() + "_" + this.y.toString()).html("<p>" + (this.number + 1).toString() + orientation + "</p>").css("background", "yellow");
         });
     }
 

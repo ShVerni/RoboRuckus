@@ -23,7 +23,7 @@ void driveForward(uint8_t spaces)
   Z_threshold = (Z_threshold / 10) - Z_offset;
   
   timeUp = false;
-  timeout.begin(timedOut, 2000000 * spaces);
+  timeout.begin(timedOut, 1500000 * spaces);
    
   mils = 0;
   left.write(leftForwardSpeed);
@@ -131,7 +131,7 @@ void driveBackward(uint8_t spaces)
   Z_threshold = (Z_threshold / 10) - Z_offset;
 
   timeUp = false;
-  timeout.begin(timedOut, 2000000 * spaces);
+  timeout.begin(timedOut, 1500000 * spaces);
    
   mils = 0;
   left.write(leftBackwardSpeed);

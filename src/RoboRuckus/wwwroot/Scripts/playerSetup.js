@@ -11,7 +11,9 @@
     // Lets a user select a starting position for their bot. TODO: Restrict selection to predefined starting squares.
     $(".boardSquare").click(function () {
         if (!$(this).hasClass("occupied")) {
-            $("#button").button("option", "disabled", false);
+            if ($("#button").button("option", "disabled") == true) {
+                $("#button").button("option", "disabled", false);
+            }
             $("#player").val(player);
             if ($(this).hasClass("selected")) {
                 switch (direction) {
@@ -51,7 +53,7 @@
                     orientation = "&#x2193;";
                     break;
             }
-            $(this).html(player + orientation).css("background", "yellow").addClass("selected");
+            $(this).html("<p>" + player + orientation + "</p>").css("background", "yellow").addClass("selected");
         }
     });
 
@@ -74,7 +76,7 @@
                     orientation = "&#x2193;";
                     break;
             }
-            $("#" + this.x.toString() + "_" + this.y.toString()).html((this.number + 1).toString() + orientation).css("background", "yellow").addClass("occupied");
+            $("#" + this.x.toString() + "_" + this.y.toString()).html("<p>" + (this.number + 1).toString() + orientation + "</p>").css("background", "yellow").addClass("occupied");
         });
     }
 });
