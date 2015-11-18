@@ -21,7 +21,6 @@
         </ul>
     </div>
 </div>
-<br />
 <div id="slots" class="row">
     @for (int j = 0; j < 5; j++)
     {
@@ -31,8 +30,10 @@
             </ul>
         </div>
     }
-    <div id="sendcards" class="ui-widget ui-widget-content">
+    <div id="sendcards">
         <img src=@Url.Content("~/images/cards/submit.png") alt="submt" />
+        <hr />
+        <p><b>Shutdown next round:</b></p>
+        <input type="checkbox" id="shutdown"><label id="shutdownLabel" for="shutdown"><span id="labelText">Shutdown Off</span></label>
     </div>
 </div>
-<input type="checkbox" id="shutdown"><label id="shutdownLabel" for="shutdown"><span id="labelText">Shutdown Off</span></label>

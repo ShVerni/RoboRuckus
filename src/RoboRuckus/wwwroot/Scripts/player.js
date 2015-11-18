@@ -123,7 +123,7 @@
         if (imageWidth < 350) {
             var percent = (imageWidth / 350);
             var imageHeight = percent * 520;
-            $(".order").css("font-size", percent * 2.15 + "em");
+            $(".order").css("font-size", percent * 4 + "em");
             $(".face").css("font-size", percent * 11.8 + "em");
             $(".details").css("font-size", percent * 2.5 + "em");
             $("#cardsContainer img, .slot img").width(imageWidth);
@@ -144,7 +144,7 @@
             cursor: "move"
         });
 
-        $("#sendcards").click(sendCards);
+        $("#sendcards img").click(sendCards);
         cardControl.server.getHealth($('#playerNum').data("player")).done(function (damage) {
             updateHealth(damage);
         })
@@ -181,7 +181,7 @@
         if (imageWidth < 350) {
             var percent = (imageWidth / 350);
             var imageHeight = percent * 520;
-            $(".order").css("font-size", percent * 2.15 + "em");
+            $(".order").css("font-size", percent * 4 + "em");
             $(".face").css("font-size", percent * 11.8 + "em");
             $(".details").css("font-size", percent * 2.5 + "em");
             $("#cardsContainer img, .slot img").width(imageWidth);
@@ -237,7 +237,7 @@
         if (imageWidth < 350) {
             var percent = (imageWidth / 350);
             var imageHeight = percent * 520;
-            $(".order").css("font-size", percent * 2.15 + "em");
+            $(".order").css("font-size", percent * 4 + "em");
             $(".face").css("font-size", percent * 11.8 + "em");
             $(".details").css("font-size", percent * 2.5 + "em");
             $("#cardsContainer img, .slot img").width(imageWidth);

@@ -1,7 +1,7 @@
 ﻿$(function () {
     setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
 
-    $("#button").prop("disabled", true);
+    $("#button").button({ disabled: true });
     var player = $("#playerNum").data("player");
     var direction = 0;
     $(".boardSquare").css({"cursor": "pointer", "user-select": "none"}).attr('unselectable', 'on').on('selectstart', false);
@@ -11,7 +11,7 @@
     // Lets a user select a starting position for their bot. TODO: Restrict selection to predefined starting squares.
     $(".boardSquare").click(function () {
         if (!$(this).hasClass("occupied")) {
-            $("#button").prop("disabled", false);
+            $("#button").button("option", "disabled", false);
             $("#player").val(player);
             if ($(this).hasClass("selected")) {
                 switch (direction) {
