@@ -1,14 +1,15 @@
 ﻿$(function () {
     var curDamage = parseInt($("#damage").data("damage"));
-
+    
+    // Set up howler sounds
     var damageSound = new Howl({
         src: ['/sounds/damage.ogg', '/sounds/damage.mp3']
     });
-
     var laserSound = new Howl({
         src: ['/sounds/laser.ogg', '/sounds/laser.mp3']
     });
 
+    // Shutdown toggle effects
     $("#shutdown").button().click(function () {
         if ($('#shutdown').is(":checked"))
         {
@@ -19,11 +20,11 @@
             $("#labelText").html("Shutdown Off");
         }
     });
-
     $("#shutdownLabel").hover(function () {
         $(this).removeClass("ui-state-hover");
     });
 
+    // Set up arrays for card faces and etails
     var faces = new Array();
     faces["right"] = "R";
     faces["left"] = "L";
@@ -71,7 +72,7 @@
                 face = faces[this.direction];
                 details = detail[this.direction];
             }
-
+            // Append card to card container
             $("#cardsContainer").append("<li id='card" + i + "' class='ui-widget-content dealtCard'>\
                 <div class='cardBody'>\
                     <p class='order'>" + this.priority + "</p>\
@@ -83,12 +84,13 @@
             $("#card" + i).data("cardinfo", this);
             i++;
         });
-
+        // Makes the card slots droppable
         $(".slot").droppable("enable");
-
+        // Reset locked card slots
         $(".locked").remove();
 
         var slot = 5;
+        // Process lock cards
         $.each($.parseJSON(lockedCards), function () {
             var face;
             var details;
@@ -100,6 +102,7 @@
                 face = faces[this.direction];
                 details = detail[this.direction];
             }
+            // Add card to locked slot
             $("#slot" + slot + " ul").append("<li style='cursor: default' id='card" + i + "' class='ui-widget-content'>\
                 <div class='cardBody'>\
                     <p class='order'>" + this.priority + "</p>\
@@ -114,7 +117,7 @@
             slot--;
             i++;
         });
-
+        // Minimum width of window is 7 slots worth
         boxes = ($(".dealtCard").length < 7) ? 7 : $(".dealtCard").length;
 
         // Set the width of the cards to fill the screen in one row
@@ -142,8 +145,9 @@
             containment: "document",
             cursor: "move"
         });
-
+        // Enable the submit program button
         $("#sendcards img").click(sendCards);
+        // Get bot's current status
         cardControl.server.getHealth($('#playerNum').data("player")).done(function (damage) {
             updateHealth(damage);
         })
@@ -163,7 +167,7 @@
             face = faces[card.direction];
             details = detail[card.direction];
         }
-
+        // Add current card being executed to the card container
         $("#cardsContainer").append("<li class='ui-widget-content dealtCard'>\
                 <div class='cardBody'>\
                     <p class='order'>" + card.priority + "</p>\
@@ -196,7 +200,7 @@
         }
     });
 
-    // Update damage
+    // Bind update damage function
     cardControl.client.UpdateHealth = (function (damage) {
         var curHealth = $.parseJSON(damage);
         var player = parseInt($('#playerNum').data("player"));
@@ -204,7 +208,7 @@
         updateHealth(myDamage);
     });
 
-    // Request a deal from the server
+    // When caleed, requests a deal from the server
     cardControl.client.requestdeal = (function () {
         $("#shutdown").prop("checked", false).button("refresh");
         cardControl.server.dealMe($('#playerNum').data("player"));
@@ -220,6 +224,7 @@
         window.location = "/Player/playerSetup/" + $('#playerNum').data("player");
     });
 
+    // Displays a message from the server
     cardControl.client.displayMessage = (function (message, sound) {
         $("#cardsContainer").html("<h2>" + message + "</h2>");
         switch(sound)
@@ -230,7 +235,7 @@
         }
     });
 
-    //Resize the cards as the window resizes
+    //Resize the cards as the window resizes, this is inelegant but works for now
     $(window).resize(function () {
         var imageWidth = (($(window).width() - 80) / boxes);
         if (imageWidth < 350) {
@@ -320,13 +325,31 @@
             $("#damageBox_" + i).css('background', 'red');
         }
         curDamage = damage;
+        // Gets the flags the robot has touched
+        $.get("/Setup/Status", function (data) {
+            updateFlags(data);
+        });
+    }
+
+    // Draws the flags and touched flags
+    function updateFlags(data) {
+        $("#flagBoxes").html("Flags Touched: ");
+        var result = $.parseJSON(data)[parseInt($('#playerNum').data("player")) - 1];
+        for (var i = 0; i < result.totalFlags; i++) {
+            $("#flagBoxes").append('<span id="flag' + i + '" class="flagBox"></span> ');
+            if (result.flags > i) {
+                $("#flag" + i).addClass("touchedFlag");
+            }
+        }
     }
 
     // Sends the selected cards to the server
-    function sendCards () {
+    function sendCards() {
+        $("#sendcards img").unbind("click");
         if ($(".slot").has("li").length != $(".slot").length)
         {
             alert("Please fill all movement slots");
+            $("#sendcards img").click(sendCards);
         }
         else
         {
@@ -341,8 +364,7 @@
                 shutdown = true;
             }
             cardControl.server.sendCards($('#playerNum').data("player"), move, shutdown);
-            $("#slots").prepend("<h3 id='submitted' style='color: red'>Program Submitted</h3>")
-            $("#sendcards").unbind("click");
+            $("#slots").prepend("<h3 id='submitted' style='color: red'>Program Submitted</h3>");
         }
     }
 });

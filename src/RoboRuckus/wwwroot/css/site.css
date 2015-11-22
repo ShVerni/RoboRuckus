@@ -122,10 +122,47 @@
     display: inline-block;
 }
 
+/* Flag boxes stuff */
+#flagBoxes {
+    margin-left: 1em;
+}
+
+.flagBox {
+    width: 1em;
+    height: 1em;
+    border: 1px solid black;
+    display: inline-block;
+}
+
+.touchedFlag {
+    background: green;
+}
+
  /* Setup stuff*/
+ .flags {
+     height: 2.5em;
+     width: 2.5em;
+     background: green;
+     border: 0.05em dotted black;
+     margin-bottom: 1.5em;
+     
+     text-align: center;
+     cursor: move;
+ }
+
+ #flagContainer {
+     min-height: 22em;
+     min-width: 5em;
+     margin-top: 3em;
+ }
+
 #board {
     margin-top: 1.5em;
     background-size: 100% auto;
+}
+
+#boardSel {
+    width: 15em
 }
 
  .boardSquare {

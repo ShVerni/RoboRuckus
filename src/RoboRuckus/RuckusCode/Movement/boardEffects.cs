@@ -51,7 +51,7 @@ namespace RoboRuckus.RuckusCode.Movement
         {
             lock (gameStatus.locker)
             {
-                Dictionary<int, byte> botsHit = new Dictionary<int, byte>();
+                Dictionary<int, sbyte> botsHit = new Dictionary<int, sbyte>();
                 playerSignals.Instance.showMessage("Firing lasers!", "laser");
                 bool botHit = boardEffects.fireBotLasers(ref botsHit);
                 bool boardHit = boardEffects.fireBoardLasers(ref botsHit);
@@ -59,7 +59,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 {
                     Timer watchDog;
                     // Add damage to hit robots
-                    foreach (KeyValuePair<int, byte> bot in botsHit)
+                    foreach (KeyValuePair<int, sbyte> bot in botsHit)
                     {
                         gameStatus.robots[bot.Key].damage += bot.Value;
                         // Start watch dog to skip bots that don't respond in 5 seconds
@@ -88,6 +88,29 @@ namespace RoboRuckus.RuckusCode.Movement
             {
                 playerSignals.Instance.showMessage("Wrenches healing");
                 return gameStatus.robots.Where(r => !r.controllingPlayer.dead && (gameStatus.gameBoard.wrenches.Any(w => w[0] == r.x_pos && w[1] == r.y_pos))).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of all robots currently on a flag space
+        /// </summary>
+        /// <returns>A list of value pairs of robots on a flag space, and the flag number</returns>
+        public static List<int[]> flags()
+        {
+            lock (gameStatus.locker)
+            {
+                List<int[]> found = new List<int[]>();
+                playerSignals.Instance.showMessage("Touching flags");
+                for (int i = 0, n = gameStatus.gameBoard.flags.Length; i < n; i++)
+                {
+                    int[] flag = gameStatus.gameBoard.flags[i];
+                    Robot bot = gameStatus.robots.FirstOrDefault(r => (r.x_pos == flag[0] && r.y_pos == flag[1]));
+                    if (bot != null)
+                    {
+                        found.Add(new int[] { bot.robotNum, i });
+                    }
+                }
+                return found;
             }
         }
 
@@ -343,7 +366,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// Fires robot lasers and adds the damage to a dictionary
         /// </summary>
         /// <returns>True if a bot was hit</returns>
-        private static bool fireBotLasers(ref Dictionary<int, byte> hit)
+        private static bool fireBotLasers(ref Dictionary<int, sbyte> hit)
         {
             lock (gameStatus.locker)
             {
@@ -375,7 +398,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// Fires the board lasers and adds the damage to a dictionary
         /// </summary>
         /// <returns>True if a bot was hit</returns>
-        private static bool fireBoardLasers(ref Dictionary<int, byte> hit)
+        private static bool fireBoardLasers(ref Dictionary<int, sbyte> hit)
         {
             lock (gameStatus.locker)
             {

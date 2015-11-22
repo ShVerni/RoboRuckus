@@ -8,7 +8,7 @@
     <script type="text/javascript" src=@Url.Content("~/Scripts/monitor.js")></script>
 }
 <h2>Number of players: @ViewBag.players</h2>
-<div id="board" class="left" data-board="@ViewBag.board">
+<div id="board" class="left" data-board="@ViewBag.board" data-flag='@ViewBag.flags'>
     @for(int i = ViewBag.board_y; i >= 0; i--)
     {
         <div class="boardRow" id="y_@i">
@@ -16,6 +16,7 @@
             {
                 <div class="boardSquare" id="@(j)_@i"></div>
             }
+            <div class="clear"></div>
         </div>
     }
 </div>
@@ -30,4 +31,5 @@
     </div>
 </div>
 <div class="clear"></div>
+<br />
 <a id="reset" href="#">Reset Game</a>

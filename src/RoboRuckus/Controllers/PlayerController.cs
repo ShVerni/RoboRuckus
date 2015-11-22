@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Mvc;
+using Newtonsoft.Json;
 using RoboRuckus.RuckusCode;
 using System.Linq;
 
@@ -49,7 +50,14 @@ namespace RoboRuckus.Controllers
             }
             else
             {
-                playerNumber = player;
+                if (gameStatus.players.Any(p => p.playerNumber == (player - 1)))
+                {
+                    playerNumber = player;
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             // Check if game is full
             if (playerNumber == 0)
@@ -59,6 +67,7 @@ namespace RoboRuckus.Controllers
             else
             {
                 // Success!
+                ViewBag.flags = JsonConvert.SerializeObject(gameStatus.gameBoard.flags);
                 ViewBag.board_x = gameStatus.boardSizeX;
                 ViewBag.board_y = gameStatus.boardSizeY;
                 ViewBag.player = playerNumber;

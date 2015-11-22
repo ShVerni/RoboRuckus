@@ -7,6 +7,8 @@ namespace RoboRuckus.RuckusCode
     {
         public int x_pos = -1;
         public int y_pos = -1;
+        // The number of flags the robot has touched
+        public int flags = 0;
         // There shouldn't be more that 256 robots in the game.
         public byte robotNum;
 
@@ -28,10 +30,10 @@ namespace RoboRuckus.RuckusCode
             NEG_Y = 3
         }
 
-        // There shouldn't be more thant 256 points of damage a bot can take
-        private  byte _damage = 0;
+        // There shouldn't be more thant 127 points of damage a bot can take, it's signged to allow damage subtraction
+        private  sbyte _damage = 0;
         // Only one thread should be issuing orders and/or modifying damage at a time
-        public byte damage
+        public sbyte damage
         {
             get
             {

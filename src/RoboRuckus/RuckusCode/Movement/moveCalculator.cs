@@ -26,7 +26,6 @@ namespace RoboRuckus.RuckusCode.Movement
         {
             lock (gameStatus.locker)
             {
-                
                 List<orderModel> orders = new List<orderModel>();
                 // Loop through each register
                 for (int i = 0; i < 5; i++)
@@ -52,26 +51,53 @@ namespace RoboRuckus.RuckusCode.Movement
 
                     // Fire lasers
                     if (boardEffects.fireLasers())
-                     {
-                         Thread.Sleep(800);
-                         playerSignals.Instance.updateHealth();
-                         Thread.Sleep(2000);
-                     }
-                     else
-                     {
-                         Thread.Sleep(800);
-                     }
+                    {
+                        Thread.Sleep(800);
+                        playerSignals.Instance.updateHealth();
+                        Thread.Sleep(2000);
+                    }
+                    else
+                    {
+                        Thread.Sleep(800);
+                    }
 
-                     // Heal from wrenches
-                     Robot[] healed = boardEffects.wrenches();
-                     if (healed.Length > 0)
-                     {
-                         foreach (Robot bot in healed)
-                         {
-                             bot.damage--;
-                         }
-                         playerSignals.Instance.updateHealth();
-                     }
+                    // Heal from wrenches
+                    Robot[] healed = boardEffects.wrenches();
+                    if (healed.Length > 0)
+                    {
+                        foreach (Robot bot in healed)
+                        {
+                            bot.damage--;
+                        }
+                        playerSignals.Instance.updateHealth();
+                    }
+                    Thread.Sleep(1000);
+
+                    // Touch flags
+                    List<int[]> touched = boardEffects.flags();
+                    if (touched.Count > 0)
+                    {
+                        foreach (int[] pair in touched)
+                        {
+                            Robot bot = gameStatus.robots[pair[0]];
+                            if (bot.flags == pair[1])
+                            {
+                                bot.flags++;
+                            }
+                            bot.damage--;
+                            playerSignals.Instance.updateHealth();
+                        }
+                    }
+                    Thread.Sleep(1000);
+
+                    // Check for winner
+                    Robot winner = gameStatus.robots.FirstOrDefault(r => r.flags == gameStatus.gameBoard.flags.Length);
+                    if (winner != null)
+                    {
+                        playerSignals.Instance.showMessage("Player " + (winner.controllingPlayer.playerNumber + 1).ToString() + " has won!");
+                        gameStatus.winner = true;
+                        return;
+                    }
                 }
             }
         }

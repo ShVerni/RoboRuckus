@@ -21,6 +21,7 @@ namespace RoboRuckus.RuckusCode
         public static string[] movementCards;
         public static Board gameBoard;
         public static List<Board> boards = new List<Board>();
+        public static bool winner = false;
 
         // Zero ordered board size
         public static int boardSizeX;

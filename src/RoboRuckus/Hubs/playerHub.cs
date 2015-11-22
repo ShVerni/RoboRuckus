@@ -39,15 +39,12 @@ namespace RoboRuckus.Hubs
                 foreach (byte card in caller.lockedCards)
                 {
                     string currentCard = gameStatus.movementCards[card];
-                    if (first)
+                    if (!first)
                     {
-                        first = false;
-                        locked += currentCard.Insert(currentCard.LastIndexOf("}") - 1, ",\"cardNumber\": " + card.ToString());
+                        locked += ",";
                     }
-                    else
-                    {
-                        locked += "," + currentCard.Insert(currentCard.LastIndexOf("}") - 1, ",\"cardNumber\": " + card.ToString());
-                    }
+                    first = false;
+                    locked += currentCard.Insert(currentCard.LastIndexOf("}") - 1, ",\"cardNumber\": " + card.ToString());
                 }
                 locked += "]";
 
@@ -58,15 +55,12 @@ namespace RoboRuckus.Hubs
                 foreach (byte card in cards)
                 {
                     string currentCard = gameStatus.movementCards[card];
-                    if (first)
+                    if (!first)
                     {
-                        first = false;
-                        dealtCards += currentCard.Insert(currentCard.LastIndexOf("}") - 1, ",\"cardNumber\": " + card.ToString());
+                        dealtCards += ",";
                     }
-                    else
-                    {
-                        dealtCards += "," + currentCard.Insert(currentCard.LastIndexOf("}") - 1, ",\"cardNumber\": " + card.ToString());
-                    }
+                    first = false;
+                    dealtCards += currentCard.Insert(currentCard.LastIndexOf("}") - 1, ",\"cardNumber\": " + card.ToString());
                 }
                 dealtCards += "]";
 

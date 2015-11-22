@@ -9,3 +9,4 @@
 /// <reference path="scripts/monitor.js" />
 /// <reference path="scripts/player.js" />
 /// <reference path="scripts/playersetup.js" />
+/// <reference path="scripts/setup.js" />

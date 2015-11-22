@@ -26,7 +26,7 @@ namespace RoboRuckus.RuckusCode
         /// <param name="damage">The damage value</param>
         /// <param name="port">The port the robot is listening on</param>
         /// <returns>The response from the bot</returns>
-        public static string sendDamage(int botNumber,byte damage, int port = 8080)
+        public static string sendDamage(int botNumber, sbyte damage, int port = 8080)
         {
             return sendDataToRobot(botNumber, "4" + damage.ToString() + "0", port);
         }

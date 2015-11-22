@@ -53,19 +53,25 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                if (caller.move == null)
+                if (!gameStatus.winner)
                 {
-                    caller.move = cards;
-                    // Checks if all players have submitted their moves
-                    if (gameStatus.players.Any(p => (p.move == null && !p.dead && !p.shutdown)))
+                    if (caller.move == null)
                     {
-                        return;
+                        caller.move = cards;
+                        // Checks if all players have submitted their moves
+                        if (gameStatus.players.Any(p => (p.move == null && !p.dead && !p.shutdown)))
+                        {
+                            return;
+                        }
+                    }
+                    // Execute player moves
+                    moveCalculator.executeRegisters();
+                    // Reset for next round
+                    if (!gameStatus.winner)
+                    {
+                        nextRound();
                     }
                 }
-                // Execute player moves
-                moveCalculator.executeRegisters();
-                // Reset for next round
-                nextRound();
             }
         }
 
@@ -80,7 +86,7 @@ namespace RoboRuckus.RuckusCode
         }
 
         /// <summary>
-        /// 
+        /// Resets the bots and game for the next round
         /// </summary>
         private void nextRound()
         {
@@ -113,7 +119,10 @@ namespace RoboRuckus.RuckusCode
                 }
             }
             // Have player clients request a deal
-            Clients.All.requestdeal();
+            if (!gameStatus.winner)
+            {
+                Clients.All.requestdeal();
+            }
         }
 
         /// <summary>
@@ -139,7 +148,7 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                if (!caller.dead)
+                if (!caller.dead && !gameStatus.winner)
                 {
                     // Check if the player has already been dealt
                     if (caller.cards == null)
@@ -185,15 +194,12 @@ namespace RoboRuckus.RuckusCode
                 string result = "[";
                 foreach (player inGame in gameStatus.players)
                 {
-                    if (first)
+                    if (!first)
                     {
-                        first = false;
-                        result += inGame.playerRobot.damage.ToString();
+                        result += ",";
                     }
-                    else
-                    {
-                        result += ", " + inGame.playerRobot.damage.ToString();
-                    }
+                    first = false;
+                    result += inGame.playerRobot.damage.ToString();
                 }
                 result += "]";
                 Clients.All.UpdateHealth(result);
@@ -207,6 +213,7 @@ namespace RoboRuckus.RuckusCode
         {
             lock(gameStatus.locker)
             {
+                gameStatus.winner = false;
                 gameStatus.lockedCards.Clear();
                 foreach (player p in gameStatus.players)
                 {
@@ -220,6 +227,7 @@ namespace RoboRuckus.RuckusCode
                     r.y_pos = -1;
                     r.x_pos = -1;
                     r.damage = 0;
+                    r.flags = 0;
                 }
                 Clients.All.Reset();
             }

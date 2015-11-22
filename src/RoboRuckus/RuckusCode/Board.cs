@@ -15,6 +15,7 @@ namespace RoboRuckus.RuckusCode
         public int[][] wrenches;
         public int[][] pits;
         public turntable[] turntables;
+        public int[][] flags;
 
         /// <summary>
         /// Walls consist of a pair of [x,y] coordinates representing the two squares the 
@@ -82,7 +83,7 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// The power of the laser
         /// </summary>
-        public byte strength;
+        public sbyte strength;
 
         /// <summary>
         /// The orientation in which the laser is facig

@@ -1,14 +1,19 @@
 ﻿$(function () {
+    // Sets a timer to retrieve the game's status at a regular interval
     setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
 
+    // Setup buttons and variables
     $("#button").button({ disabled: true });
+    var flags = $("#board").data("flag");
     var player = $("#playerNum").data("player");
     var direction = 0;
     $(".boardSquare").css({"cursor": "pointer", "user-select": "none"}).attr('unselectable', 'on').on('selectstart', false);
 
+    // Loads the background image for the board
     $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
 
-    // Lets a user select a starting position for their bot. TODO: Restrict selection to predefined starting squares.
+    // Lets a user select a starting position for their bot.
+    // TODO: Restrict selection to predefined starting squares.
     $(".boardSquare").click(function () {
         if (!$(this).hasClass("occupied")) {
             if ($("#button").button("option", "disabled") == true) {
@@ -37,7 +42,7 @@
                 $("#botY").val($(this).data("y"));
                 $("#botDir").val(direction);
             }
-            $(".boardSquare").not(".occupied").empty().css("background", "").removeClass("selected");
+            $(".boardSquare:not(:has(>.flags))").not(".occupied").empty().css("background", "").removeClass("selected");
             var orientation;
             switch (direction) {
                 case 0:
@@ -57,9 +62,14 @@
         }
     });
 
-    // Receives the locations of all bots that have selected starting squares.
+    // Receives the locations of all bots that have selected starting squares, makes those slots unselectable
     function processData(data) {
         $.each($.parseJSON(data), function () {
+            var i = 1;
+            flags.forEach(function (entry) {
+                $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
+                i++;
+            });
             $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " damage: " + this.damage + "</p>");
             var orientation;
             switch (this.direction) {

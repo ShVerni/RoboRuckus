@@ -12,6 +12,9 @@
     detail["uturn"] = "U-Turn";
     detail["forward"] = "Move";
 
+    var flags = $("#board").data("flag");
+
+    // Loads board background image
     $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
  
     // Start a timer to check the game status every second
@@ -76,8 +79,13 @@
     function processData(data) {
         $("#botStatus").empty();
         $(".boardSquare").empty().css("background", "");
+        var i = 1;
+        flags.forEach(function (entry) {
+            $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
+            i++;
+        });
         $.each($.parseJSON(data), function () {
-            $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " damage: " + this.damage + "</p>");
+            $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " Damage: " + this.damage + " Flags: " + this.flags +"</p>");
             var orientation;
             switch (this.direction) {
                 case 0:

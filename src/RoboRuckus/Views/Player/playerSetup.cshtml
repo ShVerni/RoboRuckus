@@ -8,7 +8,7 @@
 }
 @model RoboRuckus.Models.playerSetupViewModel
 <h2 id="playerNum" data-player="@ViewBag.player">You are player number @ViewBag.player</h2>
-<div id="board" class="left" data-board="@ViewBag.board">
+<div id="board" class="left" data-board="@ViewBag.board" data-flag='@ViewBag.flags'>
     @for (int i = ViewBag.board_y; i >= 0; i--)
     {
         <div class="boardRow" id="y_@i">
@@ -16,6 +16,7 @@
             {
                 <div class="boardSquare" data-x="@j" data-y="@i" id="@(j)_@i"></div>
             }
+            <div class="clear"></div>
         </div>
     }
 </div>

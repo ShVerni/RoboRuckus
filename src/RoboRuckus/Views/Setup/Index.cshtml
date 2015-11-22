@@ -1,37 +1,49 @@
 ﻿@model RoboRuckus.Models.setupViewModel
-@using RoboRuckus.RuckusCode;
-
 @{
     ViewBag.Title = "Setup";
 }
 <div class="row">
-    @using (Html.BeginForm("startGame", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+    @using (Html.BeginForm("startGame", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form", @id="setupForm"}))
     {
+
         <h4>Setup Game</h4>
-        @Html.ValidationSummary(true, "Please enter an integer between 1 and 6", new { @class = "" })
-        <div class="">
-            @Html.LabelFor(m => m.numberOfPlayers, new { @class = "" })
+        <div>
+            @Html.ValidationSummary(true, "Please enter an integer between 1 and 6", new { @class = "" })
             <div class="">
-                @Html.TextBoxFor(m => m.numberOfPlayers, new { @class = "", type = "number", max = "12", min = "1" })
-                @Html.ValidationMessageFor(m => m.numberOfPlayers, "", new { @class = "" })
+                @Html.LabelFor(m => m.numberOfPlayers, new { @class = "" })
+                <div class="">
+                    @Html.TextBoxFor(m => m.numberOfPlayers, new { @class = "", type = "number", max = "6", min = "1" })
+                    @Html.ValidationMessageFor(m => m.numberOfPlayers, "", new { @class = "" })
+                </div>
             </div>
-        </div>
-        <br />
-        <div class="">
-            @{                 
-                List<Board> _boards = gameStatus.boards;
-                IEnumerable<SelectListItem> boards = _boards.OrderBy(b => b.name).Select(b => new SelectListItem
-                {
-                    Text = b.name,
-                    Value = b.name
-                });
-            }
-            @Html.DropDownList("selBoard", boards, "Choose a Board")
-            @Html.ValidationMessageFor(m => m.selBoard, "", new { @class = "" })
-        </div>
-        <div class="">
+            <br />
             <div class="">
-                <input type="submit" value="Setup" class="" />
+                    @Html.DropDownListFor(m => m.selBoard, Model.boards, "Choose a Board", new { @id = "boardSel" })
+                    @Html.ValidationMessageFor(m => m.selBoard, "", new { @class = "" })
+            </div>
+
+            <div id="board" class="left" data-sizes='@(ViewBag.sizes)'></div>
+            <div id="flagContainer" class="left ui-helper-reset">
+                <div id="flag1" data-number="1" class="flags ">
+                    <p>1 &#x2690;</p>
+                </div>
+                <div id="flag2" data-number="2" class="flags">
+                    <p>2 &#x2690;</p>
+                </div>
+                <div id="flag3" data-number="3" class="flags">
+                    <p>3 &#x2690;</p>
+                </div>
+                <div id="flag4" data-number="4" class="flags">
+                    <p>4 &#x2690;</p>
+                </div>
+            </div>
+            <div id="flagError">
+                
+            </div>
+            @Html.TextBoxFor(m => m.flags, new { @class = "", type = "text", @id="flagString", @style="display: none"})
+            <div class="clear">
+                <br />
+                <input id="submitButton" type="submit" value="Setup" class="" />
             </div>
         </div>
     }
@@ -39,4 +51,5 @@
 @section Scripts {
     <script src="@Url.Content("~/lib/jquery-validation/jquery.validate.js")"></script>
     <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>
+    <script type="text/javascript" src=@Url.Content("~/Scripts/setup.js")></script>
 }
