@@ -236,7 +236,7 @@
                 laserSound.play();
                 break;
             case "winner":
-                winne.play();
+                winnerSound.play();
                 break;
         }
     });
