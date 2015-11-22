@@ -23,6 +23,9 @@
   <ItemGroup>
     <DnxInvisibleFolder Include=".vs\" />
   </ItemGroup>
+  <ItemGroup>
+    <DnxInvisibleContent Include="wwwroot\images\cards\submitold.png" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" />
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" />
   <ProjectExtensions>
