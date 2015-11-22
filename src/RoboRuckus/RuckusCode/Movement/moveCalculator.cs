@@ -94,7 +94,7 @@ namespace RoboRuckus.RuckusCode.Movement
                     Robot winner = gameStatus.robots.FirstOrDefault(r => r.flags == gameStatus.gameBoard.flags.Length);
                     if (winner != null)
                     {
-                        playerSignals.Instance.showMessage("Player " + (winner.controllingPlayer.playerNumber + 1).ToString() + " has won!");
+                        playerSignals.Instance.showMessage("Player " + (winner.controllingPlayer.playerNumber + 1).ToString() + " has won!", "winnner");
                         gameStatus.winner = true;
                         return;
                     }

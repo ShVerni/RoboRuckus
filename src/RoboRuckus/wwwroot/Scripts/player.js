@@ -8,6 +8,9 @@
     var laserSound = new Howl({
         src: ['/sounds/laser.ogg', '/sounds/laser.mp3']
     });
+    var winnerSound = new Howl({
+        src: ['/sounds/winner.ogg', '/sounds/winner.mp3']
+    });
 
     // Shutdown toggle effects
     $("#shutdown").button().click(function () {
@@ -231,6 +234,9 @@
         {
             case "laser":
                 laserSound.play();
+                break;
+            case "winner":
+                winne.play();
                 break;
         }
     });

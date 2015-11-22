@@ -11,7 +11,7 @@
     <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AssemblyName>RoboWebRally</AssemblyName>
+    <AssemblyName>RoboRuckus</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
@@ -23,14 +23,11 @@
   <ItemGroup>
     <DnxInvisibleFolder Include=".vs\" />
   </ItemGroup>
-  <ItemGroup>
-    <DnxInvisibleContent Include="wwwroot\images\cards\submitold.png" />
-  </ItemGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" />
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties project_1json__JSONSchema="http://json.schemastore.org/project-1.0.0-beta5" />
+      <UserProperties project_1json__JSONSchema="http://json.schemastore.org/project-1.0.0-beta8" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
