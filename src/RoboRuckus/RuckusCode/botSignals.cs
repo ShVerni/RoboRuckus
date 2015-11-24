@@ -40,7 +40,7 @@ namespace RoboRuckus.RuckusCode
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendPlayerAssignment(int botNumber, int playerNumber, int port = 8080)
         {
-            return sendDataToRobot(botNumber, playerNumber.ToString()) == "OK";
+            return sendDataToRobot(botNumber, playerNumber.ToString() + botNumber.ToString() + "\n") == "OK";
         }
 
         /// <summary>

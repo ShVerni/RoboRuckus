@@ -40,7 +40,7 @@ namespace RoboRuckus.Controllers
         /// </summary>
         /// <param name="player">The player number</param>
         /// <returns>The view</returns>
-        public IActionResult playerSetup(int player = 0)
+        public IActionResult playerSetup(int player = 0, int reset = 0)
         {
             int playerNumber;
             // Attempt to add player to game
@@ -72,6 +72,11 @@ namespace RoboRuckus.Controllers
                 ViewBag.board_y = gameStatus.boardSizeY;
                 ViewBag.player = playerNumber;
                 ViewBag.board = gameStatus.gameBoard.name.Replace(" ", "");
+                ViewBag.reset = reset;
+                if (reset == 1)
+                {
+                    ViewBag.botName = gameStatus.players[player - 1].playerRobot.robotName;
+                }
                 return View();
             }
         }
@@ -80,15 +85,22 @@ namespace RoboRuckus.Controllers
         /// Let's a player setup their parameters
         /// </summary>
         /// <param name="player">The player number</param>
+        /// <param name="botName">The chosen robot name</param>
         /// <param name="botX">The player's bot's x position</param>
         /// <param name="botY">The player's bot's y position</param>
         /// <param name="botDir">The player's bot's direction</param>
         /// <returns>The view</returns>
         [HttpPost]
-        public IActionResult setupPlayer(int player, int botX, int botY, int botDir)
+        public IActionResult setupPlayer(int player, string botName, int botX, int botY, int botDir)
         {
             lock (gameStatus.locker)
             {
+                // Check if robot was already assigned
+                if(!gameStatus.assignBot(player, botName))
+                {
+                    return RedirectToAction("playerSetup", new { player = player });
+                }
+                // Check it robot's coordinates are taken
                 if (gameStatus.robots.Any(r => (r.x_pos == botX && r.y_pos == botY)))
                 {
                     return RedirectToAction("playerSetup", new { player = player });
@@ -102,6 +114,31 @@ namespace RoboRuckus.Controllers
                     return RedirectToAction("Index", new { player = player });
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the status of the player setup
+        /// </summary>
+        /// <returns>JSON object containing bot positions, orientations, and available robot names</returns>
+        [HttpGet]
+        public IActionResult Status()
+        {
+            string result = "{\"robots\": [";
+            bool first = true;
+            foreach (Robot active in gameStatus.robots)
+            {
+                if (active.controllingPlayer != null)
+                {
+                    if (!first)
+                    {
+                        result += ",";
+                    }
+                    first = false;
+                    result += "{\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + "}";
+                }
+            }
+            result += "], \"botNames\": " + JsonConvert.SerializeObject(gameStatus.robotPen.Select(r => r.robotName).ToArray()) + "}";
+            return Content(result);
         }
 
         public IActionResult Error()

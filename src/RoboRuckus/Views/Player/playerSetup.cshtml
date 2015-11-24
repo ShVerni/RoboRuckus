@@ -21,9 +21,22 @@
     }
 </div>
 <div class="clear"></div>
-@using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+@using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form", @id = "playerForm" }))
 {
+    <br />
+    @if (ViewBag.reset == 0)
+    {
+        <p id="selMessage"></p>
+        <select id="bots" name="botName"></select>
+    }
+    <br />
     <div id="form" class="hidden">
+        @if (ViewBag.reset == 1)
+        {
+            <select name="botName">
+                <option value="@ViewBag.botName" selected></option>
+            </select>
+        }
         @Html.TextBoxFor(m => m.botX, new { @class = "", @id = "botX", type = "number" })
         @Html.TextBoxFor(m => m.botY, new { @class = "", @id = "botY", type = "number" })
         @Html.TextBoxFor(m => m.botDir, new { @class = "", @id = "botDir", type = "number" })

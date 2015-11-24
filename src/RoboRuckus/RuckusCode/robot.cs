@@ -32,7 +32,11 @@ namespace RoboRuckus.RuckusCode
 
         // There shouldn't be more thant 127 points of damage a bot can take, it's signged to allow damage subtraction
         private  sbyte _damage = 0;
-        // Only one thread should be issuing orders and/or modifying damage at a time
+
+        /// <summary>
+        /// Gets and sets the robot's damage, locking or unlocking
+        /// cards and destroying the robot as needed
+        /// </summary>
         public sbyte damage
         {
             get
@@ -41,6 +45,7 @@ namespace RoboRuckus.RuckusCode
             }
             set
             {
+                // Only one thread should be issuing orders and/or modifying damage at a time
                 lock (gameStatus.locker)
                 {
                     if (value < 0)

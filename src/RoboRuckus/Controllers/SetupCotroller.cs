@@ -103,14 +103,17 @@ namespace RoboRuckus.Controllers
         {
             string result = "[";
             bool first = true;
-            foreach (player active in gameStatus.players)
+            foreach (Robot active in gameStatus.robots)
             {
-                if (!first)
+                if (active.controllingPlayer != null)
                 {
-                    result += ",";                   
+                    if (!first)
+                    {
+                        result += ",";
+                    }
+                    first = false;
+                    result += "{\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + ",\"damage\": " + active.damage.ToString() + ",\"flags\": " + active.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + "}";
                 }
-                first = false;
-                result += "{\"number\": " + active.playerNumber.ToString() + ",\"x\": " + active.playerRobot.x_pos.ToString() + ",\"y\": " + active.playerRobot.y_pos.ToString() + ",\"direction\": " + active.playerRobot.currentDirection.ToString("D") + ",\"damage\": " + active.playerRobot.damage.ToString() + ",\"flags\": " + active.playerRobot.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + "}";
             }
             result += "]";
             return Content(result);

@@ -12,26 +12,30 @@ namespace RoboRuckus.Controllers
         /// A bot calls this action to be added to the game as an available robot
         /// </summary>
         /// <param name="ip">The IP address of the robot</param>
-        /// <returns>A plain text string containing the bot's number in this format: "Bot number:#"</returns>
+        /// <returns>An AK acknowledging the accpeted robot</returns>
         [HttpGet]
-        public IActionResult Index(string ip)
+        public IActionResult Index(string ip, string name)
         {
             // Lock used so player assignment is sent after this method exits
             lock (_locker)
             {
-                int result = gameStatus.addBot(ip);
-                // Check if bot already has player assigned
-                if ((result & 0x10000) != 0)
+                int result = gameStatus.addBot(ip, name);
+                // Check if bot is already in pen
+                if (result != -1)
                 {
-                    // Get assigned player number
-                    int player = (result & 0xffff) >> 8;
-                    // Get assigned bot number
-                    result &= 255;
-                    // Set thread to assign player to bot
-                    new Thread(() => alreadyAssigned(player + 1, result)).Start();
+                    // Check if bot already has player assigned
+                    if ((result & 0x10000) != 0)
+                    {
+                        // Get assigned player number
+                        int player = (result & 0xffff) >> 8;
+                        // Get assigned bot number
+                        result &= 255;
+                        // Set thread to assign player to bot
+                        new Thread(() => alreadyAssigned(player + 1, result)).Start();
+                    }
                 }
-                // Send bot number to bot
-                return Content("Bot number:" + result.ToString() + "\n", "text/plain");
+                // Send confirmation
+                return Content("AK\n", "text/plain");
             }
         }
 

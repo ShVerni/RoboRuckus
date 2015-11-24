@@ -161,7 +161,7 @@
     background-size: 100% auto;
 }
 
-#boardSel {
+select {
     width: 15em
 }
 

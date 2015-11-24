@@ -20,5 +20,10 @@ namespace RoboRuckus.Models
         [Display()]
         public int player { get; set; }
 
+        [Required(ErrorMessage = "Please choose a robot")]
+        [Display(Name = "Robots")]
+        public string botName { get; set; }
+
+
     }
 }

@@ -25,7 +25,7 @@
     $.connection.hub.start();
 
     // Shows the current move being executed
-    cardControl.client.showMove = (function (cards, player) {
+    cardControl.client.showMove = (function (cards, robot) {
         $("#cardsContainer").empty();
         var card = $.parseJSON(cards);
         var face;
@@ -47,7 +47,7 @@
                     <img src='/images/cards/bg.png'alt='card'>\
                 </div>\
             </li>\
-            <li id='player'>Player moving: " + player + "<\li>"
+            <li id='player'>Robot moving: " + robot + "<\li>"
         );
         //Set the width of the cards to fill the screen in one row
         var imageWidth = (($(window).width() - 80) / 8);

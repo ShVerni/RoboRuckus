@@ -17,6 +17,9 @@ float const  turn_drift_threshold = 0.1;
 // Turning
 float const turnFactor = 1.45;
 
+// Robot name, use URL encoding characters if needed  
+String robotName = "Beta%20Bot";
+
 /* Use to tune wheel speeds and above movment parameters */
 //#define setup1
 //#define setup2
@@ -183,6 +186,8 @@ void loop()
       {
         // Get assigned player
         playerNumber = wifi.read() - 48;
+        // Get assigned bot number
+        botNum = wifi.readStringUntil('\n');
         updateShiftRegister(numbers[playerNumber]);
         // Empty the buffer, just in case
         while (wifi.available())
@@ -191,6 +196,10 @@ void loop()
         }
         // Respond and close the connection
         #ifdef debug
+          Serial.print(F("Bot number: "));
+          Serial.println(botNum);
+          Serial.print(F("Player number: "));
+          Serial.println(playerNumber);
           Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
           Serial.println(sendCommand(F("OK"), F("CLOSED")));
         #else
@@ -388,21 +397,14 @@ bool startup()
   delay(100);
 
   // Inform server of bot
-  String message = "GET /Bot/Index?ip=" + client + " HTTP/1.1\r\nHost: " + server + ":" + port + "\r\nConnection: close\r\n\r\n";
-  Serial.println(sendCommand("AT+CIPSEND=1," + (String)message.length(), F("\nOK")) + message);
-  sendCommand(message, F(""));
-
-  // Get assigned bot number
-  char botchar[] = "Bot number:";
-  if (!wifi.find(botchar))
+  String message = "GET /Bot/Index?ip=" + client + "&name=" + robotName + " HTTP/1.1\r\nHost: " + server + ":" + port + "\r\nConnection: close\r\n\r\n";
+  Serial.println(sendCommand("AT+CIPSEND=1," + (String)message.length(), F("\nOK")) + message);  
+  String response = sendCommand(message, F("AK\n"));
+  if (response.indexOf(F("ERROR")) != -1)
   {
     return false;
   }
-  botNum = wifi.readStringUntil('\n');
-  Serial.print(F("Bot number: "));
-  Serial.println(botNum);
-  Serial.println(sendCommand(F(""), F("CLOSED")));
-
+  
   // Start server
   Serial.println(sendCommand(F("AT+CIPSERVER=1,8080"), F("\nOK")));
 

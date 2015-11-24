@@ -1,7 +1,7 @@
 ﻿$(function () {
     // Sets a timer to retrieve the game's status at a regular interval
-    setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
-
+    setInterval(function () { $.get("/Player/Status", function (data) { processData(data); }) }, 1000);
+    $("#bots").selectmenu();
     // Setup buttons and variables
     $("#button").button({ disabled: true });
     var flags = $("#board").data("flag");
@@ -62,14 +62,25 @@
         }
     });
 
-    // Receives the locations of all bots that have selected starting squares, makes those slots unselectable
+    // Receives the locations of all bots that have selected starting squares, makes those slots unselectable, and updates list of available bots
     function processData(data) {
-        $.each($.parseJSON(data), function () {
-            var i = 1;
-            flags.forEach(function (entry) {
-                $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
-                i++;
-            });
+        var i = 1;
+        flags.forEach(function (entry) {
+            $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
+            i++;
+        });
+        var result = $.parseJSON(data);
+        var chosen = $("#bots").val();
+        $("#bots").html('<option value="">Select a Robot</option>');
+        $.each(result.botNames, function () {
+            $("#bots").append('<option value="' + this + '">' + this + "</option>");
+        });
+        if (chosen != "" && 0 != $('#bots option[value="' + chosen + '"]').length)
+        {
+            $("#bots").val(chosen);
+        }
+        $("#bots").selectmenu("refresh");
+        $.each(result.robots, function () {
             $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " damage: " + this.damage + "</p>");
             var orientation;
             switch (this.direction) {
@@ -89,4 +100,15 @@
             $("#" + this.x.toString() + "_" + this.y.toString()).html("<p>" + (this.number + 1).toString() + orientation + "</p>").css("background", "yellow").addClass("occupied");
         });
     }
+
+    $("#playerForm").submit(function () {
+        $("#selMessage").empty();
+        if($("#bots").val() == "")
+        {
+            $("#selMessage").html("Please select a robot");
+            return false
+        }
+        return true;
+    });
+
 });

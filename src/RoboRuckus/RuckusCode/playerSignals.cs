@@ -134,8 +134,8 @@ namespace RoboRuckus.RuckusCode
             lock (gameStatus.locker)
             {
                 string card = gameStatus.movementCards[move.card.cardNumber];
-                int playerNumber = move.bot.controllingPlayer.playerNumber + 1;
-                Clients.All.showMove(card, playerNumber);
+                string robot = move.bot.robotName;
+                Clients.All.showMove(card, robot);
             }
         }
 
