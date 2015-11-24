@@ -2,3 +2,17 @@
     ViewBag.Title = "Game is Full";
 }
 <h1>Sorry, but the game is full</h1>
+<button name="refresh" id="refresh">
+   Try again?
+</button>
+
+@section scripts
+{
+    <script type="text/javascript">
+            $(function () {
+                $("#refresh").click(function () {
+                    location.reload();
+                });
+            });
+    </script>
+}
