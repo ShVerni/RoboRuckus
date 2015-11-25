@@ -157,11 +157,15 @@ namespace RoboRuckus.Controllers
         /// <summary>
         /// Resets the game to the initial state
         /// </summary>
+        /// <param name="resetAll">
+        /// 0 to reset current game with same players
+        /// 1 to reset entire game to startup state (with same bots)
+        /// </param>
         /// <returns>The string "Done"</returns>
         [HttpGet]
-        public IActionResult Reset()
+        public IActionResult Reset(int resetAll = 0)
         {
-            playerSignals.Instance.resetGame();
+            playerSignals.Instance.resetGame(resetAll);
             return Content("Done", "text/plain");
         }
     }

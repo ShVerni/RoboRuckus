@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Linq;
 using Microsoft.AspNet.SignalR.Hubs;
 using System.Security.Cryptography;
@@ -228,20 +229,31 @@ namespace RoboRuckus.RuckusCode
 
         /// <summary>
         /// Resets the game to the initial state
+        /// <param name="resetAll">IF 0 reset game with current player, if 1 reset game to initial state</param>
         /// </summary>
-        public void resetGame()
+        public void resetGame(int resetAll)
         {
             lock(gameStatus.locker)
             {
+                Timer watchDog;
                 gameStatus.winner = false;
                 gameStatus.lockedCards.Clear();
-                foreach (player p in gameStatus.players)
+                if (resetAll == 0)
                 {
-                    p.dead = false;
-                    p.lockedCards.Clear();
-                    p.move = null;
-                    p.cards = null;
-                    p.lives = 3;
+                    foreach (player p in gameStatus.players)
+                    {
+                        p.dead = false;
+                        p.lockedCards.Clear();
+                        p.move = null;
+                        p.cards = null;
+                        p.lives = 3;
+                    }
+                }
+                else
+                {
+                    gameStatus.players.Clear();
+                    gameStatus.gameReady = false;
+                    gameStatus.numPlayersInGame = 0;
                 }
                 foreach (Robot r in gameStatus.robots)
                 {
@@ -249,8 +261,27 @@ namespace RoboRuckus.RuckusCode
                     r.x_pos = -1;
                     r.damage = 0;
                     r.flags = 0;
+                    if (resetAll == 1)
+                    {
+                        // Start watch dog to skip bots that don't respond in 5 seconds
+                        bool timeout = false;
+                        watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge reset order"); timeout = true; }, null, 5000, Timeout.Infinite);
+
+                        // Wait for bot to acknowledge receipt of order
+                        SpinWait.SpinUntil(() => botSignals.sendReset(r.robotNum) || timeout);
+
+                        // Dispose the watch dog
+                        watchDog.Dispose();
+
+                        r.controllingPlayer = null;
+                        gameStatus.robotPen.Add(r);
+                    }
                 }
-                Clients.All.Reset();
+                if (resetAll == 1)
+                {
+                    gameStatus.robots.Clear();
+                }
+                Clients.All.Reset(resetAll);
             }
         }
 

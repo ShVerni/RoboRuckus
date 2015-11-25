@@ -120,9 +120,9 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Reset the bot's wait handle
                 gameStatus.robots[order.botNumber].moving.Reset();
 
-                // Start watch dog to skip bots that don't respond in 15 seconds
+                // Start watch dog to skip bots that don't respond in 10 seconds
                 bool timeout = false;
-                watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge move order"); timeout = true; }, null, 15000, Timeout.Infinite);
+                watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge move order"); timeout = true; }, null, 10000, Timeout.Infinite);
 
                 // Wait for bot to acknowledge receipt of orders
                 SpinWait.SpinUntil(() => botSignals.sendMoveCommand(order) == "OK" || timeout);

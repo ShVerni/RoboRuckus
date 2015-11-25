@@ -227,8 +227,14 @@
     });
 
     // Game has been reset, return to setup page
-    cardControl.client.Reset = (function () {
-        window.location = "/Player/playerSetup/" + $('#playerNum').data("player") + "?reset=1";
+    cardControl.client.Reset = (function (resetAll) {
+        if (resetAll == 0) {
+            window.location = "/Player/playerSetup/" + $('#playerNum').data("player") + "?reset=1";
+        }
+        else
+        {
+            window.location = "/";
+        }
     });
 
     // Displays a message from the server

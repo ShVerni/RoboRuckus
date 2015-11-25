@@ -217,8 +217,13 @@
         }
     }
 
-    // Resets the game to the initial state
+    // Resets the current game
     $("#reset").button().click(function (event) {
-        $.get("/Setup/Reset", function (data) { alert(data) })
+        $.get("/Setup/Reset?resetAll=0", function (data) { alert(data) });
+    });
+
+    //Resets the game the very start power on state
+    $("#resetAll").button().click(function (event) {
+        $.get("/Setup/Reset?resetAll=1", function (data) { alert(data); window.location = "/Setup"; });
     });
 });

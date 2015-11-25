@@ -178,7 +178,17 @@ void loop()
           sendCommand(F("AT+CIPSEND=0,2"), F("\nOK"));
           sendCommand(F("OK"), F("CLOSED"));
         #endif
-        executeMove(movement, magnitude, outOfTurn);
+        if (outOfTurn == 2)
+        {
+          // Bot received reset command
+          started = false;
+          updateShiftRegister(175); // Letter A
+        }
+        else
+        {
+          // Bot received move order
+          executeMove(movement, magnitude, outOfTurn);
+        }
       }
       else
       {
@@ -242,6 +252,7 @@ void loop()
    #endif
 }
 
+// Executes a moved recieved by the bot
 void executeMove(uint8_t movement, uint8_t magnitude, uint8_t outOfTurn)
 {
 if (movement <= 3)
@@ -349,6 +360,7 @@ if (movement <= 3)
   } while (!success);
 }
 
+//Shows the damage the bot has taken
 void takeDamage(int damage)
 {
   tone(piezo, 250, 400);
@@ -361,6 +373,7 @@ void takeDamage(int damage)
   delay(200);    
 }
 
+// Sets up the robot, connecting to the Wi-Fi, informing the server of itself, and so on.
 bool startup()
 {
   // Empty buffer

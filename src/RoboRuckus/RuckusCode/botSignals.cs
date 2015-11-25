@@ -16,7 +16,7 @@ namespace RoboRuckus.RuckusCode
         /// <returns>The response from the bot</returns>
         public static string sendMoveCommand(orderModel order, int port = 8080)
         {
-            return sendDataToRobot(order.botNumber, order.ToString());
+            return sendDataToRobot(order.botNumber, order.ToString(), port);
         }
 
         /// <summary>
@@ -40,7 +40,18 @@ namespace RoboRuckus.RuckusCode
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendPlayerAssignment(int botNumber, int playerNumber, int port = 8080)
         {
-            return sendDataToRobot(botNumber, playerNumber.ToString() + botNumber.ToString() + "\n") == "OK";
+            return sendDataToRobot(botNumber, playerNumber.ToString() + botNumber.ToString() + "\n", port) == "OK";
+        }
+
+        /// <summary>
+        /// Sends a reset order to a bot
+        /// </summary>
+        /// <param name="botNumber">The bot to reset</param>
+        /// <param name="port">The port the robot is listening on</param>
+        /// <returns>True on a successful response (OK) from the bot</returns>
+        public static bool sendReset(int botNumber, int port = 8080)
+        {
+            return sendDataToRobot(botNumber, "002", port) == "OK";
         }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace RoboRuckus.RuckusCode
         /// <param name="data">The data to send</param>
         /// <param name="port">The port the robot is listening on</param>
         /// <returns>The response from the robot or an empty string on failure</returns>
-        private static string sendDataToRobot(int botNumber, string data, int port = 8080)
+        private static string sendDataToRobot(int botNumber, string data, int port)
         {
             byte[] response = new byte[2];
             Robot bot = gameStatus.robots[botNumber];

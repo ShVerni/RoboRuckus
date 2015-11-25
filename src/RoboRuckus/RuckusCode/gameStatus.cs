@@ -12,7 +12,7 @@ namespace RoboRuckus.RuckusCode
     {
         // Game state varaibles
         public static int numPlayers = 0;
-        private static int numPlayersInGame = 0;
+        public static int numPlayersInGame = 0;
         public static bool gameReady = false;
         public static List<Robot> robotPen = new List<Robot>();
         public static List<Robot> robots = new List<Robot>();
