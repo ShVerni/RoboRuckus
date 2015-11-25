@@ -118,20 +118,29 @@
     border-radius: 0.7em;
 }
 
-#damage {
+.topRow {
     display: inline-block;
 }
 
-/* Flag boxes stuff */
-#flagBoxes {
-    margin-left: 1em;
+.topRow:not(:first-child) {
+   margin-left: 0.7em;
 }
 
+/* Flag boxes stuff */
 .flagBox {
     width: 1em;
     height: 1em;
     border: 1px solid black;
     display: inline-block;
+}
+
+/* Life boxes stuff */
+.lifeBox {
+    display: inline-block;
+    border: 1px solid purple;
+    height: 0.7em;
+    width: 0.7em;
+    border-radius: 0.7em;
 }
 
 .touchedFlag {
@@ -144,8 +153,7 @@
      width: 2.5em;
      background: green;
      border: 0.05em dotted black;
-     margin-bottom: 1.5em;
-     
+     margin-bottom: 1.5em;     
      text-align: center;
      cursor: move;
  }
@@ -182,4 +190,20 @@ select {
  .left {
      float: left;
      margin-right: 1em;
+ }
+
+ /* Bot re-entry */
+  .bots {
+     height: 2.3em;
+     width: 2.3em;
+     background: yellow;
+     border: 0.05em dotted black;
+     margin-bottom: 1.5em;     
+     text-align: center;
+     cursor: move;
+ }
+
+  #botContainer {
+     min-height: 15em;
+     min-width: 5em;
  }

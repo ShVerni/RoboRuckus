@@ -108,18 +108,38 @@ namespace RoboRuckus.RuckusCode
             gameStatus.deltCards.Clear();
             showMessage("");
 
-            // Check if all players are shutdown
-            if (gameStatus.players.All(p => p.shutdown))
+            // Check for winner
+            if (!gameStatus.winner)
             {
-                gameStatus.players.Select(p => p.shutdown = false);
-                foreach (player inGame in gameStatus.players)
+                // Check if there are dead players with lives left who need to re-enter the game
+                if (gameStatus.players.Any(p => (p.dead && p.lives > 0)))
                 {
-                    inGame.shutdown = false;
-                    inGame.playerRobot.damage = 0;
+                    gameStatus.playersNeedEntering = true;
+
+                }
+                else
+                {
+                    // Check if all players are shutdown or out of the game
+                    if (gameStatus.players.All(p => p.shutdown || p.lives <= 0))
+                    {
+                        gameStatus.players.Select(p => p.shutdown = false);
+                        foreach (player inGame in gameStatus.players)
+                        {
+                            inGame.shutdown = false;
+                            inGame.playerRobot.damage = 0;
+                        }
+                    }
+                    dealPlayers();
                 }
             }
-            // Have player clients request a deal
-            if (!gameStatus.winner)
+        }
+
+        /// <summary>
+        /// Used to deal cards to all the players
+        /// </summary>
+        public void dealPlayers()
+        {
+            lock (gameStatus.locker)
             {
                 Clients.All.requestdeal();
             }
@@ -221,6 +241,7 @@ namespace RoboRuckus.RuckusCode
                     p.lockedCards.Clear();
                     p.move = null;
                     p.cards = null;
+                    p.lives = 3;
                 }
                 foreach (Robot r in gameStatus.robots)
                 {

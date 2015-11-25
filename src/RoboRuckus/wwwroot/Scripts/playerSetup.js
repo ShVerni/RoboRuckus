@@ -69,10 +69,9 @@
             $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
             i++;
         });
-        var result = $.parseJSON(data);
         var chosen = $("#bots").val();
         $("#bots").html('<option value="">Select a Robot</option>');
-        $.each(result.botNames, function () {
+        $.each(data.botNames, function () {
             $("#bots").append('<option value="' + this + '">' + this + "</option>");
         });
         if (chosen != "" && 0 != $('#bots option[value="' + chosen + '"]').length)
@@ -80,7 +79,7 @@
             $("#bots").val(chosen);
         }
         $("#bots").selectmenu("refresh");
-        $.each(result.robots, function () {
+        $.each(data.robots, function () {
             $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " damage: " + this.damage + "</p>");
             var orientation;
             switch (this.direction) {

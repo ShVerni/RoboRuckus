@@ -13,7 +13,7 @@ uint8_t const leftBackwardSpeed = 81;
 uint8_t const Z_offset = 45;
 uint8_t const turnBoost = 3;
 uint8_t const drift_threshold = 2;
-float const  turn_drift_threshold = 0.1;
+float const turn_drift_threshold = 0.1;
 // Turning
 float const turnFactor = 1.45;
 
@@ -96,8 +96,6 @@ void setup()
     Serial.println(F("gyro not detected"));
     while(true);
   }
- // mag.setMagGain(HMC5883_MAGGAIN_4_7);
-  //mag2.setMagGain(HMC5883_MAGGAIN_4_7);
 
   /*
   * Your WiFi radio's baud rate might be different, default baud is

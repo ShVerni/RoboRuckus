@@ -18,7 +18,7 @@
     $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
  
     // Start a timer to check the game status every second
-    setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
+    var fetcher = setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
 
     // Start connection to player hub
     var cardControl = $.connection.playerHub;
@@ -83,11 +83,123 @@
         flags.forEach(function (entry) {
             $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
             i++;
-        });
-        $.each($.parseJSON(data), function () {
-            $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " Damage: " + this.damage + " Flags: " + this.flags +"</p>");
+        });;
+        // Check is robots need to re-enter game
+        if (data.entering) {
+            // Pause the update interval
+            clearInterval(fetcher);
+            // Get all the bots that need re-entering
+            var content = '<div id="botContainer" class="ui-helper-reset">';
+            $.each(data.players, function () {
+                if (this.reenter != 0) {
+                    content += '<div class="bots" data-number="' + this.number.toString() + '" data-orientation="0"><p>' + (this.number + 1).toString() + '&#x2192;</p></div>';
+                }
+            });
+            content += '</div><button id="sendBots">Re-enter bots</button>';
+
+            // Add content to the cardContainer
+            $("#cardsContainer").html(content);
+
+            // Make bots dragable
+            $(".bots").draggable({
+                revert: "invalid", // When not dropped, the item will revert back to its initial position
+                containment: "document",
+                cursor: "move"
+            }).attr('unselectable', 'on').on('selectstart', false).click(function () {
+                orient(this)
+            });
+
+            // Make the bot container dropppable
+            $("#botContainer").droppable({
+                accept: ".boardSquare div",
+                hoverClass: "ui-state-hover",
+                drop: function (event, ui) {
+                    $(ui.draggable).parent().droppable("enable");
+                    $(ui.draggable).detach().css({ top: "auto", left: "auto", margin: "0 0 1em 0" }).appendTo(this);
+                }
+            });
+            // Make board squares droppable for player re-entry
+            $(".boardSquare:not(:has(.flags))").droppable({
+                accept: "#botContainer div, .boardSquare div",
+                hoverClass: "ui-state-hover",
+                drop: function (event, ui) {
+                    $(this).droppable("disable");
+                    if ($(ui.draggable).parent().hasClass("boardSquare")) {
+                        $(ui.draggable).parent().droppable("enable");
+                    }
+                    $(ui.draggable).detach().css({ top: 0, left: 0, margin: "0 auto" }).appendTo(this);
+                }
+            });
+            // Bind function to re-enter bots 
+            $("#sendBots").button().click(sendBots);
+        } else {
+            // Display updated bot statuses
+            $.each(data.players, function () {
+                $("#botStatus").append("<p>Player number " + (this.number + 1).toString() + " Damage: " + this.damage + " Flags: " + this.flags + " Lives: " + this.lives + "</p>");
+                var orientation;
+                switch (this.direction) {
+                    case 0:
+                        orientation = "&#x2192;";
+                        break;
+                    case 1:
+                        orientation = "&#x2191;";
+                        break;
+                    case 2:
+                        orientation = "&#x2190;";
+                        break;
+                    case 3:
+                        orientation = "&#x2193;";
+                        break;
+                }
+                $("#" + this.x.toString() + "_" + this.y.toString()).html("<p>" + (this.number + 1).toString() + orientation + "</p>").css("background", "yellow");
+            });
+        }
+    }
+
+    // Sends bot info to server for re-entry
+    function sendBots() {
+        if ($('#botContainer > *').length == 0) {
+            var result = "[";
+            var first = true;
+            $(".bots").each(function (index) {
+                if (!first)
+                {
+                    result += ",";
+                }
+                first = false;
+                var coord = $(this).parent().attr("id");
+                result += "[" + $(this).data("number") + ", " + coord.substring(0, coord.indexOf("_")) + ", " + coord.substring(coord.indexOf("_") + 1) + ", " + $(this).data("orientation") + "]";
+            });
+            result += "]";
+            $(".ui-droppable").droppable("destroy");
+            $.post("/Setup/enterPlayers", { players: result });
+            $("#cardsContainer").empty();
+            // Restart the update interval
+            fetcher = setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
+        }
+    }
+    
+    // Re-orients a bot when clicked
+    function orient(bot) {
+        if ($(bot).parents('.boardSquare').length > 0) {
+            var direction = $(bot).data("orientation");
+            switch (direction) {
+                case 0:
+                    direction = 3;
+                    break;
+                case 1:
+                    direction = 0;
+                    break
+                case 2:
+                    direction = 1;
+                    break
+                case 3:
+                    direction = 2;
+                    break
+            }
+            $(bot).data("orientation", direction);
             var orientation;
-            switch (this.direction) {
+            switch (direction) {
                 case 0:
                     orientation = "&#x2192;";
                     break;
@@ -101,8 +213,8 @@
                     orientation = "&#x2193;";
                     break;
             }
-            $("#" + this.x.toString() + "_" + this.y.toString()).html("<p>" + (this.number + 1).toString() + orientation + "</p>").css("background", "yellow");
-        });
+            $(bot).html("<p>" + ($(bot).data("number") + 1).toString() + orientation + "</p>");
+        }
     }
 
     // Resets the game to the initial state

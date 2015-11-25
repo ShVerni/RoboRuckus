@@ -30,73 +30,75 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Loop through each register
                 for (int i = 0; i < 5; i++)
                 {
-                    // Move robots
-                    executePlayerMoves(i);
-                    playerSignals.Instance.updateHealth();
-                    Thread.Sleep(1000);
-
-                    // Move express conveyors
-                    boardEffects.moveConveyors(true);
-                    playerSignals.Instance.updateHealth();
-                    Thread.Sleep(1000);
-
-                    // Move all conveyors
-                    boardEffects.moveConveyors(false);
-                    playerSignals.Instance.updateHealth();
-                    Thread.Sleep(1000);
-
-                    // Rotate turntables
-                    boardEffects.executeTurnTables();
-                    Thread.Sleep(1000);
-
-                    // Fire lasers
-                    if (boardEffects.fireLasers())
+                    if (gameStatus.robots.Any(r => !r.controllingPlayer.dead))
                     {
-                        Thread.Sleep(800);
+                        // Move robots
+                        executePlayerMoves(i);
                         playerSignals.Instance.updateHealth();
-                        Thread.Sleep(2000);
-                    }
-                    else
-                    {
-                        Thread.Sleep(800);
-                    }
+                        Thread.Sleep(1000);
 
-                    // Heal from wrenches
-                    Robot[] healed = boardEffects.wrenches();
-                    if (healed.Length > 0)
-                    {
-                        foreach (Robot bot in healed)
+                        // Move express conveyors
+                        boardEffects.moveConveyors(true);
+                        playerSignals.Instance.updateHealth();
+                        Thread.Sleep(1000);
+
+                        // Move all conveyors
+                        boardEffects.moveConveyors(false);
+                        playerSignals.Instance.updateHealth();
+                        Thread.Sleep(1000);
+
+                        // Rotate turntables
+                        boardEffects.executeTurnTables();
+                        Thread.Sleep(1000);
+
+                        // Fire lasers
+                        if (boardEffects.fireLasers())
                         {
-                            bot.damage--;
+                            Thread.Sleep(800);
+                            playerSignals.Instance.updateHealth();
+                            Thread.Sleep(2000);
                         }
-                        playerSignals.Instance.updateHealth();
-                    }
-                    Thread.Sleep(1000);
-
-                    // Touch flags
-                    List<int[]> touched = boardEffects.flags();
-                    if (touched.Count > 0)
-                    {
-                        foreach (int[] pair in touched)
+                        else
                         {
-                            Robot bot = gameStatus.robots[pair[0]];
-                            if (bot.flags == pair[1])
+                            Thread.Sleep(800);
+                        }
+
+                        // Heal from wrenches
+                        Robot[] healed = boardEffects.wrenches();
+                        if (healed.Length > 0)
+                        {
+                            foreach (Robot bot in healed)
                             {
-                                bot.flags++;
+                                bot.damage--;
                             }
-                            bot.damage--;
                             playerSignals.Instance.updateHealth();
                         }
-                    }
-                    Thread.Sleep(1000);
+                        Thread.Sleep(1000);
 
-                    // Check for winner
-                    Robot winner = gameStatus.robots.FirstOrDefault(r => r.flags == gameStatus.gameBoard.flags.Length);
-                    if (winner != null)
-                    {
-                        playerSignals.Instance.showMessage((winner.robotName).ToString() + " has won!", "winner");
-                        gameStatus.winner = true;
-                        return;
+                        // Touch flags
+                        List<int[]> touched = boardEffects.flags();
+                        if (touched.Count > 0)
+                        {
+                            foreach (int[] pair in touched)
+                            {
+                                Robot bot = gameStatus.robots[pair[0]];
+                                if (bot.flags == pair[1])
+                                {
+                                    bot.flags++;
+                                }
+                                bot.damage--;
+                                playerSignals.Instance.updateHealth();
+                            }
+                        }
+                        Thread.Sleep(1000);
+                        // Check for winner
+                        Robot winner = gameStatus.robots.FirstOrDefault(r => r.flags == gameStatus.gameBoard.flags.Length);
+                        if (winner != null)
+                        {
+                            playerSignals.Instance.showMessage((winner.robotName).ToString() + " has won!", "winner");
+                            gameStatus.winner = true;
+                            return;
+                        }
                     }
                 }
             }

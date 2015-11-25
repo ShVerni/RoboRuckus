@@ -53,6 +53,8 @@
         if ($("#submitted").length != 0) {
             $("#submitted").remove();
         }
+        $("#labelText").html("Shutdown Off");
+        $("#shutdown").attr("checked", false);
         var _cards = $.parseJSON(cards);
         if (_cards.length == 0) {
             $("#shutdownLabel").css("background", "red");
@@ -158,20 +160,21 @@
 
     // Shows the current move being executed
     cardControl.client.showMove = (function (cards, robot) {
-        $("#cardsContainer").empty();
-        var card = $.parseJSON(cards);
-        var face;
-        var details;
-        if (card.direction == "forward") {
-            face = card.magnitude;
-            details = detail[card.direction] + " " + card.magnitude;
-        }
-        else {
-            face = faces[card.direction];
-            details = detail[card.direction];
-        }
-        // Add current card being executed to the card container
-        $("#cardsContainer").append("<li class='ui-widget-content dealtCard'>\
+        if (curDamage < 10) {
+            $("#cardsContainer").empty();
+            var card = $.parseJSON(cards);
+            var face;
+            var details;
+            if (card.direction == "forward") {
+                face = card.magnitude;
+                details = detail[card.direction] + " " + card.magnitude;
+            }
+            else {
+                face = faces[card.direction];
+                details = detail[card.direction];
+            }
+            // Add current card being executed to the card container
+            $("#cardsContainer").append("<li class='ui-widget-content dealtCard'>\
                 <div class='cardBody'>\
                     <p class='order'>" + card.priority + "</p>\
                     <p class='face'>" + face + "</p>\
@@ -180,26 +183,27 @@
                 </div>\
             </li>\
             <li id='player'>Robot moving: " + robot + "<\li>"
-        );
+            );
 
-        //Set the width of the cards to fill the screen in one row
-        var imageWidth = (($(window).width() - 80) / 7);
-        if (imageWidth < 350) {
-            var percent = (imageWidth / 350);
-            var imageHeight = percent * 520;
-            $(".order").css("font-size", percent * 4 + "em");
-            $(".face").css("font-size", percent * 11.8 + "em");
-            $(".details").css("font-size", percent * 2.5 + "em");
-            $("#cardsContainer img, .slot img").width(imageWidth);
-            $("#cardsContainer img,.slot img").height(imageHeight);
-            $("#cardsContainer li, .slot li").css({
-                "height": "",
-                "width": ""
-            });
-            $("#player").css("font-size", percent * 5.8 + "em");
-            $(".slot, #sendcards").width(imageWidth + 2);
-            $(".slot, #sendcards").height(imageHeight + 28);
-            $("#cardsContainer").css("min-height", imageHeight + 5);
+            //Set the width of the cards to fill the screen in one row
+            var imageWidth = (($(window).width() - 80) / 7);
+            if (imageWidth < 350) {
+                var percent = (imageWidth / 350);
+                var imageHeight = percent * 520;
+                $(".order").css("font-size", percent * 4 + "em");
+                $(".face").css("font-size", percent * 11.8 + "em");
+                $(".details").css("font-size", percent * 2.5 + "em");
+                $("#cardsContainer img, .slot img").width(imageWidth);
+                $("#cardsContainer img,.slot img").height(imageHeight);
+                $("#cardsContainer li, .slot li").css({
+                    "height": "",
+                    "width": ""
+                });
+                $("#player").css("font-size", percent * 5.8 + "em");
+                $(".slot, #sendcards").width(imageWidth + 2);
+                $(".slot, #sendcards").height(imageHeight + 28);
+                $("#cardsContainer").css("min-height", imageHeight + 5);
+            }
         }
     });
 
@@ -229,15 +233,16 @@
 
     // Displays a message from the server
     cardControl.client.displayMessage = (function (message, sound) {
-        $("#cardsContainer").html("<h2>" + message + "</h2>");
-        switch(sound)
-        {
-            case "laser":
-                laserSound.play();
-                break;
-            case "winner":
-                winnerSound.play();
-                break;
+        if (curDamage < 10) {
+            $("#cardsContainer").html("<h2>" + message + "</h2>");
+            switch (sound) {
+                case "laser":
+                    laserSound.play();
+                    break;
+                case "winner":
+                    winnerSound.play();
+                    break;
+            }
         }
     });
 
@@ -333,22 +338,34 @@
         curDamage = damage;
         // Gets the flags the robot has touched
         $.get("/Setup/Status", function (data) {
-            updateFlags(data);
+            var player = data.players[parseInt($('#playerNum').data("player")) - 1];
+            updateFlags(player);
+            updateLives(player);
         });
     }
 
     // Draws the flags and touched flags
-    function updateFlags(data) {
-        $("#flagBoxes").html("Flags Touched: ");
-        var result = $.parseJSON(data)[parseInt($('#playerNum').data("player")) - 1];
-        for (var i = 0; i < result.totalFlags; i++) {
+    function updateFlags(player) {
+        $("#flagBoxes").empty();
+        for (var i = 0; i < player.totalFlags; i++) {
             $("#flagBoxes").append('<span id="flag' + i + '" class="flagBox"></span> ');
-            if (result.flags > i) {
+            if (player.flags > i) {
                 $("#flag" + i).addClass("touchedFlag");
             }
         }
     }
 
+    // Updates the life boxes
+    function updateLives(player) {
+        $(".lifeBox").css("background", "none");
+        for (var i = 1; i <= player.lives; i++) {
+            $("#lifeBox_" + i).css("background", "blue");
+        }
+        if (player.lives <=0)
+        {
+            $("#cardsContainer").html("<h2>You lose :-(</h2>");
+        }
+    }
     // Sends the selected cards to the server
     function sendCards() {
         $("#sendcards img").unbind("click");

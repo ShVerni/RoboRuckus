@@ -36,6 +36,12 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         public bool willShutdown = false;
 
+        /// <summary>
+        /// How many lives a player has left.
+        /// When it reaches 0 they are out of the game.
+        /// </summary>
+        public int lives = 3;
+
         private bool _dead;
 
         /// <summary>
@@ -61,6 +67,10 @@ namespace RoboRuckus.RuckusCode
                         lockedCards.Clear();
                         playerRobot.x_pos = -1;
                         playerRobot.y_pos = -1;
+                        if (lives > 0 && !_dead)
+                        {
+                            lives--;
+                        }
                     }
                     _dead = value;
                 }

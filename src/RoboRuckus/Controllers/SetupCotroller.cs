@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using System;
+using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using RoboRuckus.RuckusCode;
 using System.Collections.Generic;
@@ -95,15 +96,44 @@ namespace RoboRuckus.Controllers
         }
 
         /// <summary>
+        /// Re-enters dead players in the game the game
+        /// </summary>
+        /// <param name="players">[[player number, bot X position, bot Y position, bot orientation],etc...]</param>
+        /// <returns>An OK</returns>
+        [HttpPost]
+        public IActionResult enterPlayers(string players)
+        {
+            lock(gameStatus.locker)
+            {
+                int[][] entering = JsonConvert.DeserializeObject<int[][]>(players);
+                foreach (int[] enter in entering)
+                {
+                    player sender = gameStatus.players[enter[0]];
+                    Robot bot = sender.playerRobot;
+                    bot.x_pos = enter[1];
+                    bot.y_pos = enter[2];
+                    bot.damage = 0;
+                    bot.currentDirection = (Robot.orientation)Enum.Parse(typeof(Robot.orientation), enter[3].ToString());
+                    sender.dead = false;
+                }
+                playerSignals.Instance.dealPlayers();
+                gameStatus.playersNeedEntering = false;
+            }
+            return Content("OK", "text/plain");
+        }
+
+        /// <summary>
         /// Gets the status of the game
         /// </summary>
         /// <returns>JSON object containing bot positions, orientations, damage, and flags</returns>
         [HttpGet]
         public IActionResult Status()
         {
-            string result = "[";
+            string result = "{\"players\": {";
             bool first = true;
-            foreach (Robot active in gameStatus.robots)
+            string entering = gameStatus.playersNeedEntering ? "1" : "0";
+            Robot[] sorted = gameStatus.robots.OrderBy(r => r.controllingPlayer.playerNumber).ToArray();
+            foreach (Robot active in sorted)
             {
                 if (active.controllingPlayer != null)
                 {
@@ -112,11 +142,16 @@ namespace RoboRuckus.Controllers
                         result += ",";
                     }
                     first = false;
-                    result += "{\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + ",\"damage\": " + active.damage.ToString() + ",\"flags\": " + active.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + "}";
+                    string reenter = "0";
+                    if (active.controllingPlayer.dead && active.controllingPlayer.lives > 0)
+                    {
+                        reenter = "1";
+                    }
+                    result += "\"" + active.controllingPlayer.playerNumber.ToString() + "\": {\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"lives\":" + active.controllingPlayer.lives.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + ",\"damage\": " + active.damage.ToString() + ",\"flags\": " + active.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + ", \"reenter\": " + reenter + "}";
                 }
             }
-            result += "]";
-            return Content(result);
+            result += "}, \"entering\": " + entering + "}";
+            return Content(result, "application/json");
         }
 
         /// <summary>
@@ -127,7 +162,7 @@ namespace RoboRuckus.Controllers
         public IActionResult Reset()
         {
             playerSignals.Instance.resetGame();
-            return Content("Done");
+            return Content("Done", "text/plain");
         }
     }
 }

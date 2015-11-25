@@ -91,7 +91,7 @@
         $("#flagString").val(placed);
     }
 
-    // Check to make sure a flag is places
+    // Check to make sure a flag is placed
     $("#setupForm").submit(function () {
         var placed = $("#flagString").val();
         if (!placed || $("#flagString").val() == "[  ]")

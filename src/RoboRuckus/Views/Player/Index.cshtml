@@ -9,14 +9,21 @@
 }
 <h2 id="playerNum" data-player="@ViewBag.player">You are player number @ViewBag.player</h2>
 <div>
-    <h3 id="damage" data-damage="@ViewBag.damage">Robot damage: </h3>
+    <h3 id="damage" class="topRow" data-damage="@ViewBag.damage">Robot damage: </h3>
     @for (int i = 1; i <= 10; i++)
     {
         <span class="damageBox" id="damageBox_@i"></span>
     }
 
-
+    <h3 class="topRow">Flags touched: </h3>
     <span id="flagBoxes"></span>
+
+    <h3  class="topRow">Lives remaining: </h3>
+    <span id="lifeBoxes">
+        <span class="lifeBox" id="lifeBox_1"></span>
+        <span class="lifeBox" id="lifeBox_2"></span>
+        <span class="lifeBox" id="lifeBox_3"></span>
+    </span>
 </div>
 <div class="row">
     <div class="ui-widget ui-helper-clearfix">

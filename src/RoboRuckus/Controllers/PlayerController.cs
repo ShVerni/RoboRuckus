@@ -123,7 +123,7 @@ namespace RoboRuckus.Controllers
         [HttpGet]
         public IActionResult Status()
         {
-            string result = "{\"robots\": [";
+            string result = "{\"robots\": {";
             bool first = true;
             foreach (Robot active in gameStatus.robots)
             {
@@ -134,11 +134,11 @@ namespace RoboRuckus.Controllers
                         result += ",";
                     }
                     first = false;
-                    result += "{\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + "}";
+                    result += "\"" + active.controllingPlayer.playerNumber.ToString() + "\": {\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + "}";
                 }
             }
-            result += "], \"botNames\": " + JsonConvert.SerializeObject(gameStatus.robotPen.Select(r => r.robotName).ToArray()) + "}";
-            return Content(result);
+            result += "}, \"botNames\": " + JsonConvert.SerializeObject(gameStatus.robotPen.Select(r => r.robotName).ToArray()) + "}";
+            return Content(result, "application/json");
         }
 
         public IActionResult Error()
