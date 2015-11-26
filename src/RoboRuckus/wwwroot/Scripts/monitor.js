@@ -81,7 +81,7 @@
         $(".boardSquare").empty().css("background", "");
         var i = 1;
         flags.forEach(function (entry) {
-            $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
+            $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>").addClass("hasFlag").data("flag", i);
             i++;
         });;
         // Check is robots need to re-enter game
@@ -114,18 +114,27 @@
                 accept: ".boardSquare div",
                 hoverClass: "ui-state-hover",
                 drop: function (event, ui) {
-                    $(ui.draggable).parent().droppable("enable");
+                    var parent = $(ui.draggable).parent();
+                    parent.droppable("enable");
+                    if (parent.hasClass("hasFlag"))
+                    {
+                        parent.append('<div class="flags"><p>' + parent.data("flag") + " &#x2690;</p></div>");
+                    }
                     $(ui.draggable).detach().css({ top: "auto", left: "auto", margin: "0 0 1em 0" }).appendTo(this);
                 }
             });
             // Make board squares droppable for player re-entry
-            $(".boardSquare:not(:has(.flags))").droppable({
+            $(".boardSquare").droppable({
                 accept: "#botContainer div, .boardSquare div",
                 hoverClass: "ui-state-hover",
                 drop: function (event, ui) {
-                    $(this).droppable("disable");
-                    if ($(ui.draggable).parent().hasClass("boardSquare")) {
-                        $(ui.draggable).parent().droppable("enable");
+                    $(this).droppable("disable").empty();
+                    var parent = $(ui.draggable).parent();
+                    if (parent.hasClass("boardSquare")) {
+                        parent.droppable("enable");
+                        if (parent.hasClass("hasFlag")) {
+                            parent.append('<div class="flags"><p>' + parent.data("flag") + " &#x2690;</p></div>");
+                        }
                     }
                     $(ui.draggable).detach().css({ top: 0, left: 0, margin: "0 auto" }).appendTo(this);
                 }

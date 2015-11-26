@@ -252,7 +252,7 @@ void loop()
    #endif
 }
 
-// Executes a moved recieved by the bot
+// Executes a moved received by the bot
 void executeMove(uint8_t movement, uint8_t magnitude, uint8_t outOfTurn)
 {
 if (movement <= 3)

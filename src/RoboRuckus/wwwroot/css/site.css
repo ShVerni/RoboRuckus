@@ -195,8 +195,8 @@ select {
 
  /* Bot re-entry */
   .bots {
-     height: 2.3em;
-     width: 2.3em;
+     height: 2.5em;
+     width: 2.5em;
      background: yellow;
      border: 0.05em dotted black;
      margin-bottom: 1.5em;     

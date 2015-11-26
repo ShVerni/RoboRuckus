@@ -17,6 +17,10 @@ namespace RoboRuckus.Controllers
         /// <returns>The setup index view</returns>
         public IActionResult Index()
         {
+            if (gameStatus.gameReady)
+            {
+                return RedirectToAction("Monitor");
+            }
             // Get a list of currently loaded boards and add it to the model
             IEnumerable<SelectListItem> _boards = gameStatus.boards.OrderBy(b => b.name).Select(b => new SelectListItem
             {
