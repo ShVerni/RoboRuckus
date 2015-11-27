@@ -5,17 +5,17 @@
 #include <Adafruit_L3GD20_U.h>
 
 // Movement parameters and wheel speeds
-uint8_t const leftForwardSpeed = 95;
-uint8_t const rightForwardSpeed = 86;
-uint8_t const rightBackwardSpeed = 99;
-uint8_t const leftBackwardSpeed = 81;
+uint8_t const leftForwardSpeed = 93;
+uint8_t const rightForwardSpeed = 85;
+uint8_t const rightBackwardSpeed = 97;
+uint8_t const leftBackwardSpeed = 79;
 // Forward and backward movement 
 uint8_t const Z_offset = 45;
 uint8_t const turnBoost = 3;
 uint8_t const drift_threshold = 2;
 float const turn_drift_threshold = 0.1;
 // Turning
-float const turnFactor = 1.45;
+float const turnFactor = 1.49;
 
 // Robot name, use URL encoding characters if needed  
 String robotName = "Beta%20Bot";

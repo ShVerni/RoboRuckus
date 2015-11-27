@@ -1,4 +1,5 @@
 bool timeUp = false;
+const double gyroCorrect = 0.015;
 
 void driveForward(uint8_t spaces)
 {
@@ -31,7 +32,7 @@ void driveForward(uint8_t spaces)
   while (countdown > 0 && !timeUp)
   {
     gyro.getEvent(&event2);
-    turn_drift += ((event2.gyro.z - 0.015) / 1000) * mils;
+    turn_drift += ((event2.gyro.z - gyroCorrect) / 1000) * mils;
     mils = 0;
     mag.getEvent(&event);
     #ifdef debug
@@ -100,13 +101,12 @@ void driveForward(uint8_t spaces)
     {
       countdown--;
     }
-    delay(5);
+    delay(6);
   }
   timeout.end();
   left.write(90);
   right.write(90);
 }
-
 
 void driveBackward(uint8_t spaces)
 {
@@ -139,7 +139,7 @@ void driveBackward(uint8_t spaces)
   while (countdown > 0 && !timeUp)
   {
     gyro.getEvent(&event2);
-    turn_drift += ((event2.gyro.z - 0.015) / 1000) * mils;
+    turn_drift += ((event2.gyro.z - gyroCorrect) / 1000) * mils;
     mils = 0;
     mag2.getEvent(&event);
     #ifdef debug
@@ -208,7 +208,7 @@ void driveBackward(uint8_t spaces)
     {
       countdown--;
     }
-    delay(5);
+    delay(6);
   }
   timeout.end();
   left.write(90);
@@ -235,12 +235,12 @@ void turn(uint8_t dir, uint8_t magnitude)
   while (total < threshold)
   {
     gyro.getEvent(&event);
-    total += abs(((event.gyro.z - 0.015) / 1000) * mils);
+    total += abs(((event.gyro.z - gyroCorrect) / 1000) * mils);
     mils = 0;
     #ifdef debug
       Serial.println(total);
     #endif
-    delay(5);
+    delay(7);
   }
   left.write(90);
   right.write(90);
