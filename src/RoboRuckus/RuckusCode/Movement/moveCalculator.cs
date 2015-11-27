@@ -33,9 +33,9 @@ namespace RoboRuckus.RuckusCode.Movement
                     if (gameStatus.robots.Any(r => !r.controllingPlayer.dead))
                     {
                         // Move robots
-                        executePlayerMoves(i);
+                        /*executePlayerMoves(i);
                         playerSignals.Instance.updateHealth();
-                        Thread.Sleep(1000);
+                        Thread.Sleep(1000);*/
 
                         // Move express conveyors
                         boardEffects.moveConveyors(true);

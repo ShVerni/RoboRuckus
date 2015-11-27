@@ -188,7 +188,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 if (express)
                 {
                     playerSignals.Instance.showMessage("Express conveyors moving");
-                    onConveyors = gameStatus.robots.Where(r => gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))).ToArray();
+                    onConveyors = gameStatus.robots.Where(r => (gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1])))).ToArray();
                 }
                 else
                 {
@@ -204,7 +204,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 }
 
                 // Check to see if any robots are trying to move into the same space
-                conveyorModel[] collisions = moved.Where(r => (moved.Any(p => (r != p && p.destination[0] == r.destination[0])) && moved.Any(p => (r != p && p.destination[0] == r.destination[0])))).ToArray();
+                conveyorModel[] collisions = moved.Where(r => (moved.Any(q => (r != q && q.destination[0] == r.destination[0] && q.destination[1] == r.destination[1])))).ToArray();
                 foreach (conveyorModel collided in collisions)
                 {
                     moved.Remove(collided);
