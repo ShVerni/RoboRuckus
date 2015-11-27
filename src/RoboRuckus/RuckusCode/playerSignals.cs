@@ -238,6 +238,7 @@ namespace RoboRuckus.RuckusCode
                 Timer watchDog;
                 gameStatus.winner = false;
                 gameStatus.lockedCards.Clear();
+                gameStatus.playersNeedEntering = false;
                 if (resetAll == 0)
                 {
                     foreach (player p in gameStatus.players)
