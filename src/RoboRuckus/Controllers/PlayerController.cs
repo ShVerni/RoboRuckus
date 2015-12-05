@@ -107,7 +107,7 @@ namespace RoboRuckus.Controllers
                 }
                 else
                 {
-                    player sender = gameStatus.players[player - 1];
+                    Player sender = gameStatus.players[player - 1];
                     sender.playerRobot.x_pos = botX;
                     sender.playerRobot.y_pos = botY;
                     sender.playerRobot.currentDirection = (Robot.orientation)botDir;

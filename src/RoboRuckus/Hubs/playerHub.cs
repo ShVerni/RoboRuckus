@@ -31,7 +31,7 @@ namespace RoboRuckus.Hubs
         {
             if (!gameStatus.players[playerNum - 1].dead)
             {
-                player caller = gameStatus.players[playerNum - 1];
+                Player caller = gameStatus.players[playerNum - 1];
 
                 // Build the locked cards string
                 bool first = true;
@@ -85,7 +85,7 @@ namespace RoboRuckus.Hubs
         /// <param name="cards">The cards being sent</param>
         public void sendCards(int playerNum, cardModel[] cards, bool shutdown)
         {
-            player sender = gameStatus.players[playerNum - 1];
+            Player sender = gameStatus.players[playerNum - 1];
             if (!sender.dead)
             {
                 sender.willShutdown = shutdown;

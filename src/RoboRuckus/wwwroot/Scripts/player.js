@@ -352,12 +352,16 @@
 
     // Draws the flags and touched flags
     function updateFlags(player) {
-        $("#flagBoxes").empty();
-        for (var i = 0; i < player.totalFlags; i++) {
-            $("#flagBoxes").append('<span id="flag' + i + '" class="flagBox"></span> ');
-            if (player.flags > i) {
-                $("#flag" + i).addClass("touchedFlag");
+        if (player.totalFlags > 0) {
+            $("#flagBoxes").empty();
+            for (var i = 0; i < player.totalFlags; i++) {
+                $("#flagBoxes").append('<span id="flag' + i + '" class="flagBox"></span> ');
+                if (player.flags > i) {
+                    $("#flag" + i).addClass("touchedFlag");
+                }
             }
+        } else {
+            $(".flagInfo").remove();
         }
     }
 

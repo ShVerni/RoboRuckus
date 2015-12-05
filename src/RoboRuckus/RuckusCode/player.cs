@@ -2,7 +2,7 @@
 
 namespace RoboRuckus.RuckusCode
 {
-    public class player
+    public class Player
     {
         /// <summary>
         /// Zero ordered player number
@@ -81,7 +81,7 @@ namespace RoboRuckus.RuckusCode
         /// Player constructor. A player number is required.
         /// </summary>
         /// <param name="Number">The player number</param>
-        public player(byte Number)
+        public Player(byte Number)
         {
             playerNumber = Number;
         }

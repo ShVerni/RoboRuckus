@@ -16,7 +16,7 @@ namespace RoboRuckus.RuckusCode
         public static bool gameReady = false;
         public static List<Robot> robotPen = new List<Robot>();
         public static List<Robot> robots = new List<Robot>();
-        public static List<player> players = new List<player>();
+        public static List<Player> players = new List<Player>();
         public static List<byte> deltCards = new List<byte>();
         public static List<byte> lockedCards = new List<byte>();
         public static string[] movementCards;
@@ -70,7 +70,7 @@ namespace RoboRuckus.RuckusCode
         /// <returns></returns>
         public static bool assignBot(int player, string robotName)
         {
-            player sender = players[player - 1];
+            Player sender = players[player - 1];
             if (sender.playerRobot !=  null)
             {
                 return true;
@@ -103,7 +103,7 @@ namespace RoboRuckus.RuckusCode
                 if (numPlayersInGame < numPlayers && robotPen.Count > 0)
                 {
                     // Create new player with their chosen bot                    
-                    player newPlayer = new player((byte)numPlayersInGame);
+                    Player newPlayer = new Player((byte)numPlayersInGame);
                     players.Add(newPlayer);
 
                     numPlayersInGame++;

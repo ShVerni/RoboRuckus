@@ -371,7 +371,7 @@ namespace RoboRuckus.RuckusCode.Movement
             lock (gameStatus.locker)
             {
                 // Find robots that were hit
-                foreach (player shooter in gameStatus.players)
+                foreach (Player shooter in gameStatus.players)
                 {
                     if (!shooter.shutdown && !shooter.dead)
                     {

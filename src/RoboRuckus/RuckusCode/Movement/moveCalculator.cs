@@ -75,24 +75,37 @@ namespace RoboRuckus.RuckusCode.Movement
                         }
                         Thread.Sleep(1000);
 
-                        // Touch flags
-                        List<int[]> touched = boardEffects.flags();
-                        if (touched.Count > 0)
+                        Robot winner = null;
+                        if (gameStatus.gameBoard.flags.Length > 0)
                         {
-                            foreach (int[] pair in touched)
+                            // Touch flags
+                            List<int[]> touched = boardEffects.flags();
+                            if (touched.Count > 0)
                             {
-                                Robot bot = gameStatus.robots[pair[0]];
-                                if (bot.flags == pair[1])
+                                foreach (int[] pair in touched)
                                 {
-                                    bot.flags++;
+                                    Robot bot = gameStatus.robots[pair[0]];
+                                    if (bot.flags == pair[1])
+                                    {
+                                        bot.flags++;
+                                    }
+                                    bot.damage--;
+                                    playerSignals.Instance.updateHealth();
                                 }
-                                bot.damage--;
-                                playerSignals.Instance.updateHealth();
+                            }
+                            Thread.Sleep(1000);
+                            // Check for flag win condition
+                            winner = gameStatus.robots.FirstOrDefault(r => r.flags == gameStatus.gameBoard.flags.Length);
+                        }
+                        if (winner == null && gameStatus.numPlayersInGame > 1)
+                        {
+                            Player[] alive = gameStatus.players.Where(p => p.lives > 0).ToArray();
+                            if (alive.Length == 1)
+                            {
+                                winner = alive[0].playerRobot;
                             }
                         }
-                        Thread.Sleep(1000);
-                        // Check for winner
-                        Robot winner = gameStatus.robots.FirstOrDefault(r => r.flags == gameStatus.gameBoard.flags.Length);
+                        // Check for winner                       
                         if (winner != null)
                         {
                             playerSignals.Instance.showMessage((winner.robotName).ToString() + " has won!", "winner");
@@ -479,7 +492,7 @@ namespace RoboRuckus.RuckusCode.Movement
             {
                 if (!gameStatus.players[j].dead && !gameStatus.players[j].shutdown)
                 {
-                    player mover = gameStatus.players[j];
+                    Player mover = gameStatus.players[j];
                     register[reg] = new moveModel { card = mover.move[regsiter], bot = mover.playerRobot };
                     reg++;
                 }

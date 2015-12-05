@@ -65,10 +65,12 @@
     // Receives the locations of all bots that have selected starting squares, makes those slots unselectable, and updates list of available bots
     function processData(data) {
         var i = 1;
-        flags.forEach(function (entry) {
-            $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
-            i++;
-        });
+        if (flags != null) {
+            flags.forEach(function (entry) {
+                $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
+                i++;
+            });
+        }
         var chosen = $("#bots").val();
         $("#bots").html('<option value="">Select a Robot</option>');
         $.each(data.botNames, function () {

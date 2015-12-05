@@ -96,9 +96,7 @@
         var placed = $("#flagString").val();
         if (!placed || $("#flagString").val() == "[  ]")
         {
-            $("#flagError").html("<p>Please place at least one flag");
-            return false;
+            $("#flagString").val("");
         }
-        $("#flagError").empty();
     });
 });

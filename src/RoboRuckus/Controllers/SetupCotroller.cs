@@ -62,8 +62,15 @@ namespace RoboRuckus.Controllers
                 if (_board != null)
                 {
                     gameStatus.gameBoard = _board;
-                    // Assign the flag coordinates ordered according to the flag number
-                    gameStatus.gameBoard.flags = JsonConvert.DeserializeObject<int[][]>(flags).OrderBy(f => f[0]).Select(f => new int[] { f[1], f[2] }).ToArray();
+                    if (flags != null && flags.Length > 1)
+                    {                     
+                        // Assign the flag coordinates, ordered according to the flag number
+                        gameStatus.gameBoard.flags = JsonConvert.DeserializeObject<int[][]>(flags).OrderBy(f => f[0]).Select(f => new int[] { f[1], f[2] }).ToArray();
+                    }
+                    else
+                    {
+                        gameStatus.gameBoard.flags = new int[0][];
+                    }
                     gameStatus.boardSizeX = _board.size[0];
                     gameStatus.boardSizeY = _board.size[1];
                     gameStatus.gameReady = true;
@@ -112,7 +119,7 @@ namespace RoboRuckus.Controllers
                 int[][] entering = JsonConvert.DeserializeObject<int[][]>(players);
                 foreach (int[] enter in entering)
                 {
-                    player sender = gameStatus.players[enter[0]];
+                    Player sender = gameStatus.players[enter[0]];
                     Robot bot = sender.playerRobot;
                     bot.x_pos = enter[1];
                     bot.y_pos = enter[2];

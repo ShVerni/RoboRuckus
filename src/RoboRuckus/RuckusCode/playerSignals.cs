@@ -50,7 +50,7 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="caller">The player client submitting the move</param>
         /// <param name="cards">The cards submitted for their move</param>
-        public void submitMove(player caller, Hubs.cardModel[] cards)
+        public void submitMove(Player caller, Hubs.cardModel[] cards)
         {
             lock (gameStatus.locker)
             {
@@ -91,7 +91,7 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         private void nextRound()
         {
-            foreach (player inGame in gameStatus.players)
+            foreach (Player inGame in gameStatus.players)
             {
                 inGame.cards = null;
                 inGame.move = null;
@@ -124,7 +124,7 @@ namespace RoboRuckus.RuckusCode
                     if (gameStatus.players.All(p => p.shutdown || p.lives <= 0))
                     {
                         gameStatus.players.Select(p => p.shutdown = false);
-                        foreach (player inGame in gameStatus.players)
+                        foreach (Player inGame in gameStatus.players)
                         {
                             inGame.shutdown = false;
                             inGame.playerRobot.damage = 0;
@@ -165,7 +165,7 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="caller">The player client requesting a deal</param>
         /// <returns>The cards dealt to the player client</returns>
-        public byte[] dealPlayer(player caller)
+        public byte[] dealPlayer(Player caller)
         {
             lock (gameStatus.locker)
             {
@@ -213,7 +213,7 @@ namespace RoboRuckus.RuckusCode
             {
                 bool first = true;
                 string result = "[";
-                foreach (player inGame in gameStatus.players)
+                foreach (Player inGame in gameStatus.players)
                 {
                     if (!first)
                     {
@@ -241,7 +241,7 @@ namespace RoboRuckus.RuckusCode
                 gameStatus.playersNeedEntering = false;
                 if (resetAll == 0)
                 {
-                    foreach (player p in gameStatus.players)
+                    foreach (Player p in gameStatus.players)
                     {
                         p.dead = false;
                         p.lockedCards.Clear();

@@ -80,10 +80,12 @@
         $("#botStatus").empty();
         $(".boardSquare").empty().css("background", "");
         var i = 1;
-        flags.forEach(function (entry) {
-            $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>").addClass("hasFlag").data("flag", i);
-            i++;
-        });;
+        if (flags != null) {
+            flags.forEach(function (entry) {
+                $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>").addClass("hasFlag").data("flag", i);
+                i++;
+            });;
+        }
         // Check is robots need to re-enter game
         if (data.entering) {
             // Pause the update interval

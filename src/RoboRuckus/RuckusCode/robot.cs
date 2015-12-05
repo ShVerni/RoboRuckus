@@ -19,7 +19,7 @@ namespace RoboRuckus.RuckusCode
         public IPAddress robotAddress;
         // TODO: Implement robot names
         public string robotName;
-        public player controllingPlayer = null;
+        public Player controllingPlayer = null;
         public EventWaitHandle moving = new ManualResetEvent(false);
 
         public enum orientation
