@@ -152,8 +152,7 @@
      height: 2.5em;
      width: 2.5em;
      background: green;
-     border: 0.05em dotted black;
-     margin-bottom: 1.5em;     
+     border: 0.1em dotted black;     
      text-align: center;
      cursor: move;
  }

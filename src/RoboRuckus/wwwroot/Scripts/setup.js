@@ -2,6 +2,7 @@
     var _sizes = $("#board").data("sizes");
     $.validator.setDefaults({ ignore: null });
     $("#submitButton").button();
+    $(".flags").css({ top: "auto", left: "auto", margin: "0 0 1em 0" });
 
     // Enable the board selection menu
     $("#boardSel").selectmenu({
