@@ -72,7 +72,6 @@ void setup()
   right.attach(6);
   right.write(90);
   left.write(90);
-  while(true);
 
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
