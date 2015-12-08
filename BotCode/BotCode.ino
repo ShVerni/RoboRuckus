@@ -6,11 +6,11 @@
 
 // Movement parameters and wheel speeds
 uint8_t const leftForwardSpeed = 93;
-uint8_t const rightForwardSpeed = 85;
-uint8_t const rightBackwardSpeed = 97;
-uint8_t const leftBackwardSpeed = 79;
+uint8_t const rightForwardSpeed = 88;
+uint8_t const rightBackwardSpeed = 99;
+uint8_t const leftBackwardSpeed = 80;
 // Forward and backward movement 
-uint8_t const Z_offset = 45;
+uint8_t const Z_offset = 30;
 uint8_t const turnBoost = 3;
 uint8_t const drift_threshold = 2;
 float const turn_drift_threshold = 0.1;
@@ -72,6 +72,7 @@ void setup()
   right.attach(6);
   right.write(90);
   left.write(90);
+  while(true);
 
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);

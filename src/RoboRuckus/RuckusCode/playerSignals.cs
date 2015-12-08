@@ -59,14 +59,17 @@ namespace RoboRuckus.RuckusCode
                     if (caller.move == null)
                     {
                         caller.move = cards;
-                        // Checks if all players have submitted their moves
-                        if (gameStatus.players.Any(p => (p.move == null && !p.dead && !p.shutdown)))
-                        {
-                            return;
-                        }
                     }
-                    // Execute player moves
+
+                    // Checks if all players have submitted their moves
+                    if (gameStatus.players.Any(p => (p.move == null && !(p.dead || p.shutdown))))
+                    {
+                        return;
+                    }
+
+                    // Execute player moves                  
                     moveCalculator.executeRegisters();
+                    
                     // Reset for next round
                     if (!gameStatus.winner)
                     {
@@ -91,10 +94,13 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         private void nextRound()
         {
+            // Reset players
             foreach (Player inGame in gameStatus.players)
             {
+                // Remove player's cards
                 inGame.cards = null;
                 inGame.move = null;
+                // Check if player is shutting down
                 if (inGame.willShutdown && !inGame.dead)
                 {
                     inGame.shutdown = true;
@@ -103,11 +109,12 @@ namespace RoboRuckus.RuckusCode
                 }
                 else
                 {
+                    // Bring any shutdown players back online
                     inGame.shutdown = false;
                 }
             }
+            // Clear dealt cards
             gameStatus.deltCards.Clear();
-            showMessage("");
 
             // Check for winner
             if (!gameStatus.winner)
@@ -116,14 +123,14 @@ namespace RoboRuckus.RuckusCode
                 if (gameStatus.players.Any(p => (p.dead && p.lives > 0)))
                 {
                     gameStatus.playersNeedEntering = true;
-
+                    showMessage("Dead robots re-entering floor, please be patient.");
                 }
                 else
                 {
+                    showMessage("");
                     // Check if all players are shutdown or out of the game
                     if (gameStatus.players.All(p => p.shutdown || p.lives <= 0))
                     {
-                        gameStatus.players.Select(p => p.shutdown = false);
                         foreach (Player inGame in gameStatus.players)
                         {
                             inGame.shutdown = false;
@@ -248,6 +255,8 @@ namespace RoboRuckus.RuckusCode
                         p.move = null;
                         p.cards = null;
                         p.lives = 3;
+                        p.shutdown = false;
+                        p.willShutdown = false;
                     }
                 }
                 else

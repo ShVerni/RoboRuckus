@@ -484,8 +484,8 @@ namespace RoboRuckus.RuckusCode.Movement
         private static void executePlayerMoves(int regsiter)
         {
             List<orderModel> orders = new List<orderModel>();
-            int inGame = gameStatus.players.Count(p => (!p.dead && !p.shutdown));
-            moveModel[] register = new moveModel[inGame];
+            // Set the size of the register list to all the currently active players
+            moveModel[] register = new moveModel[gameStatus.players.Count(p => (!p.dead && !p.shutdown))];
             // Add the cards to the register
             int reg = 0;
             for (int j = 0; j < gameStatus.players.Count; j++)

@@ -17,11 +17,16 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         public orientation currentDirection = orientation.Y;
         public IPAddress robotAddress;
-        // TODO: Implement robot names
         public string robotName;
         public Player controllingPlayer = null;
         public EventWaitHandle moving = new ManualResetEvent(false);
 
+        //TODO: Implement robot's last saved location for re-entering game
+        public int[] lastLocation;
+
+        /// <summary>
+        /// Encodes the cardinal directions a robot can be oriented towards
+        /// </summary>
         public enum orientation
         {
             X = 0,
@@ -30,7 +35,7 @@ namespace RoboRuckus.RuckusCode
             NEG_Y = 3
         }
 
-        // There shouldn't be more thant 127 points of damage a bot can take, it's signged to allow damage subtraction
+        // There shouldn't be more thant 127 points of damage a bot can take, it's signed to allow damage subtraction
         private  sbyte _damage = 0;
 
         /// <summary>
@@ -64,7 +69,7 @@ namespace RoboRuckus.RuckusCode
                     if (_damage > 4)
                     {
                         // Bot is dead!
-                        if (value >= 10)
+                        if (_damage >= 10)
                         {
                             controllingPlayer.dead = true;
                         }
@@ -75,6 +80,7 @@ namespace RoboRuckus.RuckusCode
                                 // Unlock cards if necessary
                                 while (controllingPlayer.lockedCards.Count > _damage - 4)
                                 {
+                                    // Unlock the most recently locked card
                                     gameStatus.lockedCards.Remove(controllingPlayer.lockedCards[controllingPlayer.lockedCards.Count - 1]);
                                     controllingPlayer.lockedCards.Remove(controllingPlayer.lockedCards[controllingPlayer.lockedCards.Count - 1]);
                                 }

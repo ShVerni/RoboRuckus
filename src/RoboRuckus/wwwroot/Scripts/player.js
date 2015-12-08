@@ -1,5 +1,9 @@
 ﻿$(function () {
+    $("#shutdown").prop("checked", false);
     var curDamage = parseInt($("#damage").data("damage"));
+    // Enable the submit program button
+    $("#sendcards img").click(sendCards);
+    var submitted = true;
     
     // Set up howler sounds
     var damageSound = new Howl({
@@ -14,7 +18,7 @@
 
     // Shutdown toggle effects
     $("#shutdown").button().click(function () {
-        if ($('#shutdown').is(":checked"))
+        if ($('#shutdown').prop("checked"))
         {
             $("#labelText").html("Shutdown On");
         }
@@ -48,17 +52,18 @@
 
     // Processes and displays cards dealt to the player
     cardControl.client.deal = (function (cards, lockedCards) {
-        $("#sendcards").unbind("click");
+        submitted = true;
         $(".slot ul").empty();
         if ($("#submitted").length != 0) {
             $("#submitted").remove();
         }
         $("#labelText").html("Shutdown Off");
-        $("#shutdown").attr("checked", false);
+        $("#shutdown").prop("checked", false);
         var _cards = $.parseJSON(cards);
         if (_cards.length == 0) {
             $("#shutdownLabel").css("background", "red");
             $("#cardsContainer").html("<h2>Robot shutdown</h2>");
+            return;
         }
         else
         {
@@ -151,7 +156,7 @@
             cursor: "move"
         });
         // Enable the submit program button
-        $("#sendcards img").click(sendCards);
+        submitted = false;
         // Get bot's current status
         cardControl.server.getHealth($('#playerNum').data("player")).done(function (damage) {
             updateHealth(damage);
@@ -378,26 +383,25 @@
     }
     // Sends the selected cards to the server
     function sendCards() {
-        $("#sendcards img").unbind("click");
-        if ($(".slot").has("li").length != $(".slot").length)
-        {
-            alert("Please fill all movement slots");
-            $("#sendcards img").click(sendCards);
-        }
-        else
-        {
-            var shutdown = false;
-            var move = new Array();
-            $(".slot").each(function () {
-                move.push($("li", this).data("cardinfo"));
-            });
-            $(".ui-draggable").draggable("option", "disabled", true).css("cursor", "default");
-            if ($('#shutdown').is(":checked"))
-            {
-                shutdown = true;
+        if (!submitted) {
+            submitted = true;
+            if ($(".slot").has("li").length != $(".slot").length) {
+                alert("Please fill all movement slots");
+                submitted = false;
             }
-            cardControl.server.sendCards($('#playerNum').data("player"), move, shutdown);
-            $("#slots").prepend("<h3 id='submitted' style='color: red'>Program Submitted</h3>");
+            else {
+                var shutdown = false;
+                var move = new Array();
+                $(".slot").each(function () {
+                    move.push($("li", this).data("cardinfo"));
+                });
+                $(".ui-draggable").draggable("option", "disabled", true).css("cursor", "default");
+                if ($('#shutdown').prop("checked")) {
+                    shutdown = true;
+                }
+                cardControl.server.sendCards($('#playerNum').data("player"), move, shutdown);
+                $("#slots").prepend("<h3 id='submitted' style='color: red'>Program Submitted</h3>");
+            }
         }
     }
 });

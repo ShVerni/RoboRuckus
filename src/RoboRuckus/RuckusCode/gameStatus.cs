@@ -84,8 +84,8 @@ namespace RoboRuckus.RuckusCode
                 bot.robotNum = (byte)(robots.Count - 1);
                 // Assign player to bot
                 bot.controllingPlayer = sender;
-                sender.playerRobot = bot;
-                SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, sender.playerNumber + 1));
+                sender.playerRobot = bot;                
+                SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, sender.playerNumber + 1));                
                 return true;
             }
             return false;

@@ -43,10 +43,8 @@ namespace RoboRuckus.RuckusCode
         public int lives = 3;
 
         private bool _dead;
-
         /// <summary>
-        /// Show's whether a player is dead, and if they are it removes
-        /// that player and their bot from the current game.
+        /// Show's whether a player is dead, and if they are removes a life
         /// </summary>
         public bool dead
         {
