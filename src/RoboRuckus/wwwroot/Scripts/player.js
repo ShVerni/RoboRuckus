@@ -15,6 +15,9 @@
     var winnerSound = new Howl({
         src: ['/sounds/winner.ogg', '/sounds/winner.mp3']
     });
+    var flagTouch = new Howl({
+        src: ['/sounds/flagtouch.ogg', '/sounds/flagtouch.mp3']
+    });
 
     // Shutdown toggle effects
     $("#shutdown").button().click(function () {
@@ -253,6 +256,9 @@
                     break;
                 case "winner":
                     winnerSound.play();
+                    break;
+                case "flagTouch":
+                    flagTouch.play();
                     break;
             }
         }

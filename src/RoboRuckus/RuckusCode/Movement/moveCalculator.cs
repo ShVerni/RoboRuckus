@@ -92,6 +92,7 @@ namespace RoboRuckus.RuckusCode.Movement
                                     bot.damage--;
                                     playerSignals.Instance.updateHealth();
                                 }
+                                playerSignals.Instance.showMessage("Touching flags", "flagTouch");
                             }
                             Thread.Sleep(1000);
                             // Check for flag win condition
