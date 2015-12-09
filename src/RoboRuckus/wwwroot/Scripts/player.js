@@ -95,7 +95,7 @@
             i++;
         });
         // Makes the card slots droppable
-        $(".slot").droppable("enable");
+        $(".slot").droppable("enable").css("border", "1px solid #DDD");
         // Reset locked card slots
         $(".locked").remove();
 
@@ -121,7 +121,7 @@
                     <img src='/images/cards/bg.png'alt='card'>\
                 </div>\
             </li>");
-            $("#slot" + slot).droppable("disable");
+            $("#slot" + slot).droppable("disable").css("border", "3px solid red");
             $("#slot" + slot + " h4").append("<span class='locked'> LOCKED!</span>");
             $("#card" + i).data("cardinfo", this);
             slot--;
@@ -157,6 +157,7 @@
         });
         // Enable the submit program button
         submitted = false;
+        $("#submitButton").attr("src", "/images/cards/submit.png");
         // Get bot's current status
         cardControl.server.getHealth($('#playerNum').data("player")).done(function (damage) {
             updateHealth(damage);
@@ -390,6 +391,7 @@
                 submitted = false;
             }
             else {
+                $("#submitButton").attr("src", "/images/cards/submitted.png");
                 var shutdown = false;
                 var move = new Array();
                 $(".slot").each(function () {

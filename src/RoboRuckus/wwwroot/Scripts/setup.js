@@ -2,7 +2,6 @@
     var _sizes = $("#board").data("sizes");
     $.validator.setDefaults({ ignore: null });
     $("#submitButton").button();
-    $(".flags").css({ top: "auto", left: "auto", margin: "0 0 1em 0" });
 
     // Enable the board selection menu
     $("#boardSel").selectmenu({
@@ -30,7 +29,7 @@
                         if ($(ui.draggable).parent().hasClass("boardSquare")) {
                             $(ui.draggable).parent().droppable("enable");
                         }
-                        $(ui.draggable).detach().css({ top: 0, left: 0, margin: "0 auto" }).appendTo(this);
+                        $(ui.draggable).detach().css({ top: 0, left: 0}).appendTo(this);
                         assignFlags();
                     }
                 });
@@ -71,7 +70,7 @@
         hoverClass: "ui-state-hover",
         drop: function (event, ui) {
             $(ui.draggable).parent().droppable("enable");
-            $(ui.draggable).detach().css({ top: "auto", left: "auto", margin: "0 0 1em 0" }).appendTo(this);
+            $(ui.draggable).detach().css({ top: "auto", left: "auto"}).appendTo(this);
             assignFlags();
         }
     });
