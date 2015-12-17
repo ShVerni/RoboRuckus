@@ -7,6 +7,10 @@
     clear: both;
 }
 
+.body-content {
+    padding-left: 1.5em;
+}
+
 /* jQueryUI fixes */
 .ui-state-active {
     background: rgba(255, 234, 0, 0.61) !important;

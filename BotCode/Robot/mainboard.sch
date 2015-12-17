@@ -3546,8 +3546,8 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND6" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="HMV5883L_1" library="SparkFun-Connectors" deviceset="M04" device="PTH"/>
-<part name="HMC5883L_0" library="SparkFun-Connectors" deviceset="M04" device="PTH"/>
+<part name="L3GD20H_LSM303" library="SparkFun-Connectors" deviceset="M04" device="PTH"/>
+<part name="HMC5883L" library="SparkFun-Connectors" deviceset="M04" device="PTH"/>
 <part name="REGULATOR" library="LD1117V33" deviceset="LD1117V33" device=""/>
 <part name="LED_DRIVER" library="BillPorter" deviceset="TLC5916/17" device="DIP-16"/>
 <part name="BAT_VCC" library="SparkFun-Connectors" deviceset="M01" device="PTH"/>
@@ -3587,8 +3587,8 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <instance part="GND5" gate="1" x="114.3" y="114.3" rot="R270"/>
 <instance part="GND6" gate="1" x="86.36" y="20.32"/>
 <instance part="GND7" gate="1" x="86.36" y="43.18"/>
-<instance part="HMV5883L_1" gate="G$1" x="119.38" y="58.42"/>
-<instance part="HMC5883L_0" gate="G$1" x="119.38" y="88.9"/>
+<instance part="L3GD20H_LSM303" gate="G$1" x="119.38" y="58.42"/>
+<instance part="HMC5883L" gate="G$1" x="119.38" y="88.9"/>
 <instance part="REGULATOR" gate="G$1" x="134.62" y="154.94"/>
 <instance part="LED_DRIVER" gate="G$1" x="88.9" y="109.22" rot="R180"/>
 <instance part="BAT_VCC" gate="G$1" x="111.76" y="157.48"/>
@@ -3670,7 +3670,7 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <label x="195.58" y="124.46" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="HMV5883L_1" gate="G$1" pin="2"/>
+<pinref part="L3GD20H_LSM303" gate="G$1" pin="2"/>
 <wire x1="124.46" y1="58.42" x2="132.08" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="1"/>
 <wire x1="132.08" y1="58.42" x2="132.08" y2="55.88" width="0.1524" layer="91"/>
@@ -3679,7 +3679,7 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <label x="134.62" y="58.42" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="HMC5883L_0" gate="G$1" pin="2"/>
+<pinref part="HMC5883L" gate="G$1" pin="2"/>
 <wire x1="124.46" y1="88.9" x2="132.08" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="C3" gate="G$1" pin="1"/>
 <wire x1="132.08" y1="88.9" x2="132.08" y2="86.36" width="0.1524" layer="91"/>
@@ -3826,13 +3826,13 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <pinref part="TEENSY_LC" gate="G$1" pin="18/A4/T/SDA0"/>
 <wire x1="149.86" y1="81.28" x2="144.78" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="144.78" y1="81.28" x2="144.78" y2="93.98" width="0.1524" layer="91"/>
-<pinref part="HMC5883L_0" gate="G$1" pin="4"/>
+<pinref part="HMC5883L" gate="G$1" pin="4"/>
 <wire x1="144.78" y1="93.98" x2="124.46" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$17" class="0">
 <segment>
-<pinref part="HMC5883L_0" gate="G$1" pin="3"/>
+<pinref part="HMC5883L" gate="G$1" pin="3"/>
 <wire x1="124.46" y1="91.44" x2="142.24" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="142.24" y1="91.44" x2="142.24" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="TEENSY_LC" gate="G$1" pin="19/A5/T/SCL0"/>
@@ -3844,13 +3844,13 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <pinref part="TEENSY_LC" gate="G$1" pin="23/A9/T/PWM"/>
 <wire x1="149.86" y1="68.58" x2="142.24" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="142.24" y1="68.58" x2="142.24" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="HMV5883L_1" gate="G$1" pin="4"/>
+<pinref part="L3GD20H_LSM303" gate="G$1" pin="4"/>
 <wire x1="142.24" y1="63.5" x2="124.46" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$21" class="0">
 <segment>
-<pinref part="HMV5883L_1" gate="G$1" pin="3"/>
+<pinref part="L3GD20H_LSM303" gate="G$1" pin="3"/>
 <wire x1="124.46" y1="60.96" x2="137.16" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="60.96" x2="137.16" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="71.12" x2="149.86" y2="71.12" width="0.1524" layer="91"/>
@@ -3888,7 +3888,7 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <wire x1="195.58" y1="106.68" x2="198.12" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="HMV5883L_1" gate="G$1" pin="1"/>
+<pinref part="L3GD20H_LSM303" gate="G$1" pin="1"/>
 <wire x1="124.46" y1="55.88" x2="127" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="127" y1="55.88" x2="127" y2="48.26" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="2"/>
@@ -3897,7 +3897,7 @@ Specs @ http://focus.ti.com/docs/prod/folders/print/tlc5916.html</description>
 <junction x="127" y="48.26"/>
 </segment>
 <segment>
-<pinref part="HMC5883L_0" gate="G$1" pin="1"/>
+<pinref part="HMC5883L" gate="G$1" pin="1"/>
 <wire x1="124.46" y1="86.36" x2="127" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="127" y1="86.36" x2="127" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="C3" gate="G$1" pin="2"/>
