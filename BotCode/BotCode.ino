@@ -20,14 +20,14 @@ float const turnFactor = 1.49;
 // Robot name, use URL encoding characters if needed  
 String robotName = "Beta%20Bot";
 
-/* Use to tune wheel speeds and above movment parameters */
+/* Use to tune wheel speeds and above movement parameters */
 //#define setup1
 //#define setup2
 //#define debug
 //#define debug2
 
 /*
- * LED pinout -> Shift register byte:
+ * LED pinout -> Shift register byte reference:
  * BL	128
  * BM	64
  * BR	32
@@ -38,6 +38,7 @@ String robotName = "Beta%20Bot";
  * DP	16
 */
 
+// Pin assignments and constants
 uint8_t const piezo = 5;
 uint8_t const latchPin = 7;
 uint8_t const clockPin = 8;
@@ -65,22 +66,28 @@ IntervalTimer timeout;
 
 #define wifi Serial2
 
+// Let's begin
 void setup()
 {
+  // Attach and initialize servos
   delay(1000);
   left.attach(4);
   right.attach(6);
   right.write(90);
   left.write(90);
 
+  // Set up LED shift register
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   
   Serial.begin(115200);
-  
+
+  // Turn off onbaord LED
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
+
+  // Set up sensors
   if (!mag.begin())
   {
     Serial.println(F("mag not detected"));
@@ -104,7 +111,8 @@ void setup()
   */
   wifi.begin(115200);
   updateShiftRegister(16);
-  
+
+  // Setup code
   #ifdef setup1
     delay(1000);
     left.write(leftForwardSpeed);
@@ -136,12 +144,15 @@ void setup()
   #endif
   
   #ifndef debug2
-  while (!startup())
-  {
-    updateShiftRegister(206); // Letter E
-    delay(1000);
-  }
-  updateShiftRegister(175); // Letter A
+    // Initialize robot
+    while (!startup())
+    {
+      // Robot encountered a problem during set up
+      updateShiftRegister(206); // Letter E
+      delay(1000);
+    }
+    // Robot is ready to go
+    updateShiftRegister(175); // Letter A
   #endif
 }
 
@@ -227,6 +238,7 @@ void loop()
     }
   }
   #endif
+  // Enable debug2 to communicate directly to the WiFi module over the serial console
   #ifdef debug2
   if (wifi.available())
   {
@@ -257,6 +269,7 @@ void executeMove(uint8_t movement, uint8_t magnitude, uint8_t outOfTurn)
 {
 if (movement <= 3)
   {
+    // Standard movement
     if (magnitude > 0)
     {
       switch (movement)
@@ -281,11 +294,13 @@ if (movement <= 3)
     }
     else
     {
+      // Robot trying to move, but is blocked
       tone(piezo, 250, 1000);
       updateShiftRegister(206);
       delay(1000);    
     }
   }
+  // Non-movment command
   else 
   {
     switch (movement)
@@ -303,6 +318,7 @@ if (movement <= 3)
   do
   {
     success = true;
+    // Connect to server
     String response = sendCommand(connection, F("\nOK"));
     #ifdef debug
       Serial.println(response);
@@ -318,6 +334,7 @@ if (movement <= 3)
     {
       // This should really be a POST request, but GET is more reliable
       String message = "GET /Bot/Done?bot=" + botNum + " HTTP/1.1\r\nHost: " + server + ":" + port + "\r\nConnection: close\r\n\r\n";
+      // Open TCP connection
       response = sendCommand("AT+CIPSEND=1," + (String)message.length(), F("\nOK"));
       #ifdef debug
         Serial.println(response);
@@ -329,6 +346,7 @@ if (movement <= 3)
       }
       else
       {
+        // Notify server that bot has finished moving, check for acknowledgment
         response = sendCommand(message, F("AK\n"));
         #ifdef debug
           Serial.println(response);
@@ -343,7 +361,7 @@ if (movement <= 3)
       }
       if (!success)
       {
-        // Rest the WiFi module
+        // Something went wrong, try resetting the WiFi module
         #ifdef debug
           Serial.println(F("Resetting"));
         #endif
@@ -428,6 +446,7 @@ bool startup()
  * to stop reading. ERROR will always terminate.
  * If EoT is an empty string, the command will be sent
  * but the method won't wait for a response.
+ * The method will timeout after ~8 seconds of not finding EoT or ERROR
  */
 String sendCommand(String command, String EoT)
 {

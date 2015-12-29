@@ -63,7 +63,7 @@ namespace RoboRuckus.RuckusCode.Movement
                             Thread.Sleep(800);
                         }
 
-                        // Heal from wrenches
+                        // Heal from wrenches and flags
                         Robot[] healed = boardEffects.wrenches();
                         if (healed.Length > 0)
                         {
@@ -89,7 +89,6 @@ namespace RoboRuckus.RuckusCode.Movement
                                     {
                                         bot.flags++;
                                     }
-                                    bot.damage--;
                                     playerSignals.Instance.updateHealth();
                                 }
                                 playerSignals.Instance.showMessage("Touching flags", "flagTouch");

@@ -79,9 +79,9 @@ namespace RoboRuckus.RuckusCode.Movement
         }
 
         /// <summary>
-        /// Gets an array of all robots currently on a wrench space
+        /// Gets an array of all robots currently on a wrench or flag space
         /// </summary>
-        /// <returns>An array of robots on a wrench space</returns>
+        /// <returns>An array of robots on a wrench or flag space</returns>
         public static Robot[] wrenches()
         {
             lock (gameStatus.locker)

@@ -1,8 +1,11 @@
+// Used to trigger a timeout so the bot won't drive forever if it misses a stop
 bool timeUp = false;
+// Corrects drift in the gyroscope
 const double gyroCorrect = 0.015;
 
 void driveForward(uint8_t spaces)
 {
+  // Initialize some variables
   int Z_threshold = 0;
   uint8_t count = 0;
   bool crossing = false;
@@ -13,7 +16,8 @@ void driveForward(uint8_t spaces)
   elapsedMillis mils;
   float turn_drift = 0;
 
-   for (int i = 0; i < 10; i++)
+  // Get starting Y and Z axis magnetometer readings, averaging 10 readings
+  for (int i = 0; i < 10; i++)
   {
     mag.getEvent(&event);
     Y_calibration += event.magnetic.y;
@@ -22,15 +26,18 @@ void driveForward(uint8_t spaces)
   }
   Y_calibration /= 10;
   Z_threshold = (Z_threshold / 10) - Z_offset;
-  
+
+  // Define a maximum time the robot should drive
   timeUp = false;
   timeout.begin(timedOut, 1500000 * spaces);
    
   mils = 0;
+  // Start driving
   left.write(leftForwardSpeed);
   right.write(rightForwardSpeed);
   while (countdown > 0 && !timeUp)
   {
+    // Get gyro and magnetometer readings
     gyro.getEvent(&event2);
     turn_drift += ((event2.gyro.z - gyroCorrect) / 1000) * mils;
     mils = 0;
@@ -42,6 +49,7 @@ void driveForward(uint8_t spaces)
       Serial.print("Z: "); Serial.print(event.magnetic.z); Serial.print("  ");
       Serial.println("uT");
     #endif
+    // Check if gyro detects the bot has drifted off course, and correct accordingly
     if (abs(turn_drift) > turn_drift_threshold)
     {
       if (turn_drift > 0)
@@ -60,7 +68,8 @@ void driveForward(uint8_t spaces)
         left.write(leftForwardSpeed + turnBoost);
         right.write(rightForwardSpeed);
       }
-    }    
+    }
+    // Check if magnetometer has detected the robot has drifted off couse, and correct accordingly
     else if (event.magnetic.y < (Y_calibration - drift_threshold))
     {
       #ifdef debug
@@ -82,6 +91,7 @@ void driveForward(uint8_t spaces)
       left.write(leftForwardSpeed);
       right.write(rightForwardSpeed);
     }
+    // Check if robot has enetered a board square
     if (event.magnetic.z < Z_threshold || event.magnetic.z < -400)
     {
       if (!crossing)
@@ -103,11 +113,13 @@ void driveForward(uint8_t spaces)
     }
     delay(6);
   }
+  // Stop moving
   timeout.end();
   left.write(90);
   right.write(90);
 }
 
+// This is identical to drive forward, except the drive speeds and turn correction speeds are reversed
 void driveBackward(uint8_t spaces)
 {
   int Z_threshold = 0;
@@ -217,11 +229,13 @@ void driveBackward(uint8_t spaces)
 
 void turn(uint8_t dir, uint8_t magnitude)
 {
+  // Determine the what the final reading of the gyro should be
   float threshold = magnitude * turnFactor;
   elapsedMillis mils;
   sensors_event_t event;
   float total = 0;
   mils = 0;
+  // Start turning
   if (dir == 1)
   {
     left.write(leftBackwardSpeed);
@@ -232,6 +246,7 @@ void turn(uint8_t dir, uint8_t magnitude)
     left.write(leftForwardSpeed);
     right.write(rightBackwardSpeed);
   }
+  // Check how far the robot has turned
   while (total < threshold)
   {
     gyro.getEvent(&event);
@@ -242,10 +257,12 @@ void turn(uint8_t dir, uint8_t magnitude)
     #endif
     delay(7);
   }
+  // Stop turning
   left.write(90);
   right.write(90);
 }
 
+// Used to stop the bot from driving forever
 void timedOut()
 {
   timeUp = true;
