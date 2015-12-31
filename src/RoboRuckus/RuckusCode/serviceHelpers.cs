@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
-using Microsoft.Dnx.Runtime;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace RoboRuckus.RuckusCode
 {
