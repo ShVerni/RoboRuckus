@@ -98,7 +98,7 @@
                     content += '<p>Checkpoint: [' + this.last_x + ', ' + this.last_y + ']</p>';
                 }
             });
-            content += '</div><button id="sendBots">Re-enter bots</button>';
+            content += '</div><button id="sendBots">Re-enter Bots</button>';
 
             // Add content to the cardContainer
             $("#cardsContainer").html(content);
