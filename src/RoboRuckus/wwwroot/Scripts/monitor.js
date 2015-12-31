@@ -86,7 +86,7 @@
                 i++;
             });;
         }
-        // Check is robots need to re-enter game
+        // Check if robots need to re-enter game
         if (data.entering) {
             // Pause the update interval
             clearInterval(fetcher);
@@ -95,6 +95,7 @@
             $.each(data.players, function () {
                 if (this.reenter != 0) {
                     content += '<div class="bots" data-number="' + this.number.toString() + '" data-orientation="0"><p>' + (this.number + 1).toString() + '&#x2192;</p></div>';
+                    content += '<p>Checkpoint: [' + this.last_x + ', ' + this.last_y + ']</p>';
                 }
             });
             content += '</div><button id="sendBots">Re-enter bots</button>';
@@ -169,7 +170,7 @@
 
     // Sends bot info to server for re-entry
     function sendBots() {
-        if ($('#botContainer > *').length == 0) {
+        if ($('#botContainer > .bots').length == 0) {
             var result = "[";
             var first = true;
             $(".bots").each(function (index) {

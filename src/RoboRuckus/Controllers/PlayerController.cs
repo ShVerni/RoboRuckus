@@ -110,6 +110,7 @@ namespace RoboRuckus.Controllers
                     Player sender = gameStatus.players[player - 1];
                     sender.playerRobot.x_pos = botX;
                     sender.playerRobot.y_pos = botY;
+                    sender.playerRobot.lastLocation = new int[] { botX, botY };
                     sender.playerRobot.currentDirection = (Robot.orientation)botDir;
                     return RedirectToAction("Index", new { player = player });
                 }

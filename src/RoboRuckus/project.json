@@ -21,7 +21,7 @@
     "Newtonsoft.Json": "7.0.1"
   },
   "commands": {
-    "kestrel": "server Microsoft.AspNet.Server.Kestrel --server.urls http://*:8082"
+    "kestrel": "Microsoft.AspNet.Server.Kestrel --server.urls http://*:8082"
   },
   "frameworks": {
     "dnx451": {

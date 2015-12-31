@@ -70,6 +70,8 @@ namespace RoboRuckus.RuckusCode.Movement
                             foreach (Robot bot in healed)
                             {
                                 bot.damage--;
+                                bot.lastLocation[0] = bot.x_pos;
+                                bot.lastLocation[1] = bot.y_pos;
                             }
                             playerSignals.Instance.updateHealth();
                         }
@@ -88,6 +90,8 @@ namespace RoboRuckus.RuckusCode.Movement
                                     if (bot.flags == pair[1])
                                     {
                                         bot.flags++;
+                                        bot.lastLocation[0] = bot.x_pos;
+                                        bot.lastLocation[1] = bot.y_pos;
                                     }
                                     playerSignals.Instance.updateHealth();
                                 }

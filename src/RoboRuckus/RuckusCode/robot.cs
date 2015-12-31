@@ -21,7 +21,9 @@ namespace RoboRuckus.RuckusCode
         public Player controllingPlayer = null;
         public EventWaitHandle moving = new ManualResetEvent(false);
 
-        //TODO: Implement robot's last saved location for re-entering game
+        /// <summary>
+        /// Robot's last check-point location
+        /// </summary>
         public int[] lastLocation;
 
         /// <summary>
