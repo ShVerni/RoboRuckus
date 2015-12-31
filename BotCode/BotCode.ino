@@ -317,6 +317,8 @@ if (movement <= 3)
   bool success = true;
   do
   {
+    // Ensure connection isn't already open
+    sendCommand(F("AT+CIPCLOSE=1"), F("\nOK"));
     success = true;
     // Connect to server
     String response = sendCommand(connection, F("\nOK"));
