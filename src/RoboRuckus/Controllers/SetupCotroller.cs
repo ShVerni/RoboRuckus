@@ -53,7 +53,7 @@ namespace RoboRuckus.Controllers
         /// <param name="numberOfPlayers">The number of players</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult startGame(string selBoard, string flags, int numberOfPlayers = 0)
+        public IActionResult startGame(string selBoard, string flags, bool timerEnabled, int numberOfPlayers = 0)
         {
             if (numberOfPlayers > 0)
             {
@@ -73,6 +73,7 @@ namespace RoboRuckus.Controllers
                     }
                     gameStatus.boardSizeX = _board.size[0];
                     gameStatus.boardSizeY = _board.size[1];
+                    gameStatus.playerTimer = timerEnabled;
                     gameStatus.gameReady = true;
                 }
                 return RedirectToAction("Monitor");

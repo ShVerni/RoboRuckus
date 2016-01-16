@@ -3,6 +3,18 @@
     $.validator.setDefaults({ ignore: null });
     $("#submitButton").button();
 
+    $("#timer").button().click(function () {
+        if ($('#timer').prop("checked")) {
+            $("#timerText").html("Timer Enabled");
+        }
+        else {
+            $("#timerText").html("Timer Disabled");
+        }
+    });
+    $("#timerLabel").hover(function () {
+        $(this).removeClass("ui-state-hover");
+    });
+
     // Enable the board selection menu
     $("#boardSel").selectmenu({
         change: function (event, ui) {

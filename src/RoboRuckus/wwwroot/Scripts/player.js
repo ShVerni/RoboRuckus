@@ -4,6 +4,9 @@
     // Enable the submit program button
     $("#sendcards img").click(sendCards);
     var submitted = true;
+
+    var timer;
+    var timeRemaing;
     
     // Set up howler sounds
     var damageSound = new Howl({
@@ -303,8 +306,7 @@
         accept: "#cardsContainer > li, .slot li",
         hoverClass: "ui-state-hover",
         drop: function (event, ui) {
-            if ($(ui.draggable).parent().hasClass("slotList"))
-            {
+            if ($(ui.draggable).parent().hasClass("slotList")) {
                 $(ui.draggable).closest("div").droppable("enable");
             }
             $(ui.draggable).css({
@@ -313,7 +315,7 @@
                 "left": 0,
                 "bottom": 0
             });
-            $(ui.draggable).appendTo($("ul", this));
+            $(ui.draggable).detach().appendTo($("ul", this));
             $(this).droppable("disable");
         }
     });
@@ -397,6 +399,8 @@
                 submitted = false;
             }
             else {
+                window.clearInterval(timer);
+                $("#timer").empty();
                 $("#submitButton").attr("src", "/images/cards/submitted.png");
                 var shutdown = false;
                 var move = new Array();
@@ -410,6 +414,35 @@
                 cardControl.server.sendCards($('#playerNum').data("player"), move, shutdown);
                 $("#slots").prepend("<h3 id='submitted' style='color: red'>Program Submitted</h3>");
             }
+        }
+    }
+
+    // Starts the countdown timer
+    cardControl.client.startTimer = (function () {
+        if (!submitted) {
+            timer = setInterval(timerHandler, 1000)
+            timeRemaing = 30;
+            $("#timer").html("<h2 style='color: red'>Time reaming: " + timeRemaing + "</h2>");
+        }
+    });
+    
+    // Handles the countdown timer
+    function timerHandler()
+    {
+        timeRemaing--;
+        $("#timer").html("<h2 style='color: red'>Time reaming: " + timeRemaing + "</h2>");
+        if (timeRemaing == 0)
+        {
+            window.clearInterval(timer);
+            $(".slot").each(function () {
+                if (!$(this).has("li").length)
+                {
+                    var number = Math.floor((Math.random() * $('#cardsContainer li').length) + 1);
+                    $('#cardsContainer li:nth-child(' + number + ')').detach().appendTo($(this).find('.slotList'));
+                }
+            });
+            $(".ui-draggable").draggable("option", "disabled", true).css("cursor", "default");
+            setTimeout(sendCards, 3000);
         }
     }
 });

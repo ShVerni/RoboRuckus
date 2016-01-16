@@ -20,5 +20,9 @@ namespace RoboRuckus.Models
         public string flags { get; set; }
 
         public IEnumerable<SelectListItem> boards { get; set; }
+
+        [Required]
+        [Display(Name = "Enable Timer")]
+        public bool timerEnabled { get; set; }
     }
 }

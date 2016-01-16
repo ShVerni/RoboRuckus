@@ -61,8 +61,15 @@ namespace RoboRuckus.RuckusCode
                         caller.move = cards;
                     }
 
+                    int submitted = gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown));
+                    // Check to see if timer needs to be started
+                    if (gameStatus.playerTimer && submitted == (gameStatus.numPlayersInGame - 1))
+                    {
+                        Clients.All.startTimer();
+                        return;
+                    }
                     // Checks if all players have submitted their moves
-                    if (gameStatus.players.Any(p => (p.move == null && !(p.dead || p.shutdown))))
+                    else if (submitted < gameStatus.numPlayersInGame)
                     {
                         return;
                     }
