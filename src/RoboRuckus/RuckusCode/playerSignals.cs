@@ -85,6 +85,7 @@ namespace RoboRuckus.RuckusCode
                     }
                 }
             }
+            // Checks is a timer needs to be started right away
             Thread.Sleep(2000);
             checkTimer();
         }
@@ -342,8 +343,7 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                int submitted = gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown));
-                if (gameStatus.playerTimer && submitted == (gameStatus.numPlayersInGame - 1))
+                if (gameStatus.playerTimer && gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown)) == (gameStatus.numPlayersInGame - 1))
                 {
                     timerStarted = true;
                     Clients.All.startTimer();
