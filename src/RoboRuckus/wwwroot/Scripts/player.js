@@ -425,7 +425,7 @@
         if (!submitted && !isShutdown) {
             timer = setInterval(timerHandler, 1000)
             timeRemaining = 30;
-            $("#timer").html("<h2 style='color: red'>Time reaming: " + timeRemaining + "</h2>");
+            $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
         }
     });
     
