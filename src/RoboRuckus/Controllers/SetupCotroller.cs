@@ -117,21 +117,24 @@ namespace RoboRuckus.Controllers
         {
             lock(gameStatus.locker)
             {
-                int[][] entering = JsonConvert.DeserializeObject<int[][]>(players);
-                foreach (int[] enter in entering)
+                lock (gameStatus.setupLocker)
                 {
-                    Player sender = gameStatus.players[enter[0]];
-                    Robot bot = sender.playerRobot;
-                    bot.x_pos = enter[1];
-                    bot.y_pos = enter[2];
-                    bot.damage = 0;
-                    bot.currentDirection = (Robot.orientation)Enum.Parse(typeof(Robot.orientation), enter[3].ToString());
-                    sender.dead = false;
+                    int[][] entering = JsonConvert.DeserializeObject<int[][]>(players);
+                    foreach (int[] enter in entering)
+                    {
+                        Player sender = gameStatus.players[enter[0]];
+                        Robot bot = sender.playerRobot;
+                        bot.x_pos = enter[1];
+                        bot.y_pos = enter[2];
+                        bot.damage = 0;
+                        bot.currentDirection = (Robot.orientation)Enum.Parse(typeof(Robot.orientation), enter[3].ToString());
+                        sender.dead = false;
+                    }
+                    playerSignals.Instance.dealPlayers();
+                    gameStatus.playersNeedEntering = false;
                 }
-                playerSignals.Instance.dealPlayers();
-                gameStatus.playersNeedEntering = false;
+                return Content("OK", "text/plain");
             }
-            return Content("OK", "text/plain");
         }
 
         /// <summary>
@@ -141,29 +144,32 @@ namespace RoboRuckus.Controllers
         [HttpGet]
         public IActionResult Status()
         {
-            string result = "{\"players\": {";
-            bool first = true;
-            string entering = gameStatus.playersNeedEntering ? "1" : "0";
-            Robot[] sorted = gameStatus.robots.OrderBy(r => r.controllingPlayer.playerNumber).ToArray();
-            foreach (Robot active in sorted)
+            lock (gameStatus.setupLocker)
             {
-                if (active.controllingPlayer != null)
+                string result = "{\"players\": {";
+                bool first = true;
+                string entering = gameStatus.playersNeedEntering ? "1" : "0";
+                Robot[] sorted = gameStatus.robots.OrderBy(r => r.controllingPlayer.playerNumber).ToArray();
+                foreach (Robot active in sorted)
                 {
-                    if (!first)
+                    if (active.controllingPlayer != null)
                     {
-                        result += ",";
+                        if (!first)
+                        {
+                            result += ",";
+                        }
+                        first = false;
+                        string reenter = "0";
+                        if (active.controllingPlayer.dead && active.controllingPlayer.lives > 0)
+                        {
+                            reenter = "1";
+                        }
+                        result += "\"" + active.controllingPlayer.playerNumber.ToString() + "\": {\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"lives\":" + active.controllingPlayer.lives.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + ",\"damage\": " + active.damage.ToString() + ",\"flags\": " + active.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + ", \"reenter\": " + reenter + ", \"last_x\": " + active.lastLocation[0].ToString() + ", \"last_y\": " + active.lastLocation[1] + "}";
                     }
-                    first = false;
-                    string reenter = "0";
-                    if (active.controllingPlayer.dead && active.controllingPlayer.lives > 0)
-                    {
-                        reenter = "1";
-                    }
-                    result += "\"" + active.controllingPlayer.playerNumber.ToString() + "\": {\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"lives\":" + active.controllingPlayer.lives.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + ",\"damage\": " + active.damage.ToString() + ",\"flags\": " + active.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + ", \"reenter\": " + reenter + ", \"last_x\": " + active.lastLocation[0].ToString() + ", \"last_y\": " + active.lastLocation[1] + "}";
                 }
+                result += "}, \"entering\": " + entering + "}";
+                return Content(result, "application/json");
             }
-            result += "}, \"entering\": " + entering + "}";
-            return Content(result, "application/json");
         }
 
         /// <summary>

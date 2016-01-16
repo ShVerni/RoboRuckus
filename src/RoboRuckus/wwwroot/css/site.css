@@ -166,6 +166,10 @@
      cursor: move;
  }
 
+ #numberOfPlayers {
+     font-size: 1em;
+ }
+
  #flagContainer {
      min-height: 22em;
      min-width: 5em;

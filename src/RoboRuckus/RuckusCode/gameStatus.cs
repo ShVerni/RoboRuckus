@@ -30,8 +30,9 @@ namespace RoboRuckus.RuckusCode
         public static int boardSizeX;
         public static int boardSizeY;
 
-        // Static object for global locks and thread control
+        // Static objects for global locks and thread control
         public static readonly object locker = new object();
+        public static readonly object setupLocker = new object();
 
         // Path to configuration files
         private static readonly string _cardPath = System.IO.Path.DirectorySeparatorChar + "GameConfig" + System.IO.Path.DirectorySeparatorChar + "movementCards.txt";

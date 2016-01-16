@@ -18,6 +18,8 @@ namespace RoboRuckus.RuckusCode
         private readonly RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
         // There can be no more than 256 card in the deck
         private byte numberOfCards;
+        // Prevents the player timer from being started multiple times
+        private bool timerStarted = false;
 
         /// <summary>
         /// Singleton instance for thread saftey
@@ -61,18 +63,17 @@ namespace RoboRuckus.RuckusCode
                         caller.move = cards;
                     }
 
-                    int submitted = gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown));
                     // Check to see if timer needs to be started
-                    if (gameStatus.playerTimer && submitted == (gameStatus.numPlayersInGame - 1))
+                    if (!timerStarted && checkTimer())
                     {
-                        Clients.All.startTimer();
                         return;
                     }
                     // Checks if all players have submitted their moves
-                    else if (submitted < gameStatus.numPlayersInGame)
+                    else if (gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown)) < gameStatus.numPlayersInGame)
                     {
                         return;
                     }
+                    timerStarted = false;
 
                     // Execute player moves                  
                     moveCalculator.executeRegisters();
@@ -84,6 +85,8 @@ namespace RoboRuckus.RuckusCode
                     }
                 }
             }
+            Thread.Sleep(2000);
+            checkTimer();
         }
 
         /// <summary>
@@ -94,59 +97,6 @@ namespace RoboRuckus.RuckusCode
         public void showMessage(string message, string sound = "")
         {
             Clients.All.displayMessage(message, sound);
-        }
-
-        /// <summary>
-        /// Resets the bots and game for the next round
-        /// </summary>
-        private void nextRound()
-        {
-            // Reset players
-            foreach (Player inGame in gameStatus.players)
-            {
-                // Remove player's cards
-                inGame.cards = null;
-                inGame.move = null;
-                // Check if player is shutting down
-                if (inGame.willShutdown && !inGame.dead)
-                {
-                    inGame.shutdown = true;
-                    inGame.playerRobot.damage = 0;
-                    inGame.willShutdown = false;
-                }
-                else
-                {
-                    // Bring any shutdown players back online
-                    inGame.shutdown = false;
-                }
-            }
-            // Clear dealt cards
-            gameStatus.deltCards.Clear();
-
-            // Check for winner
-            if (!gameStatus.winner)
-            {
-                // Check if there are dead players with lives left who need to re-enter the game
-                if (gameStatus.players.Any(p => (p.dead && p.lives > 0)))
-                {
-                    gameStatus.playersNeedEntering = true;
-                    showMessage("Dead robots re-entering floor, please be patient.");
-                }
-                else
-                {
-                    showMessage("");
-                    // Check if all players are shutdown or out of the game
-                    if (gameStatus.players.All(p => p.shutdown || p.lives <= 0))
-                    {
-                        foreach (Player inGame in gameStatus.players)
-                        {
-                            inGame.shutdown = false;
-                            inGame.playerRobot.damage = 0;
-                        }
-                    }
-                    dealPlayers();
-                }
-            }
         }
 
         /// <summary>
@@ -328,6 +278,78 @@ namespace RoboRuckus.RuckusCode
                 while (gameStatus.deltCards.Contains(drawn) || gameStatus.lockedCards.Contains(drawn));
                 gameStatus.deltCards.Add(drawn);
                 return drawn;
+            }
+        }
+
+        /// <summary>
+        /// Resets the bots and game for the next round
+        /// </summary>
+        private void nextRound()
+        {
+            // Reset players
+            foreach (Player inGame in gameStatus.players)
+            {
+                // Remove player's cards
+                inGame.cards = null;
+                inGame.move = null;
+                // Check if player is shutting down
+                if (inGame.willShutdown && !inGame.dead)
+                {
+                    inGame.shutdown = true;
+                    inGame.playerRobot.damage = 0;
+                    inGame.willShutdown = false;
+                }
+                else
+                {
+                    // Bring any shutdown players back online
+                    inGame.shutdown = false;
+                }
+            }
+            // Clear dealt cards
+            gameStatus.deltCards.Clear();
+
+            // Check for winner
+            if (!gameStatus.winner)
+            {
+                // Check if there are dead players with lives left who need to re-enter the game
+                if (gameStatus.players.Any(p => (p.dead && p.lives > 0)))
+                {
+                    gameStatus.playersNeedEntering = true;
+                    showMessage("Dead robots re-entering floor, please be patient.");
+                }
+                else
+                {
+                    showMessage("");
+                    // Check if all players are shutdown or out of the game
+                    if (gameStatus.players.All(p => p.shutdown || p.lives <= 0))
+                    {
+                        foreach (Player inGame in gameStatus.players)
+                        {
+                            inGame.shutdown = false;
+                            inGame.playerRobot.damage = 0;
+                        }
+                    }
+                    dealPlayers();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks to see if a player timer needs to be started, and starts one if needed.
+        /// </summary>
+        /// <returns>Whether a timer was started</returns>
+        private bool checkTimer()
+        {
+            lock (gameStatus.locker)
+            {
+                int submitted = gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown));
+                if (gameStatus.playerTimer && submitted == (gameStatus.numPlayersInGame - 1))
+                {
+                    timerStarted = true;
+                    Clients.All.startTimer();
+                    return true;
+                }
+                return false;
             }
         }
     }

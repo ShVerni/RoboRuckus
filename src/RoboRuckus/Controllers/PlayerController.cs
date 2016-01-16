@@ -95,24 +95,27 @@ namespace RoboRuckus.Controllers
         {
             lock (gameStatus.locker)
             {
-                // Check if robot was already assigned
-                if(!gameStatus.assignBot(player, botName))
+                lock (gameStatus.setupLocker)
                 {
-                    return RedirectToAction("playerSetup", new { player = player });
-                }
-                // Check it robot's coordinates are taken
-                if (gameStatus.robots.Any(r => (r.x_pos == botX && r.y_pos == botY)))
-                {
-                    return RedirectToAction("playerSetup", new { player = player });
-                }
-                else
-                {
-                    Player sender = gameStatus.players[player - 1];
-                    sender.playerRobot.x_pos = botX;
-                    sender.playerRobot.y_pos = botY;
-                    sender.playerRobot.lastLocation = new int[] { botX, botY };
-                    sender.playerRobot.currentDirection = (Robot.orientation)botDir;
-                    return RedirectToAction("Index", new { player = player });
+                    // Check if robot was already assigned
+                    if (!gameStatus.assignBot(player, botName))
+                    {
+                        return RedirectToAction("playerSetup", new { player = player });
+                    }
+                    // Check it robot's coordinates are taken
+                    if (gameStatus.robots.Any(r => (r.x_pos == botX && r.y_pos == botY)))
+                    {
+                        return RedirectToAction("playerSetup", new { player = player });
+                    }
+                    else
+                    {
+                        Player sender = gameStatus.players[player - 1];
+                        sender.playerRobot.x_pos = botX;
+                        sender.playerRobot.y_pos = botY;
+                        sender.playerRobot.lastLocation = new int[] { botX, botY };
+                        sender.playerRobot.currentDirection = (Robot.orientation)botDir;
+                        return RedirectToAction("Index", new { player = player });
+                    }
                 }
             }
         }

@@ -4,9 +4,10 @@
     // Enable the submit program button
     $("#sendcards img").click(sendCards);
     var submitted = true;
+    var isShutdown = false;
 
     var timer;
-    var timeRemaing;
+    var timeRemaining;
     
     // Set up howler sounds
     var damageSound = new Howl({
@@ -59,6 +60,7 @@
     // Processes and displays cards dealt to the player
     cardControl.client.deal = (function (cards, lockedCards) {
         submitted = true;
+        isShutdown = false;
         $(".slot ul").empty();
         if ($("#submitted").length != 0) {
             $("#submitted").remove();
@@ -69,6 +71,7 @@
         if (_cards.length == 0) {
             $("#shutdownLabel").css("background", "red");
             $("#cardsContainer").html("<h2>Robot shutdown</h2>");
+            isShutdown = true;
             return;
         }
         else
@@ -106,7 +109,7 @@
         $(".locked").remove();
 
         var slot = 5;
-        // Process lock cards
+        // Process locked cards
         $.each($.parseJSON(lockedCards), function () {
             var face;
             var details;
@@ -419,19 +422,19 @@
 
     // Starts the countdown timer
     cardControl.client.startTimer = (function () {
-        if (!submitted) {
+        if (!submitted && !isShutdown) {
             timer = setInterval(timerHandler, 1000)
-            timeRemaing = 30;
-            $("#timer").html("<h2 style='color: red'>Time reaming: " + timeRemaing + "</h2>");
+            timeRemaining = 30;
+            $("#timer").html("<h2 style='color: red'>Time reaming: " + timeRemaining + "</h2>");
         }
     });
     
     // Handles the countdown timer
     function timerHandler()
     {
-        timeRemaing--;
-        $("#timer").html("<h2 style='color: red'>Time reaming: " + timeRemaing + "</h2>");
-        if (timeRemaing == 0)
+        timeRemaining--;
+        $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
+        if (timeRemaining == 0)
         {
             window.clearInterval(timer);
             $(".slot").each(function () {
