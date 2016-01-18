@@ -22,6 +22,9 @@
     var flagTouch = new Howl({
         src: ['/sounds/flagtouch.ogg', '/sounds/flagtouch.mp3']
     });
+    var timerStarted = new Howl({
+        src: ['/sounds/timer.ogg', '/sounds/timer.mp3']
+    });
 
     // Shutdown toggle effects
     $("#shutdown").button().click(function () {
@@ -423,6 +426,7 @@
     // Starts the countdown timer
     cardControl.client.startTimer = (function () {
         if (!submitted && !isShutdown) {
+            timerStarted.play();
             timer = setInterval(timerHandler, 1000)
             timeRemaining = 30;
             $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
