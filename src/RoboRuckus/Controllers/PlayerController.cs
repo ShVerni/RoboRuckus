@@ -15,11 +15,11 @@ namespace RoboRuckus.Controllers
         /// <param name="player">The player number, if they have one</param>
         /// <returns>The view or action context</returns>
         public IActionResult Index(int player = 0)
-        {            
+        {
             if (gameStatus.gameReady)
             {
-                // See if player is already in game
-                if (player > gameStatus.numPlayers || player == 0 || player > gameStatus.players.Count)
+                // See if player is not in game or needs setup
+                if (!gameStatus.players.Any(p => p.playerNumber == (player - 1)) || gameStatus.players[player - 1].playerRobot == null)
                 {
                     return RedirectToAction("playerSetup", new { player = player });
                 }
@@ -36,11 +36,11 @@ namespace RoboRuckus.Controllers
         }
 
         /// <summary>
-        /// Set's up a player
+        /// Attempts to add a player to the game
         /// </summary>
         /// <param name="player">The player number</param>
         /// <returns>The view</returns>
-        public IActionResult playerSetup(int player = 0, int reset = 0)
+        public IActionResult addPlayer(int player = 0)
         {
             int playerNumber;
             // Attempt to add player to game
@@ -48,6 +48,7 @@ namespace RoboRuckus.Controllers
             {
                 playerNumber = gameStatus.addPlayer();
             }
+            // See if player is already in game, and if not, try to add them
             else
             {
                 if (gameStatus.players.Any(p => p.playerNumber == (player - 1)))
@@ -56,7 +57,7 @@ namespace RoboRuckus.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index");
+                    playerNumber = gameStatus.addPlayer();
                 }
             }
             // Check if game is full
@@ -67,10 +68,34 @@ namespace RoboRuckus.Controllers
             else
             {
                 // Success!
+                return RedirectToAction("playerSetup", new { player = playerNumber });
+            }
+        }
+
+        /// <summary>
+        /// Set's up a player
+        /// </summary>
+        /// <param name="player">The player number</param>
+        /// <returns>The view</returns>
+        public IActionResult playerSetup(int player = 0, int reset = 0)
+        {
+            // Double check player is in game
+            if (!gameStatus.players.Any(p => p.playerNumber == (player - 1)))
+            {
+                return RedirectToAction("addPlayer", new { player = player });
+            }
+            // Check if player is already set up
+            else if (gameStatus.players[player - 1].playerRobot != null && reset !=1)
+            {
+                return RedirectToAction("Index", new { player = player });
+            }
+            // Set up player
+            else
+            {
                 ViewBag.flags = JsonConvert.SerializeObject(gameStatus.gameBoard.flags);
                 ViewBag.board_x = gameStatus.boardSizeX;
                 ViewBag.board_y = gameStatus.boardSizeY;
-                ViewBag.player = playerNumber;
+                ViewBag.player = player;
                 ViewBag.board = gameStatus.gameBoard.name.Replace(" ", "");
                 ViewBag.reset = reset;
                 if (reset == 1)

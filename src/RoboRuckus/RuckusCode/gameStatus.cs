@@ -102,7 +102,8 @@ namespace RoboRuckus.RuckusCode
             // Only one player can be added at a time, and a player cannot be added during a turn
             lock(locker)
             {
-                if (numPlayersInGame < numPlayers && robotPen.Count > 0)
+                // Makes sure there are enough player slots and robots for another player to be added
+                if (numPlayersInGame < numPlayers && (robotPen.Count + robots.Count) > numPlayersInGame)
                 {
                     // Create new player with their chosen bot                    
                     Player newPlayer = new Player((byte)numPlayersInGame);
