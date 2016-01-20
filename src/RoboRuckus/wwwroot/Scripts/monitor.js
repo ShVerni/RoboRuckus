@@ -1,4 +1,5 @@
 ﻿$(function () {
+    // Set up arrays for card faces and details
     var faces = new Array();
     faces["right"] = "R";
     faces["left"] = "L";

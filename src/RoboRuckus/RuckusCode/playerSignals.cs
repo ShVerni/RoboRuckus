@@ -16,7 +16,7 @@ namespace RoboRuckus.RuckusCode
     {
         private readonly static Lazy<playerSignals> _instance = new Lazy<playerSignals>(() => new playerSignals());
         private readonly RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-        // There can be no more than 256 card in the deck
+        // There can be no more than 256 cards in the deck
         private byte numberOfCards;
         // Prevents the player timer from being started multiple times
         private bool timerStarted = false;
@@ -77,7 +77,7 @@ namespace RoboRuckus.RuckusCode
 
                     // Execute player moves                  
                     moveCalculator.executeRegisters();
-                    
+
                     // Reset for next round
                     if (!gameStatus.winner)
                     {
@@ -97,7 +97,10 @@ namespace RoboRuckus.RuckusCode
         /// <param name="sound">An optional sound effect to play</param>
         public void showMessage(string message, string sound = "")
         {
-            Clients.All.displayMessage(message, sound);
+            lock (gameStatus.locker)
+            {
+                Clients.All.displayMessage(message, sound);
+            }
         }
 
         /// <summary>
@@ -194,11 +197,11 @@ namespace RoboRuckus.RuckusCode
 
         /// <summary>
         /// Resets the game to the initial state
-        /// <param name="resetAll">IF 0 reset game with current player, if 1 reset game to initial state</param>
+        /// <param name="resetAll">If 0 reset game with current players, if 1 reset game to initial state</param>
         /// </summary>
         public void resetGame(int resetAll)
         {
-            lock(gameStatus.locker)
+            lock (gameStatus.locker)
             {
                 Timer watchDog;
                 gameStatus.winner = false;
@@ -341,16 +344,14 @@ namespace RoboRuckus.RuckusCode
         /// <returns>Whether a timer was started</returns>
         private bool checkTimer()
         {
-            lock (gameStatus.locker)
+            // Makes sure there is more than one living player in the game, and checks if there is only one player who hasn't submitted thier program.
+            if (gameStatus.playerTimer && gameStatus.players.Count(p => !p.dead) > 1 && gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown)) == (gameStatus.numPlayersInGame - 1))
             {
-                if (gameStatus.playerTimer && gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown)) == (gameStatus.numPlayersInGame - 1))
-                {
-                    timerStarted = true;
-                    Clients.All.startTimer();
-                    return true;
-                }
-                return false;
+                timerStarted = true;
+                Clients.All.startTimer();
+                return true;
             }
+            return false;
         }
     }
 }

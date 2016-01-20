@@ -1,8 +1,11 @@
 ﻿$(function () {
     var _sizes = $("#board").data("sizes");
+
+    // Allow validation of hidden fields
     $.validator.setDefaults({ ignore: null });
     $("#submitButton").button();
 
+    // Timer button toggle effects
     $("#timer").button().click(function () {
         if ($('#timer').prop("checked")) {
             $("#timerText").html("Timer Enabled");
@@ -68,7 +71,7 @@
 
             // Makes flags draggable
             $(".flags").draggable({
-                revert: "invalid", // When not dropped, the item will revert back to its initial position
+                revert: "invalid", // When not dropped, the element will revert back to its initial position
                 containment: "document",
                 cursor: "move"
             }).attr('unselectable', 'on').on('selectstart', false);

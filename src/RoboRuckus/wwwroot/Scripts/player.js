@@ -41,7 +41,7 @@
         $(this).removeClass("ui-state-hover");
     });
 
-    // Set up arrays for card faces and etails
+    // Set up arrays for card faces and details
     var faces = new Array();
     faces["right"] = "R";
     faces["left"] = "L";
@@ -161,7 +161,7 @@
             $("#cardsContainer").css("min-height", imageHeight + 5);
         }
 
-        // Let the card items be draggable
+        // Let the card elements be draggable
         $("li", "#cardsContainer").draggable({
             revert: "invalid", // When not dropped, the item will revert back to its initial position
             containment: "document",
@@ -203,7 +203,7 @@
             <li id='player'>Robot moving: " + robot + "<\li>"
             );
 
-            //Set the width of the cards to fill the screen in one row
+            // Set the width of the cards to fill the screen in one row
             var imageWidth = (($(window).width() - 80) / 7);
             if (imageWidth < 350) {
                 var percent = (imageWidth / 350);
@@ -233,13 +233,13 @@
         updateHealth(myDamage);
     });
 
-    // When caleed, requests a deal from the server
+    // When called, requests a deal from the server
     cardControl.client.requestdeal = (function () {
         $("#shutdown").prop("checked", false).button("refresh");
         cardControl.server.dealMe($('#playerNum').data("player"));
     });
 
-    //  Once the page loads, get the player's first hand
+    // Once the page loads, get the player's first hand
     $.connection.hub.start().done(function () {
         cardControl.server.dealMe($('#playerNum').data("player"));
     });
@@ -273,7 +273,7 @@
         }
     });
 
-    //Resize the cards as the window resizes, this is inelegant but works for now
+    // Resize the cards as the window resizes, this is inelegant but works for now
     $(window).resize(function () {
         var imageWidth = (($(window).width() - 80) / boxes);
         if (imageWidth < 350) {
@@ -307,7 +307,7 @@
         }
     });
 
-    // Let the slots be droppable, accepting the card items
+    // Let the slots be droppable, accepting the card elements
     $(".slot").droppable({
         accept: "#cardsContainer > li, .slot li",
         hoverClass: "ui-state-hover",
@@ -326,7 +326,7 @@
         }
     });
 
-    // Let the card area be droppable as well, accepting items from the slots
+    // Let the card area be droppable as well, accepting elements from the slots
     $("#cardsContainer").droppable({
         accept: ".slot li",
         activeClass: "custom-state-active",
@@ -396,6 +396,7 @@
             $("#cardsContainer").html("<h2>You lose :-(</h2>");
         }
     }
+
     // Sends the selected cards to the server
     function sendCards() {
         if (!submitted) {
@@ -425,22 +426,24 @@
 
     // Starts the countdown timer
     cardControl.client.startTimer = (function () {
-        if (!submitted && !isShutdown) {
-            timerStarted.play();
-            timer = setInterval(timerHandler, 1000)
+        if (!submitted && !isShutdown) {            
             timeRemaining = 30;
             $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
+            timerStarted.play();
+            timer = setInterval(timerHandler, 1000);
         }
     });
     
     // Handles the countdown timer
     function timerHandler()
     {
+        // Count down
         timeRemaining--;
         $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
         if (timeRemaining == 0)
         {
             window.clearInterval(timer);
+            // Deal random cards into the register slots
             $(".slot").each(function () {
                 if (!$(this).has("li").length)
                 {
@@ -449,7 +452,7 @@
                 }
             });
             $(".ui-draggable").draggable("option", "disabled", true).css("cursor", "default");
-            setTimeout(sendCards, 3000);
+            setTimeout(sendCards, 1500);
         }
     }
 });
