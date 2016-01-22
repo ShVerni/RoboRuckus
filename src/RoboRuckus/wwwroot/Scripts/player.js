@@ -62,6 +62,7 @@
 
     // Processes and displays cards dealt to the player
     cardControl.client.deal = (function (cards, lockedCards) {
+        $('.executing').removeClass('executing');
         submitted = true;
         isShutdown = false;
         $(".slot ul").empty();
@@ -177,24 +178,26 @@
     });
 
     // Shows the current move being executed
-    cardControl.client.showMove = (function (cards, robot) {
+    cardControl.client.showMove = (function (card, robot, register) {
         if (curDamage < 10) {
+            $('.executing').removeClass('executing');
+            $("#slot" + register + ' .ui-widget-header').addClass('executing');
             $("#cardsContainer").empty();
-            var card = $.parseJSON(cards);
+            var _card = $.parseJSON(card);
             var face;
             var details;
-            if (card.direction == "forward") {
-                face = card.magnitude;
-                details = detail[card.direction] + " " + card.magnitude;
+            if (_card.direction == "forward") {
+                face = _card.magnitude;
+                details = detail[_card.direction] + " " + _card.magnitude;
             }
             else {
-                face = faces[card.direction];
-                details = detail[card.direction];
+                face = faces[_card.direction];
+                details = detail[_card.direction];
             }
             // Add current card being executed to the card container
             $("#cardsContainer").append("<li class='ui-widget-content dealtCard'>\
                 <div class='cardBody'>\
-                    <p class='order'>" + card.priority + "</p>\
+                    <p class='order'>" + _card.priority + "</p>\
                     <p class='face'>" + face + "</p>\
                     <p class='details'>" + details + "</p>\
                     <img src='/images/cards/bg.png'alt='card'>\
@@ -273,7 +276,7 @@
         }
     });
 
-    // Resize the cards as the window resizes, this is inelegant but works for now
+    // Resize the cards as the window resizes, this is inelegant but works for now, should switch to entirely CSS solution
     $(window).resize(function () {
         var imageWidth = (($(window).width() - 80) / boxes);
         if (imageWidth < 350) {

@@ -118,13 +118,13 @@ namespace RoboRuckus.RuckusCode
         /// Sends the current move being executed to the players
         /// </summary>
         /// <param name="move">The move model being executed</param>
-        public void displayMove(moveModel move)
+        public void displayMove(moveModel move, int register)
         {
             lock (gameStatus.locker)
             {
                 string card = gameStatus.movementCards[move.card.cardNumber];
                 string robot = move.bot.robotName;
-                Clients.All.showMove(card, robot);
+                Clients.All.showMove(card, robot, register + 1);
             }
         }
 

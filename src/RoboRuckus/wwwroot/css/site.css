@@ -87,6 +87,10 @@
       margin: 0 0 0.4em; 
   }
  
+ .executing {
+     background: #0E1AFF !important;
+ }
+
  .order {
     position: absolute;
     top: -11%;

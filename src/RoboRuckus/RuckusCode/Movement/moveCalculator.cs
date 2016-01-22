@@ -506,7 +506,7 @@ namespace RoboRuckus.RuckusCode.Movement
             // Resolve a move for each card
             foreach (moveModel move in register)
             {
-                playerSignals.Instance.displayMove(move);
+                playerSignals.Instance.displayMove(move, regsiter);
                 orders = calculateMove(move);
                 // Send each order to the appropriate robot
                 foreach (orderModel order in orders)

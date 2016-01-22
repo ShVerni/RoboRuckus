@@ -37,23 +37,23 @@
     });
 
     // Shows the current move being executed
-    cardControl.client.showMove = (function (cards, robot) {
+    cardControl.client.showMove = (function (card, robot, register) {
         $("#cardsContainer").empty();
-        var card = $.parseJSON(cards);
+        var _card = $.parseJSON(card);
         var face;
         var details;
-        if (card.direction == "forward") {
-            face = card.magnitude;
-            details = detail[card.direction] + " " + card.magnitude;
+        if (_card.direction == "forward") {
+            face = _card.magnitude;
+            details = detail[_card.direction] + " " + _card.magnitude;
         }
         else {
-            face = faces[card.direction];
-            details = detail[card.direction];
+            face = faces[_card.direction];
+            details = detail[_card.direction];
         }
 
         $("#cardsContainer").append("<li class='ui-widget-content dealtCard'>\
                 <div class='cardBody'>\
-                    <p class='order'>" + card.priority + "</p>\
+                    <p class='order'>" + _card.priority + "</p>\
                     <p class='face'>" + face + "</p>\
                     <p class='details'>" + details + "</p>\
                     <img src='/images/cards/bg.png'alt='card'>\
