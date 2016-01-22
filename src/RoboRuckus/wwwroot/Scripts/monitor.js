@@ -19,11 +19,22 @@
     $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
  
     // Start a timer to check the game status every second
-    var fetcher = setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
+    var fetcher = new Interval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
+    fetcher.start();
 
     // Start connection to player hub
     var cardControl = $.connection.playerHub;
     $.connection.hub.start();
+
+    // Makes sure the monitor is ready for a round if multiple monitors are being used
+    cardControl.client.requestdeal = (function (cards, lockedCards) {
+        if (!fetcher.isRunning()) {
+            $(".ui-droppable").droppable("destroy");
+            $("#cardsContainer").empty();
+            // Restart the update interval
+            fetcher.start();
+        }
+    });
 
     // Shows the current move being executed
     cardControl.client.showMove = (function (cards, robot) {
@@ -71,11 +82,6 @@
         }
     });
 
-    // Display a message from the server
-    cardControl.client.displayMessage = (function (message, sound) {
-        $("#cardsContainer").html("<h2>" + message + "</h2>");
-    });
-
     // Processes the current game status
     function processData(data) {
         $("#botStatus").empty();
@@ -90,7 +96,7 @@
         // Check if robots need to re-enter game
         if (data.entering) {
             // Pause the update interval
-            clearInterval(fetcher);
+            fetcher.stop();
             // Get all the bots that need re-entering
             var content = '<div id="botContainer" class="ui-helper-reset">';
             $.each(data.players, function () {
@@ -169,6 +175,11 @@
         }
     }
 
+    // Display a message from the server
+    cardControl.client.displayMessage = (function (message, sound) {
+        $("#cardsContainer").html("<h2>" + message + "</h2>");
+    });
+
     // Sends bot info to server for re-entry
     function sendBots() {
         if ($('#botContainer > .bots').length == 0) {
@@ -188,7 +199,7 @@
             $.post("/Setup/enterPlayers", { players: result });
             $("#cardsContainer").empty();
             // Restart the update interval
-            fetcher = setInterval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
+            fetcher.start();
         }
     }
     
@@ -240,3 +251,19 @@
         $.get("/Setup/Reset?resetAll=1", function (data) { alert(data); window.location = "/Setup"; });
     });
 });
+
+// Creates an interval with an associated running status
+function Interval(fn, time) {
+    var timer = false;
+    this.start = function () {
+        if (!this.isRunning())
+            timer = setInterval(fn, time);
+    };
+    this.stop = function () {
+        clearInterval(timer);
+        timer = false;
+    };
+    this.isRunning = function () {
+        return timer !== false;
+    };
+}

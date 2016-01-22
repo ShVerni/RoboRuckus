@@ -442,7 +442,7 @@
         $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
         if (timeRemaining == 0)
         {
-            window.clearInterval(timer);
+            clearInterval(timer);
             // Deal random cards into the register slots
             $(".slot").each(function () {
                 if (!$(this).has("li").length)
