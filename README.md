@@ -1,3 +1,4 @@
 # RoboRuckus
-RoboRuckus game, currently in progress.\s\s
+RoboRuckus game, currently in progress.
+
 More details can be found at http://www.roboruckus.com/
