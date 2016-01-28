@@ -13,10 +13,6 @@
       "environmentVariables": {
         "ASPNET_ENV": "Development"
       }
-    },
-    "web": {
-      "commandName": "web",
-      "launchUrl": "localhost:8082/Setup"
     }
   }
 }
