@@ -91,7 +91,7 @@ void driveForward(uint8_t spaces)
       left.write(leftForwardSpeed);
       right.write(rightForwardSpeed);
     }
-    // Check if robot has enetered a board square
+    // Check if robot has entered a board square
     if (event.magnetic.z < Z_threshold || event.magnetic.z < -400)
     {
       if (!crossing)
