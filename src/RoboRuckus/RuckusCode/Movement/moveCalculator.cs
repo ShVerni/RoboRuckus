@@ -84,6 +84,7 @@ namespace RoboRuckus.RuckusCode.Movement
                             List<int[]> touched = boardEffects.flags();
                             if (touched.Count > 0)
                             {
+                                bool sound = false;
                                 foreach (int[] pair in touched)
                                 {
                                     Robot bot = gameStatus.robots[pair[0]];
@@ -92,8 +93,12 @@ namespace RoboRuckus.RuckusCode.Movement
                                         bot.flags++;
                                         bot.lastLocation[0] = bot.x_pos;
                                         bot.lastLocation[1] = bot.y_pos;
+                                        sound = true;
                                     }
-                                    playerSignals.Instance.updateHealth();
+                                    if (sound)
+                                    {
+                                        playerSignals.Instance.updateHealth();
+                                    }
                                 }
                                 playerSignals.Instance.showMessage("Touching flags", "flagTouch");
                             }
