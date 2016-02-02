@@ -71,8 +71,11 @@
         }
         $("#labelText").html("Shutdown Off");
         $("#shutdown").prop("checked", false);
+
         var _cards = $.parseJSON(cards);
-        if (_cards.length == 0) {
+        var _lockedCards = $.parseJSON(lockedCards);
+
+        if (_cards.length == 0 && _lockedCards.length == 0) {
             $("#shutdownLabel").css("background", "red");
             $("#cardsContainer").html("<h2>Robot shutdown</h2>");
             isShutdown = true;
@@ -114,7 +117,7 @@
 
         var slot = 5;
         // Process locked cards
-        $.each($.parseJSON(lockedCards), function () {
+        $.each(_lockedCards, function () {
             var face;
             var details;
             if (this.direction == "forward") {
