@@ -86,7 +86,7 @@ namespace RoboRuckus.RuckusCode.Movement
         {
             lock (gameStatus.locker)
             {
-                playerSignals.Instance.showMessage("Wrenches healing");
+                playerSignals.Instance.showMessage("Wrenches and flags healing");
                 return gameStatus.robots.Where(r => !r.controllingPlayer.dead && (gameStatus.gameBoard.wrenches.Any(w => w[0] == r.x_pos && w[1] == r.y_pos) || gameStatus.gameBoard.flags.Any(f => f[0] == r.x_pos && f[1] == r.y_pos))).ToArray();
             }
         }

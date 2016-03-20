@@ -5,12 +5,12 @@
 #include <Adafruit_L3GD20_U.h>
 
 // Movement parameters and wheel speeds
-uint8_t const leftForwardSpeed = 93;
-uint8_t const rightForwardSpeed = 88;
-uint8_t const rightBackwardSpeed = 99;
-uint8_t const leftBackwardSpeed = 80;
+uint8_t leftForwardSpeed = 93;
+uint8_t rightForwardSpeed = 87;
+uint8_t rightBackwardSpeed = 99;
+uint8_t leftBackwardSpeed = 80;
 // Forward and backward movement 
-uint8_t const Z_offset = 30;
+uint8_t const Z_offset = 23;
 uint8_t const turnBoost = 3;
 uint8_t const drift_threshold = 2;
 float const turn_drift_threshold = 0.1;

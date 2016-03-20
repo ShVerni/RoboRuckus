@@ -25,7 +25,9 @@
     var timerStarted = new Howl({
         src: ['/sounds/timer.ogg', '/sounds/timer.mp3']
     });
-
+    var healSound = new Howl({
+        src: ['/sounds/heal.ogg', '/sounds/heal.mp3']
+    });
     // Shutdown toggle effects
     $("#shutdown").button().click(function () {
         if ($('#shutdown').prop("checked"))
@@ -354,6 +356,10 @@
         if (damage > curDamage)
         {
             damageSound.play();
+        }
+        else if (damage < curDamage)
+        {
+            healSound.play();
         }
         $(".damageBox").css('background', 'none');
         if (damage >= 10) {

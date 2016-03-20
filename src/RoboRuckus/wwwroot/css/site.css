@@ -55,7 +55,7 @@
 #sendcards {
     border: 1px solid black;
     text-align: center;
-    font-size: 1vw;
+    font-size: 0.9vw;
 }
 
 #sendcards img {
@@ -67,6 +67,7 @@
     width: 100%;
     font-size: 1.23vw;
 }
+
 
 .hidden {
     display: none;

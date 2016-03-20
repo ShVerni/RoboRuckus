@@ -74,9 +74,9 @@ namespace RoboRuckus.RuckusCode.Movement
                                 bot.lastLocation[1] = bot.y_pos;
                             }
                             playerSignals.Instance.updateHealth();
+                            Thread.Sleep(1650);
                         }
-                        Thread.Sleep(1000);
-
+                        
                         Robot winner = null;
                         if (gameStatus.gameBoard.flags.Length > 0)
                         {
@@ -97,12 +97,12 @@ namespace RoboRuckus.RuckusCode.Movement
                                     }
                                     if (sound)
                                     {
-                                        playerSignals.Instance.updateHealth();
+                                        playerSignals.Instance.showMessage("Touching flags", "flagTouch");
+                                        Thread.Sleep(1000);
                                     }
                                 }
-                                playerSignals.Instance.showMessage("Touching flags", "flagTouch");
+                                
                             }
-                            Thread.Sleep(1000);
                             // Check for flag win condition
                             winner = gameStatus.robots.FirstOrDefault(r => r.flags == gameStatus.gameBoard.flags.Length);
                         }

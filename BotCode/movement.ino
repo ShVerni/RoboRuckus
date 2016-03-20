@@ -12,8 +12,9 @@ void driveForward(uint8_t spaces)
   sensors_event_t event;
   sensors_event_t event2;
   int Y_calibration = 0;
-  uint8_t countdown = 4;
+  uint8_t countdown = 5;
   elapsedMillis mils;
+  elapsedMillis speedAdjust;
   float turn_drift = 0;
 
   // Get starting Y and Z axis magnetometer readings, averaging 10 readings
@@ -32,15 +33,16 @@ void driveForward(uint8_t spaces)
   timeout.begin(timedOut, 1500000 * spaces);
    
   mils = 0;
+  speedAdjust = 0;
   // Start driving
   left.write(leftForwardSpeed);
   right.write(rightForwardSpeed);
   while (countdown > 0 && !timeUp)
   {
+    Serial.println(mils);
     // Get gyro and magnetometer readings
     gyro.getEvent(&event2);
     turn_drift += ((event2.gyro.z - gyroCorrect) / 1000) * mils;
-    mils = 0;
     mag.getEvent(&event);
     #ifdef debug
       Serial.print("Gryo: "); Serial.println(turn_drift);
@@ -103,6 +105,18 @@ void driveForward(uint8_t spaces)
     {
       if (crossing)
       {
+        uint16_t elapsed = speedAdjust;
+        if (elapsed > 1550)
+        {
+          rightForwardSpeed--;
+          leftForwardSpeed++;
+        }
+        else if (elapsed < 950)
+        {
+          rightForwardSpeed++;
+          leftForwardSpeed--;
+        }
+        speedAdjust = 0;
         crossing = false;
         count++;
       }
@@ -128,8 +142,9 @@ void driveBackward(uint8_t spaces)
   sensors_event_t event;
   sensors_event_t event2;
   int X_calibration = 0;
-  uint8_t countdown = 4;
+  uint8_t countdown = 1;
   elapsedMillis mils;
+  elapsedMillis speedAdjust;
   float turn_drift = 0;
 
    for (int i = 0; i < 10; i++)
@@ -146,6 +161,7 @@ void driveBackward(uint8_t spaces)
   timeout.begin(timedOut, 1500000 * spaces);
    
   mils = 0;
+  speedAdjust = 0;
   left.write(leftBackwardSpeed);
   right.write(rightBackwardSpeed);
   while (countdown > 0 && !timeUp)
@@ -212,6 +228,18 @@ void driveBackward(uint8_t spaces)
     {
       if (crossing)
       {
+        uint16_t elapsed = speedAdjust;
+        if (elapsed > 1550)
+        {
+          rightBackwardSpeed++;
+          leftBackwardSpeed--;
+        }
+        else if (elapsed < 950)
+        {
+          rightBackwardSpeed--;
+          leftBackwardSpeed++;
+        }
+        speedAdjust = 0;
         crossing = false;
         count++;
       }
