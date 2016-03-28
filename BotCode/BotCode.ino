@@ -12,7 +12,7 @@ uint8_t leftBackwardSpeed = 80;
 // Forward and backward movement 
 uint8_t const Z_offset = 23;
 uint8_t const turnBoost = 3;
-uint8_t const drift_threshold = 2;
+uint8_t const drift_threshold = 3;
 float const turn_drift_threshold = 0.1;
 // Turning
 float const turnFactor = 1.49;
