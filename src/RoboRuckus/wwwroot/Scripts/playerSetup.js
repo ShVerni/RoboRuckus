@@ -6,7 +6,7 @@
     $("#button").button({ disabled: true });
     var flags = $("#board").data("flag");
     var player = $("#playerNum").data("player");
-    var direction = 0;
+    var direction = 1;
     $(".boardSquare").css({"cursor": "pointer", "user-select": "none"}).attr('unselectable', 'on').on('selectstart', false);
 
     // Loads the background image for the board
