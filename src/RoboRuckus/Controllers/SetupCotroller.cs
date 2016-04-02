@@ -145,20 +145,26 @@ namespace RoboRuckus.Controllers
         /// <returns>The view</returns>
         public IActionResult Manage(int player = 0)
         {
-            if (player != 0 && player <= gameStatus.players.Count())
+            lock (gameStatus.locker)
             {
-                Player caller = gameStatus.players[player - 1];
 
-                ViewBag.board_x = gameStatus.boardSizeX;
-                ViewBag.board_y = gameStatus.boardSizeY;
-                ViewBag.player = player;
-                ViewBag.dir = (int)caller.playerRobot.currentDirection;
-                ViewBag.bots = JsonConvert.SerializeObject(gameStatus.robotPen.Select(r => r.robotName).ToArray()).Replace("\"", "&quot;");
-                return View(new manageViewModel(caller));
+                lock (gameStatus.setupLocker)
+                {
+                    if (player != 0 && player <= gameStatus.players.Count())
+                    {
+                        Player caller = gameStatus.players[player - 1];
+
+                        ViewBag.board_x = gameStatus.boardSizeX;
+                        ViewBag.board_y = gameStatus.boardSizeY;
+                        ViewBag.player = player;
+                        ViewBag.dir = (int)caller.playerRobot.currentDirection;
+                        ViewBag.bots = JsonConvert.SerializeObject(gameStatus.robotPen.Select(r => r.robotName).ToArray()).Replace("\"", "&quot;");
+                        return View(new manageViewModel(caller));
+                    }
+                    return Content("Error", "text/plain");
+                }
             }
-            return Content("Error", "text/plain");
         }
-
         /// <summary>
         /// Updates the status of a player
         /// </summary>
@@ -184,14 +190,17 @@ namespace RoboRuckus.Controllers
                         caller.lives = lives;
                         if (botName != "" && bot.robotName != botName && gameStatus.robotPen.Exists(r => r.robotName == botName))
                         {
+                            // Get new bot
                             Robot newBot = gameStatus.robotPen.FirstOrDefault(r => r.robotName == botName);
                             gameStatus.robotPen.Remove(newBot);
-                            newBot.lastLocation = bot.lastLocation;
 
+                            // Clear old bot
                             bot.y_pos = -1;
                             bot.x_pos = -1;
                             bot.damage = 0;
                             bot.flags = 0;
+                            bot.controllingPlayer = null;
+
                             // Start watch dog to skip bots that don't respond in 2 seconds
                             Timer watchDog;
                             bool timeout = false;
@@ -203,18 +212,18 @@ namespace RoboRuckus.Controllers
                             // Dispose the watch dog
                             watchDog.Dispose();
 
-                            bot.controllingPlayer = null;
-                            gameStatus.robots.Remove(bot);
-                            gameStatus.robotPen.Add(bot);
+                            // Setup new bot
+                            newBot.robotNum = bot.robotNum;
+                            newBot.lastLocation = bot.lastLocation;
+                            gameStatus.robots[newBot.robotNum] = newBot;
+                            gameStatus.robotPen.Add(bot);                            
 
                             bot = newBot;
-                            gameStatus.robots.Add(bot);
-                            gameStatus.robotPen.Remove(bot);
                             bot.controllingPlayer = caller;
-                            bot.robotNum = (byte)(gameStatus.robots.Count - 1);
                             caller.playerRobot = bot;
-                            SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(newBot.robotNum, player));
+                            SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, player));
                         }
+                        // Assign updates
                         bot.damage = damage;
                         bot.x_pos = botX;
                         bot.y_pos = botY;
@@ -225,7 +234,7 @@ namespace RoboRuckus.Controllers
                     return View();
                 }
             }
-            return Content("Error", "text/plain");
+            return Content("<h1>Error</h1>", "text/HTML");
         }
 
         /// <summary>
