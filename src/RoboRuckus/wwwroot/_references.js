@@ -6,6 +6,7 @@
 /// <reference path="lib/jquery-validation/jquery.validate.js" />
 /// <reference path="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" />
 /// <reference path="lib/signalr/jquery.signalR.js" />
+/// <reference path="scripts/manage.js" />
 /// <reference path="scripts/monitor.js" />
 /// <reference path="scripts/player.js" />
 /// <reference path="scripts/playersetup.js" />

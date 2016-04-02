@@ -75,7 +75,7 @@ namespace RoboRuckus.RuckusCode
                     socketConnection.Send(bytesToSend, bytesToSend.Length, 0);
 
                     // Wait up to 1000 ms for all data to be available
-                    if (SpinWait.SpinUntil(() => socketConnection.Available > 1, 1000))
+                    if (SpinWait.SpinUntil(() => socketConnection.Available > 1, 500))
                     {
                         Int32 bytesRead = socketConnection.Receive(response);
                     }

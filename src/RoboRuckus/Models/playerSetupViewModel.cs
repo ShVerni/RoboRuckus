@@ -24,6 +24,5 @@ namespace RoboRuckus.Models
         [Display(Name = "Robots")]
         public string botName { get; set; }
 
-
     }
 }

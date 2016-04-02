@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RoboRuckus.Models;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace RoboRuckus.Controllers
 {
@@ -138,6 +139,96 @@ namespace RoboRuckus.Controllers
         }
 
         /// <summary>
+        /// Allows the game master to manage players
+        /// </summary>
+        /// <param name="player">The player number to manage</param>
+        /// <returns>The view</returns>
+        public IActionResult Manage(int player = 0)
+        {
+            if (player != 0 && player <= gameStatus.players.Count())
+            {
+                Player caller = gameStatus.players[player - 1];
+
+                ViewBag.board_x = gameStatus.boardSizeX;
+                ViewBag.board_y = gameStatus.boardSizeY;
+                ViewBag.player = player;
+                ViewBag.dir = (int)caller.playerRobot.currentDirection;
+                ViewBag.bots = JsonConvert.SerializeObject(gameStatus.robotPen.Select(r => r.robotName).ToArray()).Replace("\"", "&quot;");
+                return View(new manageViewModel(caller));
+            }
+            return Content("Error", "text/plain");
+        }
+
+        /// <summary>
+        /// Updates the status of a player
+        /// </summary>
+        /// <param name="lives">Ther number of lives the player has</param>
+        /// <param name="damage">The damage the robot has</param>
+        /// <param name="botX">The robot's x position</param>
+        /// <param name="botY">The robot's y position</param>
+        /// <param name="botDir">The robots orientation</param>
+        /// <param name="botName">The robot the player is using</param>
+        /// <param name="flags">The flags they've touched</param>
+        /// <param name="player">The player being updated</param>
+        /// <returns>The view</returns>
+        public IActionResult updatePlayer(int lives, sbyte damage, int botX, int botY, int botDir, string botName, int flags, int player = 0)
+        {
+            lock (gameStatus.locker)
+            {
+                if (player != 0 && player <= gameStatus.players.Count())
+                {
+                    lock (gameStatus.setupLocker)
+                    {
+                        Player caller = gameStatus.players[player - 1];
+                        Robot bot = caller.playerRobot;
+                        caller.lives = lives;
+                        if (botName != "" && bot.robotName != botName && gameStatus.robotPen.Exists(r => r.robotName == botName))
+                        {
+                            Robot newBot = gameStatus.robotPen.FirstOrDefault(r => r.robotName == botName);
+                            gameStatus.robotPen.Remove(newBot);
+                            newBot.lastLocation = bot.lastLocation;
+
+                            bot.y_pos = -1;
+                            bot.x_pos = -1;
+                            bot.damage = 0;
+                            bot.flags = 0;
+                            // Start watch dog to skip bots that don't respond in 2 seconds
+                            Timer watchDog;
+                            bool timeout = false;
+                            watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge reset order"); timeout = true; }, null, 2000, Timeout.Infinite);
+
+                            // Wait for bot to acknowledge receipt of order
+                            SpinWait.SpinUntil(() => botSignals.sendReset(bot.robotNum) || timeout);
+
+                            // Dispose the watch dog
+                            watchDog.Dispose();
+
+                            bot.controllingPlayer = null;
+                            gameStatus.robots.Remove(bot);
+                            gameStatus.robotPen.Add(bot);
+
+                            bot = newBot;
+                            gameStatus.robots.Add(bot);
+                            gameStatus.robotPen.Remove(bot);
+                            bot.controllingPlayer = caller;
+                            bot.robotNum = (byte)(gameStatus.robots.Count - 1);
+                            caller.playerRobot = bot;
+                            SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(newBot.robotNum, player));
+                        }
+                        bot.damage = damage;
+                        bot.x_pos = botX;
+                        bot.y_pos = botY;
+                        bot.currentDirection = (Robot.orientation)botDir;
+                        bot.flags = flags;
+                    }
+                    playerSignals.Instance.updateHealth();
+                    return View();
+                }
+            }
+            return Content("Error", "text/plain");
+        }
+
+        /// <summary>
         /// Gets the status of the game
         /// </summary>
         /// <returns>JSON object containing bot positions, orientations, damage, and flags. Also indicates if bots are re-entering the game and their last checkpoint locations</returns>
@@ -164,6 +255,7 @@ namespace RoboRuckus.Controllers
                         {
                             reenter = "1";
                         }
+
                         result += "\"" + active.controllingPlayer.playerNumber.ToString() + "\": {\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"lives\":" + active.controllingPlayer.lives.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + ",\"damage\": " + active.damage.ToString() + ",\"flags\": " + active.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + ", \"reenter\": " + reenter + ", \"last_x\": " + active.lastLocation[0].ToString() + ", \"last_y\": " + active.lastLocation[1] + "}";
                     }
                 }

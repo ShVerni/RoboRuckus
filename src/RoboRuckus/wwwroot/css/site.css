@@ -203,6 +203,10 @@ select {
     width: 15em
 }
 
+.managePlayer {
+    cursor: pointer;
+}
+
  .boardSquare {
      height: 2.6em;
      width: 2.6em;

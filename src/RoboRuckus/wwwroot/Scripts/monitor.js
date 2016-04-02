@@ -85,7 +85,7 @@
     // Processes the current game status
     function processData(data) {
         $("#botStatus").empty();
-        $(".boardSquare").empty().css("background", "");
+        $(".boardSquare").empty().css("background", "").removeClass("managePlayer");
         var i = 1;
         if (flags != null) {
             flags.forEach(function (entry) {
@@ -170,7 +170,16 @@
                         orientation = "&#x2193;";
                         break;
                 }
-                $("#" + this.x.toString() + "_" + this.y.toString()).html("<p>" + (this.number + 1).toString() + orientation + "</p>").css("background", "yellow");
+                $("#" + this.x.toString() + "_" + this.y.toString()).html('<p data-player="' + (this.number + 1).toString() + '">' + (this.number + 1).toString() + orientation + "</p>").css("background", "yellow").addClass("managePlayer");
+            });
+            $(".managePlayer").click(function (event) {
+                event.stopImmediatePropagation();
+                $('<div id="dialog"></div>').html('<iframe style="border: 0px; " src="/Setup/Manage/' + $(this).find("p").data("player") + '" width="100%" height="100%"></iframe>').dialog({
+                    autoOpen: true,
+                    height: 650,
+                    width: 450,
+                    title: "Manage Player" + $(this).find("p").data("player")
+               });
             });
         }
     }
