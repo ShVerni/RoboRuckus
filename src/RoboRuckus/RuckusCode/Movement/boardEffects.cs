@@ -104,7 +104,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 for (int i = 0, n = gameStatus.gameBoard.flags.Length; i < n; i++)
                 {
                     int[] flag = gameStatus.gameBoard.flags[i];
-                    Robot bot = gameStatus.robots.FirstOrDefault(r => (r.x_pos == flag[0] && r.y_pos == flag[1]));
+                    Robot bot = gameStatus.robots.FirstOrDefault(r => r.x_pos == flag[0] && r.y_pos == flag[1] && !r.controllingPlayer.shutdown);
                     if (bot != null)
                     {
                         found.Add(new int[] { bot.robotNum, i });

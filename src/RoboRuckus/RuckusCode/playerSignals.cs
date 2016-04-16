@@ -327,11 +327,22 @@ namespace RoboRuckus.RuckusCode
                     // Check if all players are shutdown or out of the game
                     if (gameStatus.players.All(p => p.shutdown || p.lives <= 0))
                     {
-                        foreach (Player inGame in gameStatus.players)
+                        // Clear dealt cards
+                        Clients.All.deal(new byte[0], new byte[0]);
+
+                        // Alert players to what's happening
+                        showMessage("All active players are shutdown, next round starting now.");
+                        Thread.Sleep(3000);
+
+                        // Skip directly to executing the movement registers                 
+                        moveCalculator.executeRegisters();
+
+                        // Reset for next round
+                        if (!gameStatus.winner)
                         {
-                            inGame.shutdown = false;
-                            inGame.playerRobot.damage = 0;
+                            nextRound();
                         }
+                        return;
                     }
                     dealPlayers();
                 }

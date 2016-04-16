@@ -69,12 +69,23 @@ namespace RoboRuckus.RuckusCode.Movement
                         {
                             foreach (Robot bot in healed)
                             {
-                                bot.damage--;
-                                bot.lastLocation[0] = bot.x_pos;
-                                bot.lastLocation[1] = bot.y_pos;
+                                // Heal only on the last register
+                                if (i == 4)
+                                {
+                                    bot.damage--;
+                                }
+                                // Update "archive marker" (a.k.a. new respawn location)
+                                if (!bot.controllingPlayer.shutdown)
+                                {
+                                    bot.lastLocation[0] = bot.x_pos;
+                                    bot.lastLocation[1] = bot.y_pos;
+                                }
                             }
-                            playerSignals.Instance.updateHealth();
-                            Thread.Sleep(1650);
+                            if (i == 4)
+                            {
+                                playerSignals.Instance.updateHealth();
+                                Thread.Sleep(1650);
+                            }
                         }
                         
                         Robot winner = null;
