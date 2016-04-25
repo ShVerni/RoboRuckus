@@ -65,7 +65,7 @@
 
 #shutdownLabel {
     width: 100%;
-    font-size: 1.23vw;
+    font-size: 1.35vw;
 }
 
 
@@ -189,6 +189,7 @@
 #board {
     margin-top: 1.5em;
     background-size: 100% auto;
+    float: left;
 }
 
 .inline {

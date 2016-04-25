@@ -319,7 +319,7 @@ namespace RoboRuckus.RuckusCode
                 if (gameStatus.players.Any(p => (p.dead && p.lives > 0)))
                 {
                     gameStatus.playersNeedEntering = true;
-                    showMessage("Dead robots re-entering floor, please be patient.");
+                    showMessage("Dead robots re-entering floor, please be patient.", "entering");
                 }
                 else
                 {

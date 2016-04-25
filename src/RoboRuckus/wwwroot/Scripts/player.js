@@ -32,11 +32,11 @@
     $("#shutdown").button().click(function () {
         if ($('#shutdown').prop("checked"))
         {
-            $("#labelText").html("Shutdown On");
+            $("#labelText").html("Shutdown Next Round Enabled");
         }
         else
         {
-            $("#labelText").html("Shutdown Off");
+            $("#labelText").html("Shutdown Next Round Disabled");
         }
     });
     $("#shutdownLabel").hover(function () {
@@ -71,7 +71,7 @@
         if ($("#submitted").length != 0) {
             $("#submitted").remove();
         }
-        $("#labelText").html("Shutdown Off");
+        $("#labelText").html("Shutdown Next Round Disabled");
         $("#shutdown").prop("checked", false);
 
         var _cards = $.parseJSON(cards);
@@ -87,6 +87,7 @@
         {
             $("#cardsContainer").empty();
             $("#shutdownLabel").css("background", "none");
+            $("#shutdown").button("enable");
         }
         var i = 1;
         $.each(_cards, function () {
@@ -277,6 +278,9 @@
                 case "flagTouch":
                     flagTouch.play();
                     break;
+                case "entering":
+                    $(".slot ul").empty();
+                    break;
             }
         }
     });
@@ -421,6 +425,7 @@
                 window.clearInterval(timer);
                 $("#timer").empty();
                 $("#submitButton").attr("src", "/images/cards/submitted.png");
+                $("#shutdown").button("disable");
                 var shutdown = false;
                 var move = new Array();
                 $(".slot").each(function () {

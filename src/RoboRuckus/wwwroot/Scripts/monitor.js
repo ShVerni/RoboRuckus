@@ -85,7 +85,7 @@
     // Processes the current game status
     function processData(data) {
         $("#botStatus").empty();
-        $(".boardSquare").empty().css("background", "").removeClass("managePlayer");
+        $(".boardSquare").empty().css("background", "").removeClass("managePlayer").off("click");
         var i = 1;
         if (flags != null) {
             flags.forEach(function (entry) {
@@ -101,7 +101,7 @@
             var content = '<div id="botContainer" class="ui-helper-reset">';
             $.each(data.players, function () {
                 if (this.reenter != 0) {
-                    content += '<div class="bots" data-number="' + this.number.toString() + '" data-orientation="0"><p>' + (this.number + 1).toString() + '&#x2192;</p></div>';
+                    content += '<div class="bots" data-number="' + this.number.toString() + '" data-orientation="1"><p>' + (this.number + 1).toString() + '&#x2191;</p></div>';
                     content += '<p>Checkpoint: [' + this.last_x + ', ' + this.last_y + ']</p>';
                 }
             });

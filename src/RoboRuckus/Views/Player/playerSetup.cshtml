@@ -20,7 +20,6 @@
         </div>
     }
 </div>
-<div class="clear"></div>
 @using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form", @id = "playerForm" }))
 {
     <br />
@@ -42,6 +41,7 @@
         @Html.TextBoxFor(m => m.botDir, new { @class = "", @id = "botDir", type = "number" })
         @Html.TextBoxFor(m => m.player, new { @class = "", @id = "player", type = "number"})
     </div>
+    <div class="clear"></div>
     <br />
     <div class="">
         <input id="button" type="submit" value="Join Game" class="" />
