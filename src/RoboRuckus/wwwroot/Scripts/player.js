@@ -166,6 +166,7 @@
             $(".slot, #sendcards").width(imageWidth + 2);
             $(".slot, #sendcards").height(imageHeight + 28);
             $("#cardsContainer").css("min-height", imageHeight + 5);
+            $("#labelText").css("font-size", 1.35 + (0.3 * (9 - boxes)) + "vw");
         }
 
         // Let the card elements be draggable
@@ -317,6 +318,7 @@
             $(".slot, #sendcards").height(548);
             $("#cardsContainer").css("min-height", 525);
         }
+        $("#labelText").css("font-size", 1.35 + (0.3 * (9 - boxes)) + "vw");
     });
 
     // Let the slots be droppable, accepting the card elements
