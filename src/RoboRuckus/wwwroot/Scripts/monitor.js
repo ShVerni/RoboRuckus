@@ -259,6 +259,38 @@
     $("#resetAll").button().click(function (event) {
         $.get("/Setup/Reset?resetAll=1", function (data) { alert(data); window.location = "/Setup"; });
     });
+
+    // Timer button toggle effects
+    $("#timer").button().click(function () {
+        if ($('#timer').prop("checked")) {
+            $.get("/Setup/Timer?timerEnable=true", function (data) {
+                if (data == "OK") {
+                    $("#timerText").html("Timer Enabled");
+                } else {
+                    $('#timer').prop("checked", false);
+                    $('#timer').button("refresh");
+                }
+            });
+        } else {
+            $.get("/Setup/Timer?timerEnable=false", function (data) {
+                if (data == "OK") {
+                    $("#timerText").html("Timer Disabled");
+                } else {
+                    $('#timer').prop("checked", true);
+                    $('#timer').button("refresh");
+                }
+            });
+        }
+    });
+    $("#timerLabel").hover(function () {
+        $(this).removeClass("ui-state-hover");
+    });
+    if ($('#timer').prop("checked")) {
+        $("#timerText").html("Timer Enabled");
+    }
+    else {
+        $("#timerText").html("Timer Disabled");
+    }
 });
 
 // Creates an interval with an associated running status

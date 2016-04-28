@@ -54,7 +54,7 @@ namespace RoboRuckus.Controllers
         /// <param name="numberOfPlayers">The number of players</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult startGame(string selBoard, string flags, bool timerEnabled, int numberOfPlayers = 0)
+        public IActionResult startGame(string selBoard, string flags, int numberOfPlayers = 0)
         {
             if (numberOfPlayers > 0)
             {
@@ -74,7 +74,6 @@ namespace RoboRuckus.Controllers
                     }
                     gameStatus.boardSizeX = _board.size[0];
                     gameStatus.boardSizeY = _board.size[1];
-                    gameStatus.playerTimer = timerEnabled;
                     gameStatus.gameReady = true;
                 }
                 return RedirectToAction("Monitor");
@@ -99,6 +98,7 @@ namespace RoboRuckus.Controllers
                 ViewBag.board_x = gameStatus.boardSizeX;
                 ViewBag.board_y = gameStatus.boardSizeY;
                 ViewBag.board = gameStatus.gameBoard.name.Replace(" ", "");
+                ViewBag.timer = gameStatus.playerTimer;
                 return View();
             }
             else
@@ -286,6 +286,18 @@ namespace RoboRuckus.Controllers
         {
             playerSignals.Instance.resetGame(resetAll);
             return Content("Done", "text/plain");
+        }
+
+        /// <summary>
+        /// Toggles the timer state
+        /// </summary>
+        /// <param name="timerEnable"></param>
+        /// <returns>The string "OK"</returns>
+        [HttpGet]
+        public IActionResult Timer(bool timerEnable)
+        {
+            gameStatus.playerTimer = timerEnable;
+            return Content("OK", "text/plain");
         }
     }
 }

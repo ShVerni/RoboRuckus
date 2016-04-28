@@ -21,10 +21,6 @@
                 @Html.DropDownListFor(m => m.selBoard, Model.boards, "Choose a Board", new { @id = "boardSel" })
                 @Html.ValidationMessageFor(m => m.selBoard, "", new { @class = "" })
             </div>
-            <div class="inline" id="timerContainer">
-                @Html.CheckBoxFor(m => m.timerEnabled, new { @class = "", @name="timer", @id="timer"})
-                <label id="timerLabel" for="timer"><span id="timerText">Timer Disabled</span></label>
-            </div>
             <div class="clear"></div>
             <div id="board" class="left" data-sizes='@(ViewBag.sizes)'></div>
             <div id="flagContainer" class="left ui-helper-reset">
