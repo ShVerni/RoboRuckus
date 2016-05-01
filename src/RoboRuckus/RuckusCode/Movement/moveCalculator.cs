@@ -7,7 +7,7 @@ namespace RoboRuckus.RuckusCode.Movement
 {
     /// <summary>
     /// Controls all bot movment
-    /// Wrapping public methods in lock statements is probably overkill, but doesn't hurt, and might help.
+    /// Wrapping public methods in lock statements is probably overkill, but doesn't hurt.
     /// </summary>
     public static class moveCalculator
     {
@@ -20,7 +20,7 @@ namespace RoboRuckus.RuckusCode.Movement
         }
 
         /// <summary>
-        /// Executes and resolves the round registers, including baord effects
+        /// Executes and resolves the round registers, including board effects
         /// </summary>
         public static void executeRegisters()
         {
@@ -186,7 +186,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// Calculates and resolves all necessary moves for a robot and
         /// any other robots affected by the move.
         /// </summary>
-        /// <param name="move">The movment model to resolve</param>
+        /// <param name="move">The movmeModel to resolve</param>
         /// <returns>A list of orders for robots</returns>
         public static List<orderModel> calculateMove(moveModel move)
         {
@@ -273,7 +273,6 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <summary>
         /// Creates a movement program that resolves one bot's movement and its
         /// impact on any other bots on the board. Executes recursively.
-        /// Currently, a robot cannot fall off the edge of the board, it acts as a wall.
         /// </summary>
         /// <param name="bot">The bot being moved</param>
         /// <param name="direction">The directon the bot is moving.</param>
@@ -315,12 +314,14 @@ namespace RoboRuckus.RuckusCode.Movement
                             destination = new int[] { newCordX, newCordY };
                             break;
                     }
+                    // Check for walls and other obstacles
                     if (isObstacle(new int[] { bot.x_pos, bot.y_pos }, destination, direction))
                     {
                         magnitude = i - 1;
                         break;
                     }
-                    else if (newCordX > gameStatus.boardSizeX || newCordY > gameStatus.boardSizeY || newCordX < 0 || newCordY < 0 || boardEffects.onPit(new int[] { newCordX, newCordY }))
+                    // Check for edge of board and pits
+                    else if (newCordX > gameStatus.boardSizeX || newCordY > gameStatus.boardSizeY || newCordX < 0 || newCordY < 0 || boardEffects.onPit(destination))
                     {
                         magnitude = i;
                         bot.damage = 10;

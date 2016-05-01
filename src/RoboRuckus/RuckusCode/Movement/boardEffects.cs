@@ -13,7 +13,7 @@ namespace RoboRuckus.RuckusCode.Movement
     public static class boardEffects
     {
         /// <summary>
-        /// Execute turn table moves
+        /// Execute turntable moves
         /// </summary>
         public static void executeTurnTables()
         {
