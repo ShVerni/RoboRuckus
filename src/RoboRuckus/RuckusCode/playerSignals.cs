@@ -325,7 +325,7 @@ namespace RoboRuckus.RuckusCode
                 {
                     showMessage("");
                     // Check if all players are shutdown or out of the game
-                    if (gameStatus.players.All(p => p.shutdown || p.lives <= 0))
+                    if (!gameStatus.players.All(p => p.lives <= 0) && gameStatus.players.All(p => p.shutdown || p.lives <= 0))
                     {
                         // Clear dealt cards
                         Clients.All.deal(new byte[0], new byte[0]);

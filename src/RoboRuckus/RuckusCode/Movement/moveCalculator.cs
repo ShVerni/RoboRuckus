@@ -130,6 +130,9 @@ namespace RoboRuckus.RuckusCode.Movement
                         {
                             playerSignals.Instance.showMessage((winner.robotName).ToString() + " has won!", "winner");
                             gameStatus.winner = true;
+                            Thread.Sleep(250);
+                            // Do a victory dance
+                            botSignals.sendMoveCommand(new orderModel { botNumber = winner.robotNum, magnitude = 4, move = movement.Right, outOfTurn = false });
                             return;
                         }
                     }

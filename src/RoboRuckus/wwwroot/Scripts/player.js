@@ -32,11 +32,11 @@
     $("#shutdown").button().click(function () {
         if ($('#shutdown').prop("checked"))
         {
-            $("#labelText").html("Shutdown Next Round Enabled");
+            $("#labelText").html("Shutdown Next Round On");
         }
         else
         {
-            $("#labelText").html("Shutdown Next Round Disabled");
+            $("#labelText").html("Shutdown Next Round");
         }
     });
     $("#shutdownLabel").hover(function () {
@@ -71,7 +71,7 @@
         if ($("#submitted").length != 0) {
             $("#submitted").remove();
         }
-        $("#labelText").html("Shutdown Next Round Disabled");
+        $("#labelText").html("Shutdown Next Round");
         $("#shutdown").prop("checked", false);
 
         var _cards = $.parseJSON(cards);
