@@ -2,7 +2,7 @@
 bool timeUp = false;
 // Corrects drift in the gyroscope
 double gyroCorrect = 0.015;
-// Used to prevent bot from slowing down too much
+// Prevents the automatic speed correction from slowing down too much
 uint8_t rightForwardSpeed_max = rightForwardSpeed;
 uint8_t rightBackwardSpeed_min = rightBackwardSpeed;
 
@@ -28,6 +28,7 @@ void driveForward(uint8_t spaces)
     Y_calibration += event.magnetic.y;
     delay(10);
   }
+  // Calculates a correction for the gyroscope
   double cur = 0;
   for (int i = 0; i < 10; i++)
   {
@@ -304,6 +305,7 @@ void turn(uint8_t dir, uint8_t magnitude)
   elapsedMillis mils;
   sensors_event_t event;
   float total = 0;
+  // Calculates a correction for the gyroscope
   double cur = 0;
   for (int i = 0; i < 10; i++)
   {
