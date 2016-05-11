@@ -5,15 +5,15 @@
 #include <Adafruit_L3GD20_U.h>
 
 // Movement parameters and wheel speeds
-uint8_t leftForwardSpeed = 93;
-uint8_t rightForwardSpeed = 87;
-uint8_t rightBackwardSpeed = 99;
-uint8_t leftBackwardSpeed = 80;
+uint8_t leftForwardSpeed = 94;
+uint8_t rightForwardSpeed = 85;
+uint8_t rightBackwardSpeed = 100;
+uint8_t leftBackwardSpeed = 79;
 // Forward and backward movement 
-uint8_t const Z_offset = 23;
-uint8_t const turnBoost = 3;
-uint8_t const drift_threshold = 3;
-float const turn_drift_threshold = 0.1;
+int16_t const Z_threshold = -100;
+uint8_t const turnBoost = 4;
+uint8_t const drift_threshold = 1;
+float const  turn_drift_threshold = 0.15;
 // Turning
 float const turnFactor = 1.49;
 
@@ -93,11 +93,13 @@ void setup()
     Serial.println(F("mag not detected"));
     while(true);
   }
+  mag.setMagGain(HMC5883_MAGGAIN_4_0);
   if (!mag2.begin())
   {
     Serial.println(F("mag2 not detected"));
     while(true);
   }
+  mag2.setMagGain(HMC5883_MAGGAIN_4_0);
   if (!gyro.begin())
   {
     Serial.println(F("gyro not detected"));
