@@ -2,7 +2,7 @@
 bool timeUp = false;
 // Corrects drift in the gyroscope
 double gyroCorrect = 0.015;
-// Prevents the automatic speed correction from slowing down too much
+// Used to prevent bot from slowing down too much
 uint8_t rightForwardSpeed_max = rightForwardSpeed;
 uint8_t rightBackwardSpeed_min = rightBackwardSpeed;
 
@@ -28,20 +28,19 @@ void driveForward(uint8_t spaces)
     Y_calibration += event.magnetic.y;
     delay(10);
   }
-  // Calculates a correction for the gyroscope
   double cur = 0;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 20; i++)
   {
     gyro.getEvent(&event2);
     cur += event2.gyro.z;
     delay(10);
   }
-  gyroCorrect = cur / 10.0;  
+  gyroCorrect = cur / 20.0;  
   Y_calibration /= 10;
   
   // Define a maximum time the robot should drive
   timeUp = false;
-  timeout.begin(timedOut, 1500000 * spaces);
+  timeout.begin(timedOut, 1001000 * spaces);
    
   mils = 0;
   speedAdjust = 0;
@@ -50,14 +49,16 @@ void driveForward(uint8_t spaces)
   right.write(rightForwardSpeed);
 
   // Make sure the robot is clear of the current square's magnet
-  do
+  mag.getEvent(&event);
+  while (event.magnetic.z < Z_threshold)
   {
-    mag.getEvent(&event);
-    delay(50);
+    delay(5);
     #ifdef debug
+      Serial.println(event.magnetic.z);
       Serial.println("Waiting...");
     #endif
-  } while (event.magnetic.z <=  Z_threshold);
+    mag.getEvent(&event);
+  }
   // Start movement
   while (countdown > 0 && !timeUp)
   {
@@ -133,12 +134,12 @@ void driveForward(uint8_t spaces)
       {
         // Check to see if the robot's speed needs to be adjusted
         uint16_t elapsed = speedAdjust;
-        if (elapsed > 1500)
+        if (elapsed > 980)
         {
           rightForwardSpeed--;
           leftForwardSpeed++;
         }
-        else if (elapsed < 1000 && rightForwardSpeed < rightForwardSpeed_max)
+        else if (elapsed < 850 && rightForwardSpeed < rightForwardSpeed_max)
         {
           rightForwardSpeed++;
           leftForwardSpeed--;
@@ -181,31 +182,33 @@ void driveBackward(uint8_t spaces)
     delay(10);
   }
   double cur = 0;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 20; i++)
   {
     gyro.getEvent(&event2);
     cur += event2.gyro.z;
     delay(10);
   }
-  gyroCorrect = cur / 10.0;  
+  gyroCorrect = cur / 20.0;  
   X_calibration /= 10;
 
   timeUp = false;
-  timeout.begin(timedOut, 1500000 * spaces);
+  timeout.begin(timedOut, 1001000 * spaces);
    
   mils = 0;
   speedAdjust = 0;
   left.write(leftBackwardSpeed);
   right.write(rightBackwardSpeed);
 
-  do
+  mag2.getEvent(&event);
+  while (event.magnetic.z < Z_threshold)
   {
-    mag.getEvent(&event);
-    delay(50);
+    delay(5);
     #ifdef debug
+      Serial.println(event.magnetic.z);
       Serial.println("Waiting...");
     #endif
-  } while (event.magnetic.z <=  Z_threshold);
+    mag2.getEvent(&event);
+  }
   
   while (countdown > 0 && !timeUp)
   {
@@ -222,7 +225,7 @@ void driveBackward(uint8_t spaces)
     #endif
     if (abs(turn_drift) > turn_drift_threshold)
     {
-      if (turn_drift > 0)
+      if (turn_drift < 0)
       {
         #ifdef debug
           Serial.println("Gyro turn left");
@@ -260,7 +263,7 @@ void driveBackward(uint8_t spaces)
       left.write(leftBackwardSpeed);
       right.write(rightBackwardSpeed);
     }
-    if (event.magnetic.z < Z_threshold || event.magnetic.z < -350)
+    if (event.magnetic.z < Z_threshold)
     {
       if (!crossing)
       {
@@ -272,12 +275,12 @@ void driveBackward(uint8_t spaces)
       if (crossing)
       {
         uint16_t elapsed = speedAdjust;
-        if (elapsed > 1300)
+        if (elapsed > 980)
         {
           rightBackwardSpeed++;
           leftBackwardSpeed--;
         }
-        else if (elapsed < 950 && rightBackwardSpeed > rightBackwardSpeed_min)
+        else if (elapsed < 850 && rightBackwardSpeed > rightBackwardSpeed_min)
         {
           rightBackwardSpeed--;
           leftBackwardSpeed++;
@@ -305,15 +308,14 @@ void turn(uint8_t dir, uint8_t magnitude)
   elapsedMillis mils;
   sensors_event_t event;
   float total = 0;
-  // Calculates a correction for the gyroscope
   double cur = 0;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 20; i++)
   {
     gyro.getEvent(&event);
     cur += event.gyro.z;
     delay(10);
   }
-  gyroCorrect = cur / 10.0;  
+  gyroCorrect = cur / 20.0;  
   mils = 0;
   // Start turning
   if (dir == 1)

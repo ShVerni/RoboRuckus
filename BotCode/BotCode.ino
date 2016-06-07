@@ -13,9 +13,9 @@ uint8_t leftBackwardSpeed = 79;
 int16_t const Z_threshold = -100;
 uint8_t const turnBoost = 4;
 uint8_t const drift_threshold = 1;
-float const  turn_drift_threshold = 0.15;
+float const  turn_drift_threshold = 0.4;
 // Turning
-float const turnFactor = 1.49;
+float const turnFactor = 1.44;
 
 // Robot name, use URL encoding characters if needed  
 String robotName = "Beta%20Bot";
