@@ -31,7 +31,7 @@
                         if ($(ui.draggable).parent().hasClass("boardSquare")) {
                             $(ui.draggable).parent().droppable("enable");
                         }
-                        $(ui.draggable).detach().css({ top: 0, left: 0}).appendTo(this);
+                        $(ui.draggable).detach().css({ top: 0, left: 0 }).appendTo(this);
                         assignFlags();
                     }
                 });
@@ -72,7 +72,7 @@
         hoverClass: "ui-state-hover",
         drop: function (event, ui) {
             $(ui.draggable).parent().droppable("enable");
-            $(ui.draggable).detach().css({ top: "auto", left: "auto"}).appendTo(this);
+            $(ui.draggable).detach().css({ top: "auto", left: "auto" }).appendTo(this);
             assignFlags();
         }
     });
@@ -96,8 +96,7 @@
     // Check to make sure a flag is placed
     $("#setupForm").submit(function () {
         var placed = $("#flagString").val();
-        if (!placed || $("#flagString").val() == "[  ]")
-        {
+        if (!placed || $("#flagString").val() == "[  ]") {
             $("#flagString").val("");
         }
     });

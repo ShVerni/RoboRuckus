@@ -203,7 +203,6 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                Timer watchDog;
                 gameStatus.winner = false;
                 gameStatus.lockedCards.Clear();
                 gameStatus.playersNeedEntering = false;
@@ -234,16 +233,7 @@ namespace RoboRuckus.RuckusCode
                     r.flags = 0;
                     if (resetAll == 1)
                     {
-                        // Start watch dog to skip bots that don't respond in 5 seconds
-                        bool timeout = false;
-                        watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge reset order"); timeout = true; }, null, 5000, Timeout.Infinite);
-
-                        // Wait for bot to acknowledge receipt of order
-                        SpinWait.SpinUntil(() => botSignals.sendReset(r.robotNum) || timeout);
-
-                        // Dispose the watch dog
-                        watchDog.Dispose();
-
+                        botSignals.sendReset(r.robotNum);
                         r.controllingPlayer = null;
                         gameStatus.robotPen.Add(r);
                     }

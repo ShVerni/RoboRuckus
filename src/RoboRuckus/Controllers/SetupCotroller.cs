@@ -200,17 +200,9 @@ namespace RoboRuckus.Controllers
                             bot.damage = 0;
                             bot.flags = 0;
                             bot.controllingPlayer = null;
-
-                            // Start watch dog to skip bots that don't respond in 2 seconds
-                            Timer watchDog;
-                            bool timeout = false;
-                            watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge reset order"); timeout = true; }, null, 2000, Timeout.Infinite);
-
+                           
                             // Wait for bot to acknowledge receipt of order
-                            SpinWait.SpinUntil(() => botSignals.sendReset(bot.robotNum) || timeout);
-
-                            // Dispose the watch dog
-                            watchDog.Dispose();
+                            botSignals.sendReset(bot.robotNum);
 
                             // Setup new bot
                             newBot.robotNum = bot.robotNum;
@@ -265,7 +257,7 @@ namespace RoboRuckus.Controllers
                             reenter = "1";
                         }
 
-                        result += "\"" + active.controllingPlayer.playerNumber.ToString() + "\": {\"number\": " + active.controllingPlayer.playerNumber.ToString() + ",\"lives\":" + active.controllingPlayer.lives.ToString() + ",\"x\": " + active.x_pos.ToString() + ",\"y\": " + active.y_pos.ToString() + ",\"direction\": " + active.currentDirection.ToString("D") + ",\"damage\": " + active.damage.ToString() + ",\"flags\": " + active.flags.ToString() + ",\"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + ", \"reenter\": " + reenter + ", \"last_x\": " + active.lastLocation[0].ToString() + ", \"last_y\": " + active.lastLocation[1] + "}";
+                        result += "\"" + active.controllingPlayer.playerNumber.ToString() + "\": {\"number\": " + active.controllingPlayer.playerNumber.ToString() + ", \"lives\":" + active.controllingPlayer.lives.ToString() + ", \"x\": " + active.x_pos.ToString() + ", \"y\": " + active.y_pos.ToString() + ", \"direction\": " + active.currentDirection.ToString("D") + ", \"damage\": " + active.damage.ToString() + ", \"flags\": " + active.flags.ToString() + ", \"totalFlags\": " + gameStatus.gameBoard.flags.Length.ToString() + ", \"reenter\": " + reenter + ", \"last_x\": " + active.lastLocation[0].ToString() + ", \"last_y\": " + active.lastLocation[1] + ", \"name\": \"" + active.robotName + "\"}";
                     }
                 }
                 result += "}, \"entering\": " + entering + "}";

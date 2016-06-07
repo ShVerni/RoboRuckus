@@ -8,7 +8,7 @@
     <script type="text/javascript" src=@Url.Content("~/Scripts/player.js")></script>
 }
 <div>
-    <h2 id="playerNum" class="topRow" data-player="@ViewBag.player">Player: @ViewBag.player</h2>
+    <h2 id="playerNum" class="topRow" data-player="@ViewBag.player">Player @ViewBag.player: @ViewBag.robot</h2>
     <h2 id="damage" class="topRow" data-damage="@ViewBag.damage">Robot damage: </h2>
     @for (int i = 1; i <= 10; i++)
     {

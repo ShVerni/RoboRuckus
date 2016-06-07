@@ -72,20 +72,28 @@ namespace RoboRuckus.RuckusCode
                 try
                 {
                     // Connect to bot
-                    socketConnection.Connect(bot.robotAddress, port);
-                    socketConnection.Send(bytesToSend, bytesToSend.Length, 0);
-
-                    // Wait up to 1000 ms for all data to be available
-                    if (SpinWait.SpinUntil(() => socketConnection.Available > 1, 500))
+                    IAsyncResult result = socketConnection.BeginConnect(bot.robotAddress, port, null, null);
+                    if (result.AsyncWaitHandle.WaitOne(500, true) && socketConnection.Connected)
                     {
-                        Int32 bytesRead = socketConnection.Receive(response);
+                        socketConnection.Send(bytesToSend, bytesToSend.Length, 0);
+
+                        // Wait up to 200 ms for all data to be available
+                        if (SpinWait.SpinUntil(() => socketConnection.Available > 1, 200))
+                        {
+                            Int32 bytesRead = socketConnection.Receive(response);
+                        }
+                        else
+                        {
+                            // Connection timed out
+                            Console.WriteLine("Response from robot " + bot.robotNum.ToString() + " timed out.");
+                            Thread.Sleep(25);
+                            return "";
+                        }
                     }
                     else
                     {
-                        // Connection timed out
-                        Console.WriteLine("Timed out");
-                        Thread.Sleep(300);
-                        return "";
+                        socketConnection.Close();
+                        throw new TimeoutException("Connection to robot " + bot.robotNum.ToString() + " timed out.");
                     }
                 }
                 catch (Exception e)

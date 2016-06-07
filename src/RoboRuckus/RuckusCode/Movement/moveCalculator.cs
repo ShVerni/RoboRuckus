@@ -151,14 +151,14 @@ namespace RoboRuckus.RuckusCode.Movement
             {
                 Timer watchDog;
                 // For debugging/diagnostics
-                System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
+                //System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
                 // Reset the bot's wait handle
                 gameStatus.robots[order.botNumber].moving.Reset();
 
-                // Start watch dog to skip bots that don't respond in 10 seconds
+                // Start watch dog to skip bots that don't respond in 3 seconds
                 bool timeout = false;
-                watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge move order"); timeout = true; }, null, 10000, Timeout.Infinite);
+                watchDog = new Timer(delegate { Console.WriteLine("Bot didn't acknowledge move order"); timeout = true; }, null, 3000, Timeout.Infinite);
 
                 // Wait for bot to acknowledge receipt of orders
                 SpinWait.SpinUntil(() => botSignals.sendMoveCommand(order) == "OK" || timeout);
@@ -166,21 +166,23 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Dispose the watch dog
                 watchDog.Dispose();
 
-                // Start a watchdog to skip bots that don't finish moving in 10 seconds (may need tweaking or removing)
-                watchDog = new Timer(delegate { Console.WriteLine("Bot didn't finish moving"); timeout = true; gameStatus.robots[order.botNumber].moving.Set(); }, null, 10000, Timeout.Infinite);
+                if (!timeout)
+                {
+                    // Start a watchdog to skip bots that don't finish moving in 7 seconds (may need tweaking or removing)
+                    watchDog = new Timer(delegate { Console.WriteLine("Bot didn't finish moving"); timeout = true; gameStatus.robots[order.botNumber].moving.Set(); }, null, 7000, Timeout.Infinite);
 
-                // Wait for bot to finish moving
-                gameStatus.robots[order.botNumber].moving.WaitOne();
+                    // Wait for bot to finish moving
+                    gameStatus.robots[order.botNumber].moving.WaitOne();
 
-                // Dispose the watch dog
-                watchDog.Dispose();
-
+                    // Dispose the watch dog
+                    watchDog.Dispose();
+                }
                 // Let the bot become ready again (min: 150ms)
                 Thread.Sleep(250);
 
                 // For debugging/diagnostics
-                stopwatch.Stop();
-                Console.WriteLine(stopwatch.Elapsed.TotalMilliseconds);
+                //stopwatch.Stop();
+                //Console.WriteLine(stopwatch.Elapsed.TotalMilliseconds);
                 return !timeout;
             }
         }

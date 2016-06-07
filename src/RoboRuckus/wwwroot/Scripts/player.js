@@ -63,12 +63,12 @@
     var cardControl = $.connection.playerHub;
 
     // Processes and displays cards dealt to the player
-    cardControl.client.deal = (function (cards, lockedCards) {
+    cardControl.client.deal = function (cards, lockedCards) {
         $('.executing').removeClass('executing');
         submitted = true;
         isShutdown = false;
         $(".slot ul").empty();
-        if ($("#submitted").length != 0) {
+        if ($("#submitted").length !== 0) {
             $("#submitted").remove();
         }
         $("#labelText").html("Shutdown Next Round");
@@ -77,7 +77,7 @@
         var _cards = $.parseJSON(cards);
         var _lockedCards = $.parseJSON(lockedCards);
 
-        if (_cards.length == 0 && _lockedCards.length == 0) {
+        if (_cards.length === 0 && _lockedCards.length === 0) {
             $("#shutdownLabel").css("background", "red");
             $("#cardsContainer").html("<h2>Robot shutdown</h2>");
             isShutdown = true;
@@ -93,7 +93,7 @@
         $.each(_cards, function () {
             var face;
             var details;
-            if (this.direction == "forward") {
+            if (this.direction === "forward") {
                 face = this.magnitude;
                 details = detail[this.direction] + " " + this.magnitude;
             }
@@ -123,7 +123,7 @@
         $.each(_lockedCards, function () {
             var face;
             var details;
-            if (this.direction == "forward") {
+            if (this.direction === "forward") {
                 face = this.magnitude;
                 details = detail[this.direction] + " " + this.magnitude;
             }
@@ -147,7 +147,7 @@
             i++;
         });
         // Minimum width of window is 7 slots worth
-        boxes = ($(".dealtCard").length < 7) ? 7 : $(".dealtCard").length;
+        boxes = $(".dealtCard").length < 7 ? 7 : $(".dealtCard").length;
 
         // Set the width of the cards to fill the screen in one row
         var imageWidth = (($(window).width() - 80) / boxes);
@@ -181,67 +181,24 @@
         // Get bot's current status
         cardControl.server.getHealth($('#playerNum').data("player")).done(function (damage) {
             updateHealth(damage);
-        })
-    });
+        });
+    };
 
     // Shows the current move being executed
-    cardControl.client.showMove = (function (card, robot, register) {
+    cardControl.client.showMove = function (card, robot, register) {
         if (curDamage < 10) {
             $('.executing').removeClass('executing');
             $("#slot" + register + ' .ui-widget-header').addClass('executing');
-            $("#cardsContainer").empty();
-            var _card = $.parseJSON(card);
-            var face;
-            var details;
-            if (_card.direction == "forward") {
-                face = _card.magnitude;
-                details = detail[_card.direction] + " " + _card.magnitude;
-            }
-            else {
-                face = faces[_card.direction];
-                details = detail[_card.direction];
-            }
-            // Add current card being executed to the card container
-            $("#cardsContainer").append("<li class='ui-widget-content dealtCard'>\
-                <div class='cardBody'>\
-                    <p class='order'>" + _card.priority + "</p>\
-                    <p class='face'>" + face + "</p>\
-                    <p class='details'>" + details + "</p>\
-                    <img src='/images/cards/bg.png'alt='card'>\
-                </div>\
-            </li>\
-            <li id='player'>Robot moving: " + robot + "<\li>"
-            );
-
-            // Set the width of the cards to fill the screen in one row
-            var imageWidth = (($(window).width() - 80) / 7);
-            if (imageWidth < 350) {
-                var percent = (imageWidth / 350);
-                var imageHeight = percent * 520;
-                $(".order").css("font-size", percent * 4 + "em");
-                $(".face").css("font-size", percent * 11.8 + "em");
-                $(".details").css("font-size", percent * 2.5 + "em");
-                $("#cardsContainer img, .slot img").width(imageWidth);
-                $("#cardsContainer img,.slot img").height(imageHeight);
-                $("#cardsContainer li, .slot li").css({
-                    "height": "",
-                    "width": ""
-                });
-                $("#player").css("font-size", percent * 5.8 + "em");
-                $(".slot, #sendcards").width(imageWidth + 2);
-                $(".slot, #sendcards").height(imageHeight + 28);
-                $("#cardsContainer").css("min-height", imageHeight + 5);
-            }
         }
-    });
+    };
 
     // Bind update damage function
-    cardControl.client.UpdateHealth = (function (damage) {
+    cardControl.client.UpdateHealth = function (damage) {
         var curHealth = $.parseJSON(damage);
         var player = parseInt($('#playerNum').data("player"));
         var myDamage = curHealth[player - 1];
         updateHealth(myDamage);
-    });
+    };
 
     // When called, requests a deal from the server
     cardControl.client.requestdeal = (function () {
@@ -385,6 +342,7 @@
             var player = data.players[parseInt($('#playerNum').data("player")) - 1];
             updateFlags(player);
             updateLives(player);
+            updateBot(player);
         });
     }
 
@@ -415,11 +373,16 @@
         }
     }
 
+    // Updates the bot assigned to the player
+    function updateBot(player) {
+        $("#playerNum").html("Player " + (player.number + 1) + ": " + player.name);
+    }
+
     // Sends the selected cards to the server
     function sendCards() {
         if (!submitted) {
             submitted = true;
-            if ($(".slot").has("li").length != $(".slot").length) {
+            if ($(".slot").has("li").length !== $(".slot").length) {
                 alert("Please fill all movement slots");
                 submitted = false;
             }
@@ -459,7 +422,7 @@
         // Count down
         timeRemaining--;
         $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
-        if (timeRemaining == 0)
+        if (timeRemaining === 0)
         {
             clearInterval(timer);
             // Deal random cards into the register slots
