@@ -132,7 +132,7 @@ namespace RoboRuckus.RuckusCode.Movement
                             gameStatus.winner = true;
                             Thread.Sleep(250);
                             // Do a victory dance
-                            botSignals.sendMoveCommand(new orderModel { botNumber = winner.robotNum, magnitude = 4, move = movement.Right, outOfTurn = false });
+                            processMoveOrder(new orderModel { botNumber = winner.robotNum, magnitude = 4, move = movement.Right, outOfTurn = false });
                             return;
                         }
                     }
@@ -528,12 +528,16 @@ namespace RoboRuckus.RuckusCode.Movement
             // Resolve a move for each card
             foreach (moveModel move in register)
             {
-                playerSignals.Instance.displayMove(move, regsiter);
-                orders = calculateMove(move);
-                // Send each order to the appropriate robot
-                foreach (orderModel order in orders)
+                // Check if robot has died during the register
+                if (!move.bot.controllingPlayer.dead)
                 {
-                    processMoveOrder(order);
+                    playerSignals.Instance.displayMove(move, regsiter);
+                    orders = calculateMove(move);
+                    // Send each order to the appropriate robot
+                    foreach (orderModel order in orders)
+                    {
+                        processMoveOrder(order);
+                    }
                 }
             }
         }
