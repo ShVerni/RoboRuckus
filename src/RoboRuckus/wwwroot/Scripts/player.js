@@ -375,7 +375,7 @@
 
     // Updates the bot assigned to the player
     function updateBot(player) {
-        $("#playerNum").html("Player " + (player.number + 1) + ": " + player.name);
+        $("#roboName").html("Robot: " + player.name);
     }
 
     // Sends the selected cards to the server

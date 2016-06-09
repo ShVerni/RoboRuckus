@@ -136,8 +136,13 @@
     display: inline-block;
 }
 
+
 .topRow:not(:first-child) {
    margin-left: 0.7em;
+}
+
+#roboName {
+    margin: -0.6em 0 .3em;
 }
 
 /* Flag boxes stuff */
