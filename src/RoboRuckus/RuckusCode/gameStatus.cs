@@ -73,7 +73,7 @@ namespace RoboRuckus.RuckusCode
         public static bool assignBot(int player, string robotName)
         {
             Player sender = players[player - 1];
-            if (sender.playerRobot !=  null)
+            if (sender.playerRobot != null)
             {
                 return true;
             }
@@ -128,12 +128,13 @@ namespace RoboRuckus.RuckusCode
             {
                 // Check if robot is already in game
                 IPAddress botAddress = IPAddress.Parse(botIP);
-                Robot bot = robots.FirstOrDefault(r => r.robotAddress.Equals(botAddress));
+                Robot bot = robots.FirstOrDefault(r => r.robotName == name);
                 if (bot != null)
                 {
+                   bot.robotAddress = botAddress;
                    return bot.robotNum | 0x10000 | (bot.controllingPlayer.playerNumber << 8);
                 }
-                bot = robotPen.FirstOrDefault(r => r.robotAddress.Equals(botAddress));
+                bot = robotPen.FirstOrDefault(r => r.robotName == name);
                 if (bot == null)
                 {
                     // Add new robot to game
@@ -142,6 +143,7 @@ namespace RoboRuckus.RuckusCode
                 }
                 else
                 {
+                    bot.robotAddress = botAddress;
                     return bot.robotNum;
                 }
             }
