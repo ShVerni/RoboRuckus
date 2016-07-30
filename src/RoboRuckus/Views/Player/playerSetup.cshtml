@@ -20,7 +20,7 @@
         </div>
     }
 </div>
-@using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form", @id = "playerForm" }))
+@using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, false, new { @class = "", role = "form", @id = "playerForm" }))
 {
     <br />
     @if (ViewBag.reset == 0)

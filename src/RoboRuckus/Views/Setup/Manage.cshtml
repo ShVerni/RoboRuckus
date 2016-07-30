@@ -7,7 +7,7 @@
     <script type="text/javascript" src=@Url.Content("~/Scripts/manage.js")></script>
 }
 
-@using (Html.BeginForm("updatePlayer", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form", @id = "playerForm" }))
+@using (Html.BeginForm("updatePlayer", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, false, new { @class = "", role = "form", @id = "playerForm" }))
 {
     @Html.LabelFor(m => m.lives, new { @class = "" })
     <div>

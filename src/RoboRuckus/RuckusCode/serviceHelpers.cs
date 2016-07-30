@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.SignalR;
-using Microsoft.Extensions.PlatformAbstractions;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace RoboRuckus.RuckusCode
 {
@@ -9,7 +8,7 @@ namespace RoboRuckus.RuckusCode
     public static class serviceHelpers
     {
         private static volatile IHubContext _playerHubContext = null;
-        private static volatile IApplicationEnvironment _appEnvironment = null;
+        private static volatile string _rootPath;
 
         /// <summary>
         /// The player hub context
@@ -30,19 +29,19 @@ namespace RoboRuckus.RuckusCode
         }
 
         /// <summary>
-        /// The application enviroment
+        /// The application's root path
         /// </summary>
-        public static IApplicationEnvironment appEnvironment
+        public static string rootPath
         {
             get
             {
-                return _appEnvironment;
+                return _rootPath;
             }
             set
             {
-                if (_appEnvironment == null)
+                if (_rootPath == null)
                 {
-                    _appEnvironment = value;
+                    _rootPath = value;
                 }
             }
         }

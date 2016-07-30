@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using RoboRuckus.RuckusCode;
 
 namespace RoboRuckus.Controllers

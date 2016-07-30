@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Linq;
-using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNetCore.SignalR.Hubs;
 using System.Security.Cryptography;
 using RoboRuckus.RuckusCode.Movement;
 

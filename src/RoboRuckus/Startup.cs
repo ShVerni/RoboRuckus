@@ -1,16 +1,29 @@
-﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
 using RoboRuckus.RuckusCode;
+using System.IO;
 
 namespace RoboRuckus
 {
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
+
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls("http://localhost:8082")
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
 
         // This method gets called by the runtime.
         public void ConfigureServices(IServiceCollection services)
@@ -23,21 +36,19 @@ namespace RoboRuckus
         }
 
         // Configure is called after ConfigureServices is called.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationEnvironment appEnvironment)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Setup configuration sources. May be unnecessary
-            var configBuilder = new ConfigurationBuilder().SetBasePath(appEnvironment.ApplicationBasePath).AddJsonFile("config.json");
-            configBuilder.AddEnvironmentVariables();
-            Configuration = configBuilder.Build();
-
-            serviceHelpers.appEnvironment = appEnvironment;
+            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json").AddEnvironmentVariables(); ;
+            Configuration = builder.Build();
             loggerFactory.AddConsole();
+
+            serviceHelpers.rootPath = env.ContentRootPath;
 
             // Add Error handling middleware which catches all application specific errors and
             // sends the request to the following path or controller action.
             app.UseExceptionHandler("/Home/Error");
             app.UseStaticFiles();
-            app.UseIISPlatformHandler();
 
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>

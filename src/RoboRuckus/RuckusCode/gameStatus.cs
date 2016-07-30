@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Linq;
-using System.Threading;
 using Newtonsoft.Json;
 
 namespace RoboRuckus.RuckusCode
@@ -46,7 +46,7 @@ namespace RoboRuckus.RuckusCode
         static gameStatus()
         {
             // Load the game boards
-            string path = serviceHelpers.appEnvironment.ApplicationBasePath + _boardPath;
+            string path = serviceHelpers.rootPath + _boardPath;
             foreach (string boardFile in Directory.GetFiles(path))
             {
                 using (StreamReader file = File.OpenText(boardFile))
@@ -56,7 +56,7 @@ namespace RoboRuckus.RuckusCode
                 }
             }
             // Load the movement cards
-            path = serviceHelpers.appEnvironment.ApplicationBasePath + _cardPath;
+            path = serviceHelpers.rootPath + _cardPath;
             using (StreamReader sr = new StreamReader(path))
             {
                 string cards = sr.ReadToEnd();

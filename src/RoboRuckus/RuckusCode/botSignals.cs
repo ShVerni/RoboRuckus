@@ -65,7 +65,6 @@ namespace RoboRuckus.RuckusCode
         {
             byte[] response = new byte[2];
             Robot bot = gameStatus.robots[botNumber];
-            
             using (Socket socketConnection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 Byte[] bytesToSend = Encoding.ASCII.GetBytes(data);
