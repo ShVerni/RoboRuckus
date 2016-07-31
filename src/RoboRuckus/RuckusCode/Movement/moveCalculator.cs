@@ -539,6 +539,10 @@ namespace RoboRuckus.RuckusCode.Movement
                         processMoveOrder(order);
                     }
                 }
+                if (gameStatus.noBots)
+                {
+                    Thread.Sleep(1000);
+                }
             }
         }
 

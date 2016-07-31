@@ -10,6 +10,9 @@ namespace RoboRuckus.RuckusCode
 {
     public static class gameStatus
     {
+        // Set to true to play without physical robots
+        public static readonly bool noBots = false;
+
         // Game state varaibles
         public static int numPlayers = 0;
         public static int numPlayersInGame = 0;
@@ -62,6 +65,16 @@ namespace RoboRuckus.RuckusCode
                 string cards = sr.ReadToEnd();
                 movementCards = Array.ConvertAll(cards.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), p => p.Trim());
             }
+
+            if (noBots)
+            {
+                addBot("0.0.0.0", "Botimus Prome");
+                addBot("0.0.0.1", "Protobot");
+                addBot("0.0.0.2", "Twirly Bot");
+                addBot("0.0.0.3", "Bot Waaay");
+                addBot("0.0.0.4", "Thunderbot");
+                addBot("0.0.0.5", "Fredbot");
+            }
         }
 
         /// <summary>
@@ -86,8 +99,11 @@ namespace RoboRuckus.RuckusCode
                 bot.robotNum = (byte)(robots.Count - 1);
                 // Assign player to bot
                 bot.controllingPlayer = sender;
-                sender.playerRobot = bot;                
-                SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, sender.playerNumber + 1));                
+                sender.playerRobot = bot;
+                if (!noBots)
+                {
+                    SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, sender.playerNumber + 1));
+                }         
                 return true;
             }
             return false;
