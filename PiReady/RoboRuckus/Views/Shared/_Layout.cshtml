@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/lib/jqueryUI/jquery-ui.css" />
+    <link rel="stylesheet" href="~/lib/jqueryUI/jquery-ui.theme.css" />
+    <link rel="stylesheet" href="~/lib/jqueryUI/jquery-ui.structure.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container body-content">
+        @RenderBody()
+        <div style="clear: both"></div>
+    </div>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/signalr/jquery.signalR.js"></script>    
+    <script src="~/lib/jqueryUI/jquery-ui.min.js"></script>
+    <script src="~/lib/jqueryPunch/jquery.ui.touch-punch.min.js"></script>
+    <script src="~/lib/howler/howler.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

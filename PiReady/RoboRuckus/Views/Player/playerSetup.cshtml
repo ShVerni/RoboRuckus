@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Player Setup";
+}
+
+@section scripts
+{
+    <script type="text/javascript" src=@Url.Content("~/Scripts/playerSetup.js")></script>
+}
+@model RoboRuckus.Models.playerSetupViewModel
+<h2 id="playerNum" data-player="@ViewBag.player">You are player number @ViewBag.player</h2>
+<div id="board" class="left" data-board="@ViewBag.board" data-flag='@ViewBag.flags'>
+    @for (int i = ViewBag.board_y; i >= 0; i--)
+    {
+        <div class="boardRow" id="y_@i">
+            @for (int j = 0; j <= ViewBag.board_x; j++)
+            {
+                <div class="boardSquare" data-x="@j" data-y="@i" id="@(j)_@i"></div>
+            }
+            <div class="clear"></div>
+        </div>
+    }
+</div>
+@using (Html.BeginForm("setupPlayer", "Player", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, false, new { @class = "", role = "form", @id = "playerForm" }))
+{
+    <br />
+    @if (ViewBag.reset == 0)
+    {
+        <p id="selMessage"></p>
+        <select id="bots" name="botName"></select>
+    }
+    <br />
+    <div id="form" class="hidden">
+        @if (ViewBag.reset == 1)
+        {
+            <select name="botName">
+                <option value="@ViewBag.botName" selected></option>
+            </select>
+        }
+        @Html.TextBoxFor(m => m.botX, new { @class = "", @id = "botX", type = "number" })
+        @Html.TextBoxFor(m => m.botY, new { @class = "", @id = "botY", type = "number" })
+        @Html.TextBoxFor(m => m.botDir, new { @class = "", @id = "botDir", type = "number" })
+        @Html.TextBoxFor(m => m.player, new { @class = "", @id = "player", type = "number"})
+    </div>
+    <div class="clear"></div>
+    <br />
+    <div class="">
+        <input id="button" type="submit" value="Join Game" class="" />
+    </div>
+}

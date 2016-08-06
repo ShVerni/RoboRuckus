@@ -1,0 +1,444 @@
+﻿{
+  "name": "Spin Zone",
+  "size": [ 11, 11 ],
+  "wrenches": [
+    [ 3, 3 ],
+    [ 9, 3 ],
+    [ 2, 8 ],
+    [ 8, 8 ]
+  ],
+  "pits": [ ],
+  "turntables": [
+    {
+      "location": [ 3, 2 ],
+      "dir": "right"
+    },
+    {
+      "location": [ 6, 2 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 9, 2 ],
+      "dir": "right"
+    },
+    {
+      "location": [ 2, 3 ],
+      "dir": "right"
+    },
+    {
+      "location": [ 8, 3 ],
+      "dir": "right"
+    },
+    {
+      "location": [ 5, 4 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 2, 5 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 7, 5 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 4, 6 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 9, 6 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 6, 7 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 3, 8 ],
+      "dir": "right"
+    },
+    {
+      "location": [ 9, 8 ],
+      "dir": "right"
+    },
+    {
+      "location": [ 2, 9 ],
+      "dir": "right"
+    },
+    {
+      "location": [ 5, 9 ],
+      "dir": "left"
+    },
+    {
+      "location": [ 8, 9 ],
+      "dir": "right"
+    }
+  ],
+  "lasers": [
+    {
+      "start": [ 5, 3 ],
+      "end": [ 6, 4 ],
+      "strength": 1,
+      "facing": "X"
+    },
+    {
+      "start": [ 3, 5 ],
+      "end": [ 3, 8 ],
+      "strength": 1,
+      "facing": "Y"
+    },
+    {
+      "start": [ 8, 6 ],
+      "end": [ 8, 3 ],
+      "strength": 1,
+      "facing": "NEG_Y"
+    },
+    {
+      "start": [ 6, 8 ],
+      "end": [ 5, 8 ],
+      "strength": 1,
+      "facing": "NEG_X"
+    }
+  ],
+  "conveyors": [ ],
+  "expressConveyors": [
+    {
+      "location": [ 1, 1 ],
+      "entrance": "X",
+      "exit": "Y"
+    },
+    {
+      "location": [ 2, 1 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 3, 1 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 4, 1 ],
+      "entrance": "Y",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 7, 1 ],
+      "entrance": "X",
+      "exit": "Y"
+    },
+    {
+      "location": [ 8, 1 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 9, 1 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 10, 1 ],
+      "entrance": "Y",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 1, 2 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 4, 2 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 7, 2 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 10, 2 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 1, 3 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 4, 3 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 7, 3 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 10, 3 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 1, 4 ],
+      "entrance": "NEG_Y",
+      "exit": "X"
+    },
+    {
+      "location": [ 2, 4 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 3, 4 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 4, 4 ],
+      "entrance": "NEG_X",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 7, 4 ],
+      "entrance": "NEG_Y",
+      "exit": "X"
+    },
+    {
+      "location": [ 8, 4 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 9, 4 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 10, 4 ],
+      "entrance": "NEG_X",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 1, 7 ],
+      "entrance": "X",
+      "exit": "Y"
+    },
+    {
+      "location": [ 2, 7 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 3, 7 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 4, 7 ],
+      "entrance": "Y",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 7, 7 ],
+      "entrance": "X",
+      "exit": "Y"
+    },
+    {
+      "location": [ 8, 7 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 9, 7 ],
+      "entrance": "X",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 10, 7 ],
+      "entrance": "Y",
+      "exit": "NEG_X"
+    },
+    {
+      "location": [ 1, 8 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 4, 8 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 7, 8 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 10, 8 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 1, 9 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 4, 9 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 7, 9 ],
+      "entrance": "NEG_Y",
+      "exit": "Y"
+    },
+    {
+      "location": [ 10, 9 ],
+      "entrance": "Y",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 1, 10 ],
+      "entrance": "NEG_Y",
+      "exit": "X"
+    },
+    {
+      "location": [ 2, 10 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 3, 10 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 4, 10 ],
+      "entrance": "NEG_X",
+      "exit": "NEG_Y"
+    },
+    {
+      "location": [ 7, 10 ],
+      "entrance": "NEG_Y",
+      "exit": "X"
+    },
+    {
+      "location": [ 8, 10 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 9, 10 ],
+      "entrance": "NEG_X",
+      "exit": "X"
+    },
+    {
+      "location": [ 10, 10 ],
+      "entrance": "NEG_X",
+      "exit": "NEG_Y"
+    }
+  ],
+  "walls": [
+    [
+      [ 2, 0 ],
+      [ 2, -1 ]
+    ],
+    [
+      [ 4, 0 ],
+      [ 4, -1 ]
+    ],
+    [
+      [ 7, 0 ],
+      [ 7, -1 ]
+    ],
+    [
+      [ 9, 0 ],
+      [ 9, -1 ]
+    ],
+    [
+      [ -1, 2 ],
+      [ 0, 2 ]
+    ],
+    [
+      [ 8, 2 ],
+      [ 8, 3 ]
+    ],
+    [
+      [ 11, 2 ],
+      [ 12, 2 ]
+    ],
+    [
+      [ 4, 3 ],
+      [ 5, 3 ]
+    ],
+    [
+      [ 6, 3 ],
+      [ 7, 3 ]
+    ],
+    [
+      [ -1, 4 ],
+      [ 0, 4 ]
+    ],
+    [
+      [ 11, 4 ],
+      [ 12, 4 ]
+    ],
+    [
+      [ 3, 4 ],
+      [ 3, 5 ]
+    ],
+    [
+      [ 8, 6 ],
+      [ 8, 7 ]
+    ],
+    [
+      [ -1, 7 ],
+      [ 0, 7 ]
+    ],
+    [
+      [ 11, 7 ],
+      [ 12, 7 ]
+    ],
+    [
+      [ 3, 8 ],
+      [ 3, 9 ]
+    ],
+    [
+      [ 4, 8 ],
+      [ 5, 8 ]
+    ],
+    [
+      [ 6, 8 ],
+      [ 7, 8 ]
+    ],
+    [
+      [ -1, 9 ],
+      [ 0, 9 ]
+    ],
+    [
+      [ 11, 9 ],
+      [ 12, 9 ]
+    ],
+    [
+      [ 2, 11 ],
+      [ 2, 12 ]
+    ],
+    [
+      [ 4, 11 ],
+      [ 4, 12 ]
+    ],
+    [
+      [ 7, 11 ],
+      [ 7, 12 ]
+    ],
+    [
+      [ 9, 11 ],
+      [ 9, 12 ]
+    ]
+  ]
+}

@@ -31,7 +31,7 @@ namespace RoboRuckus
             // Add MVC services to the services container.
             services.AddMvc();
 
-            // Add all SignalR related services to IoC.
+            // Add all SignalR related services.
             services.AddSignalR();
         }
 
