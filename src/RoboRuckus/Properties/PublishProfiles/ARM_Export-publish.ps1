@@ -10,7 +10,7 @@ try{
 	$publishModulePath = Join-Path (Split-Path $MyInvocation.MyCommand.Path) 'publish-module.psm1'
     Import-Module $publishModulePath -DisableNameChecking -Force
 
-	# copy needed unix libraryti output folder
+	# copy needed unix library to output folder
 	cp $home\.nuget\packages\System.Runtime.InteropServices.RuntimeInformation\4.0.0\runtimes\unix\lib\netstandard1.1\System.Runtime.InteropServices.RuntimeInformation.dll $packOutput
 
     # call Publish-AspNet to perform the publish operation

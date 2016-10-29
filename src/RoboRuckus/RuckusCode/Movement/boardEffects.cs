@@ -360,8 +360,6 @@ namespace RoboRuckus.RuckusCode.Movement
             }
         }
 
-
-
         /// <summary>
         /// Fires robot lasers and adds the damage to a dictionary
         /// </summary>

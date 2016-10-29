@@ -22,7 +22,6 @@
   </PropertyGroup>
   <ItemGroup>
     <DnxInvisibleFolder Include=".vs\" />
-    <DnxInvisibleFolder Include="Release\RoboRuckus\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" />
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" />

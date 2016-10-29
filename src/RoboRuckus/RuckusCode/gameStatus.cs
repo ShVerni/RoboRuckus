@@ -80,7 +80,7 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// Assigns a robot to a player
         /// </summary>
-        /// <param name="player">The robot to be assigned</param>
+        /// <param name="player">The player being assigned to</param>
         /// <param name="robotName">The robot name to assign</param>
         /// <returns></returns>
         public static bool assignBot(int player, string robotName)
@@ -119,7 +119,7 @@ namespace RoboRuckus.RuckusCode
             lock(locker)
             {
                 // Makes sure there are enough player slots and robots for another player to be added
-                if (numPlayersInGame < numPlayers && (robotPen.Count + robots.Count) > numPlayersInGame)
+                if (numPlayersInGame < numPlayers && robotPen.Count > 0)
                 {
                     // Create new player with their chosen bot                    
                     Player newPlayer = new Player((byte)numPlayersInGame);
