@@ -21,6 +21,9 @@
     background: rgba(255, 234, 0, 0.61) !important;
 }
 
+.ui-selectmenu-button.ui-button {
+
+}
 /* Card stuff*/
 #cardsContainer {
     min-height: 525px; 
@@ -64,7 +67,6 @@
 }
 
 #shutdownLabel {
-    width: 100%;
     font-size: 1.35vw;
 }
 
@@ -84,7 +86,6 @@
 }
 
  .slot h4 { 
-      line-height: 16px; 
       margin: 0 0 0.4em; 
   }
  

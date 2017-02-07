@@ -68,7 +68,7 @@ namespace RoboRuckus.RuckusCode
 
             if (noBots)
             {
-                addBot("0.0.0.0", "Botimus Prome");
+                addBot("0.0.0.0", "Botimus Prime");
                 addBot("0.0.0.1", "Protobot");
                 addBot("0.0.0.2", "Twirly Bot");
                 addBot("0.0.0.3", "Bot Waaay");

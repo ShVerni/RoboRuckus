@@ -4,7 +4,7 @@
 
 @section scripts
 {
-    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript" src=@Url.Content("~/signalr/hubs")></script>
     <script type="text/javascript" src=@Url.Content("~/Scripts/monitor.js")></script>
 }
 <h2>Number of players: @ViewBag.players</h2>
