@@ -21,7 +21,6 @@
     // Start a timer to check the game status every second
     var fetcher = new Interval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
     fetcher.start();
-
     // Start connection to player hub
     var cardControl = $.connection.playerHub;
     $.connection.hub.start();
@@ -37,7 +36,7 @@
     });
 
     // Shows the current move being executed
-    cardControl.client.showMove = (function (card, robot, register) {
+    cardControl.client.showMove = (function showCard (card, robot, register) {
         $("#cardsContainer").empty();
         var _card = $.parseJSON(card);
         var face;
@@ -59,7 +58,7 @@
                     <img src='/images/cards/bg.png'alt='card'>\
                 </div>\
             </li>\
-            <li id='player'>Robot moving: " + robot + "<\li>"
+            <li style=\"display: block\" id='player'>Robot moving: " + robot + "<\li>"
         );
         //Set the width of the cards to fill the screen in one row
         var imageWidth = (($(window).width() - 80) / 8);
@@ -75,7 +74,7 @@
                 "height": "",
                 "width": ""
             });
-            $("#player").css("font-size", percent * 5.8 + "em");
+            $("#player").css("font-size", percent * 3 + "em");
             $(".slot, #sendcards").width(imageWidth + 2);
             $(".slot, #sendcards").height(imageHeight + 28);
             $("#cardsContainer").css("min-height", imageHeight + 5);
