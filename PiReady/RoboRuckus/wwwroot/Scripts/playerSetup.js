@@ -1,7 +1,9 @@
 ﻿$(function () {
     // Sets a timer to retrieve the game's status at a regular interval
     setInterval(function () { $.get("/Player/Status", function (data) { processData(data); }) }, 1000);
-    $("#bots").selectmenu();
+    $("#bots").selectmenu({
+        width: null
+    });
     // Setup buttons and variables
     $("#button").button({ disabled: true });
     var flags = $("#board").data("flag");

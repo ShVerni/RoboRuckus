@@ -11,7 +11,7 @@ try{
     Import-Module $publishModulePath -DisableNameChecking -Force
 
 	# copy needed unix library to output folder
-	cp $home\.nuget\packages\System.Runtime.InteropServices.RuntimeInformation\4.0.0\runtimes\unix\lib\netstandard1.1\System.Runtime.InteropServices.RuntimeInformation.dll $packOutput
+	cp $home\.nuget\packages\System.Runtime.InteropServices.RuntimeInformation\4.3.0\runtimes\unix\lib\netstandard1.1\System.Runtime.InteropServices.RuntimeInformation.dll $packOutput
 
     # call Publish-AspNet to perform the publish operation
     Publish-AspNet -publishProperties $publishProperties -packOutput $packOutput -pubProfilePath $pubProfilePath

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RoboRuckus.RuckusCode;
+using System;
 using System.IO;
 
 namespace RoboRuckus
@@ -21,6 +22,13 @@ namespace RoboRuckus
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
+            
+            // Used to run game without physical bots.
+            if (args.Length >0 && args[0] == "botless")
+            {
+                gameStatus.noBots = true;
+                Console.WriteLine("Botless Mode");
+            }
 
             host.Run();
         }

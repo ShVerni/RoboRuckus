@@ -7,6 +7,7 @@
 
     // Enable the board selection menu
     $("#boardSel").selectmenu({
+        width: null,
         change: function (event, ui) {
             // Draw the selected board
             var name = $(this).val();
