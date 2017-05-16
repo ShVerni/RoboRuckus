@@ -52,9 +52,9 @@ namespace RoboRuckus.Controllers
         /// <param name="selBoard">The board selected to play on</param>
         /// <param name="flags">The position of placed flags</param>
         /// <param name="numberOfPlayers">The number of players</param>
-        /// <returns></returns>
+        /// <returns>Redirects to the appropriate action</returns>
         [HttpPost]
-        public IActionResult startGame(string selBoard, string flags, int numberOfPlayers = 0)
+        public IActionResult setupGame(string selBoard, string flags, int numberOfPlayers = 0)
         {
             if (numberOfPlayers > 0)
             {
@@ -85,6 +85,19 @@ namespace RoboRuckus.Controllers
         }
 
         /// <summary>
+        /// Starts the game and has the first hand of cards dealt to players.
+        /// </summary>
+        /// <param name="status">Status code for start command (not yet used)</param>
+        /// <returns>The string "Done"</returns>
+        [HttpGet]
+        public IActionResult startGame(int status)
+        {
+            gameStatus.gameStarted = true;
+            playerSignals.Instance.dealPlayers();
+            return Content("Done", "text/plain");
+        }
+
+        /// <summary>
         /// Monitors the game board status
         /// </summary>
         /// <returns>The view</returns>
@@ -99,6 +112,7 @@ namespace RoboRuckus.Controllers
                 ViewBag.board_y = gameStatus.boardSizeY;
                 ViewBag.board = gameStatus.gameBoard.name.Replace(" ", "");
                 ViewBag.timer = gameStatus.playerTimer;
+                ViewBag.started = gameStatus.gameStarted;
                 return View();
             }
             else
@@ -112,7 +126,7 @@ namespace RoboRuckus.Controllers
         /// Re-enters dead players in the game the game
         /// </summary>
         /// <param name="players">[[player number, bot X position, bot Y position, bot orientation],etc...]</param>
-        /// <returns>An OK</returns>
+        /// <returns>The string "OK"</returns>
         [HttpPost]
         public IActionResult enterPlayers(string players)
         {

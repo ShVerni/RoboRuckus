@@ -137,7 +137,7 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                if (!caller.dead && !gameStatus.winner)
+                if (gameStatus.gameStarted && !caller.dead && !gameStatus.winner)
                 {
                     // Check if the player has already been dealt
                     if (caller.cards == null)
@@ -206,6 +206,7 @@ namespace RoboRuckus.RuckusCode
                 gameStatus.winner = false;
                 gameStatus.lockedCards.Clear();
                 gameStatus.playersNeedEntering = false;
+                gameStatus.gameStarted = false;
                 if (resetAll == 0)
                 {
                     foreach (Player p in gameStatus.players)

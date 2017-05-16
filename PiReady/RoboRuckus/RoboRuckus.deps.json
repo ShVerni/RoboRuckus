@@ -1,13 +1,13 @@
 {
   "runtimeTarget": {
-    "name": ".NETFramework,Version=v4.6.2/win7-x86",
+    "name": ".NETFramework,Version=v4.7/win7-x86",
     "signature": "3de04ab5adb1156ad74151ec4ec2b76841303d2a"
   },
   "compilationOptions": {
     "defines": [
       "TRACE",
       "RELEASE",
-      "NET462"
+      "NET47"
     ],
     "languageVersion": "",
     "platform": "x86",
@@ -20,7 +20,7 @@
     "debugType": "portable"
   },
   "targets": {
-    ".NETFramework,Version=v4.6.2": {
+    ".NETFramework,Version=v4.7": {
       "roboruckus/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Diagnostics": "1.1.0",
@@ -45,302 +45,287 @@
       },
       "microsoft.csharp/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Microsoft.CSharp.dll": {}
+          ".NETFramework/v4.7/Microsoft.CSharp.dll": {}
         }
       },
       "mscorlib/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/mscorlib.dll": {}
+          ".NETFramework/v4.7/mscorlib.dll": {}
         }
       },
       "system.componentmodel.composition/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.ComponentModel.Composition.dll": {}
+          ".NETFramework/v4.7/System.ComponentModel.Composition.dll": {}
         }
       },
       "system.componentmodel.dataannotations/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.ComponentModel.DataAnnotations.dll": {}
+          ".NETFramework/v4.7/System.ComponentModel.DataAnnotations.dll": {}
         }
       },
       "system.core/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Core.dll": {}
+          ".NETFramework/v4.7/System.Core.dll": {}
         }
       },
       "system.data/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Data.dll": {}
+          ".NETFramework/v4.7/System.Data.dll": {}
         }
       },
       "system/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.dll": {}
+          ".NETFramework/v4.7/System.dll": {}
         }
       },
       "system.drawing/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Drawing.dll": {}
+          ".NETFramework/v4.7/System.Drawing.dll": {}
         }
       },
       "system.io.compression.filesystem/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.IO.Compression.FileSystem.dll": {}
+          ".NETFramework/v4.7/System.IO.Compression.FileSystem.dll": {}
         }
       },
       "system.numerics/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Numerics.dll": {}
+          ".NETFramework/v4.7/System.Numerics.dll": {}
         }
       },
       "system.runtime.serialization/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Runtime.Serialization.dll": {}
+          ".NETFramework/v4.7/System.Runtime.Serialization.dll": {}
         }
       },
       "system.security/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Security.dll": {}
+          ".NETFramework/v4.7/System.Security.dll": {}
         }
       },
       "system.xml/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Xml.dll": {}
+          ".NETFramework/v4.7/System.Xml.dll": {}
         }
       },
       "system.xml.linq/4.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/System.Xml.Linq.dll": {}
+          ".NETFramework/v4.7/System.Xml.Linq.dll": {}
         }
       },
       "system.collections.concurrent/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Collections.Concurrent.dll": {}
+          ".NETFramework/v4.7/Facades/System.Collections.Concurrent.dll": {}
         }
       },
       "system.collections/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Collections.dll": {}
+          ".NETFramework/v4.7/Facades/System.Collections.dll": {}
         }
       },
       "system.componentmodel.annotations/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ComponentModel.Annotations.dll": {}
+          ".NETFramework/v4.7/Facades/System.ComponentModel.Annotations.dll": {}
         }
       },
       "system.componentmodel/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ComponentModel.dll": {}
+          ".NETFramework/v4.7/Facades/System.ComponentModel.dll": {}
         }
       },
       "system.componentmodel.eventbasedasync/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ComponentModel.EventBasedAsync.dll": {}
+          ".NETFramework/v4.7/Facades/System.ComponentModel.EventBasedAsync.dll": {}
         }
       },
       "system.diagnostics.contracts/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Diagnostics.Contracts.dll": {}
+          ".NETFramework/v4.7/Facades/System.Diagnostics.Contracts.dll": {}
         }
       },
       "system.diagnostics.debug/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Diagnostics.Debug.dll": {}
+          ".NETFramework/v4.7/Facades/System.Diagnostics.Debug.dll": {}
         }
       },
       "system.diagnostics.tools/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Diagnostics.Tools.dll": {}
+          ".NETFramework/v4.7/Facades/System.Diagnostics.Tools.dll": {}
         }
       },
       "system.dynamic.runtime/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Dynamic.Runtime.dll": {}
+          ".NETFramework/v4.7/Facades/System.Dynamic.Runtime.dll": {}
         }
       },
       "system.globalization/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Globalization.dll": {}
-        }
-      },
-      "system.linq/0.0.0.0": {
-        "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Linq.dll": {}
-        }
-      },
-      "system.linq.expressions/0.0.0.0": {
-        "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Linq.Expressions.dll": {}
+          ".NETFramework/v4.7/Facades/System.Globalization.dll": {}
         }
       },
       "system.linq.parallel/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Linq.Parallel.dll": {}
+          ".NETFramework/v4.7/Facades/System.Linq.Parallel.dll": {}
         }
       },
       "system.linq.queryable/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Linq.Queryable.dll": {}
+          ".NETFramework/v4.7/Facades/System.Linq.Queryable.dll": {}
         }
       },
       "system.net.networkinformation/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Net.NetworkInformation.dll": {}
+          ".NETFramework/v4.7/Facades/System.Net.NetworkInformation.dll": {}
         }
       },
       "system.net.primitives/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Net.Primitives.dll": {}
+          ".NETFramework/v4.7/Facades/System.Net.Primitives.dll": {}
         }
       },
       "system.net.requests/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Net.Requests.dll": {}
+          ".NETFramework/v4.7/Facades/System.Net.Requests.dll": {}
         }
       },
       "system.net.webheadercollection/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Net.WebHeaderCollection.dll": {}
+          ".NETFramework/v4.7/Facades/System.Net.WebHeaderCollection.dll": {}
         }
       },
       "system.objectmodel/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ObjectModel.dll": {}
+          ".NETFramework/v4.7/Facades/System.ObjectModel.dll": {}
         }
       },
       "system.reflection.emit/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Reflection.Emit.dll": {}
+          ".NETFramework/v4.7/Facades/System.Reflection.Emit.dll": {}
         }
       },
       "system.reflection.emit.ilgeneration/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Reflection.Emit.ILGeneration.dll": {}
+          ".NETFramework/v4.7/Facades/System.Reflection.Emit.ILGeneration.dll": {}
         }
       },
       "system.reflection.emit.lightweight/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Reflection.Emit.Lightweight.dll": {}
+          ".NETFramework/v4.7/Facades/System.Reflection.Emit.Lightweight.dll": {}
         }
       },
       "system.reflection.extensions/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Reflection.Extensions.dll": {}
+          ".NETFramework/v4.7/Facades/System.Reflection.Extensions.dll": {}
         }
       },
       "system.reflection.primitives/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Reflection.Primitives.dll": {}
+          ".NETFramework/v4.7/Facades/System.Reflection.Primitives.dll": {}
         }
       },
       "system.resources.resourcemanager/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Resources.ResourceManager.dll": {}
+          ".NETFramework/v4.7/Facades/System.Resources.ResourceManager.dll": {}
         }
       },
       "system.runtime.handles/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Runtime.Handles.dll": {}
+          ".NETFramework/v4.7/Facades/System.Runtime.Handles.dll": {}
         }
       },
       "system.runtime.interopservices.windowsruntime/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Runtime.InteropServices.WindowsRuntime.dll": {}
+          ".NETFramework/v4.7/Facades/System.Runtime.InteropServices.WindowsRuntime.dll": {}
         }
       },
       "system.runtime.numerics/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Runtime.Numerics.dll": {}
+          ".NETFramework/v4.7/Facades/System.Runtime.Numerics.dll": {}
         }
       },
       "system.runtime.serialization.json/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Runtime.Serialization.Json.dll": {}
+          ".NETFramework/v4.7/Facades/System.Runtime.Serialization.Json.dll": {}
         }
       },
       "system.runtime.serialization.primitives/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Runtime.Serialization.Primitives.dll": {}
+          ".NETFramework/v4.7/Facades/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
       "system.runtime.serialization.xml/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Runtime.Serialization.Xml.dll": {}
+          ".NETFramework/v4.7/Facades/System.Runtime.Serialization.Xml.dll": {}
         }
       },
       "system.security.principal/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Security.Principal.dll": {}
+          ".NETFramework/v4.7/Facades/System.Security.Principal.dll": {}
         }
       },
       "system.servicemodel.duplex/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ServiceModel.Duplex.dll": {}
+          ".NETFramework/v4.7/Facades/System.ServiceModel.Duplex.dll": {}
         }
       },
       "system.servicemodel.http/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ServiceModel.Http.dll": {}
+          ".NETFramework/v4.7/Facades/System.ServiceModel.Http.dll": {}
         }
       },
       "system.servicemodel.nettcp/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ServiceModel.NetTcp.dll": {}
+          ".NETFramework/v4.7/Facades/System.ServiceModel.NetTcp.dll": {}
         }
       },
       "system.servicemodel.primitives/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ServiceModel.Primitives.dll": {}
+          ".NETFramework/v4.7/Facades/System.ServiceModel.Primitives.dll": {}
         }
       },
       "system.servicemodel.security/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.ServiceModel.Security.dll": {}
+          ".NETFramework/v4.7/Facades/System.ServiceModel.Security.dll": {}
         }
       },
       "system.text.encoding/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Text.Encoding.dll": {}
+          ".NETFramework/v4.7/Facades/System.Text.Encoding.dll": {}
         }
       },
       "system.text.encoding.extensions/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Text.Encoding.Extensions.dll": {}
-        }
-      },
-      "system.text.regularexpressions/0.0.0.0": {
-        "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Text.RegularExpressions.dll": {}
+          ".NETFramework/v4.7/Facades/System.Text.Encoding.Extensions.dll": {}
         }
       },
       "system.threading/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Threading.dll": {}
+          ".NETFramework/v4.7/Facades/System.Threading.dll": {}
         }
       },
       "system.threading.tasks/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Threading.Tasks.dll": {}
+          ".NETFramework/v4.7/Facades/System.Threading.Tasks.dll": {}
         }
       },
       "system.threading.tasks.parallel/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Threading.Tasks.Parallel.dll": {}
+          ".NETFramework/v4.7/Facades/System.Threading.Tasks.Parallel.dll": {}
         }
       },
       "system.threading.timer/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Threading.Timer.dll": {}
+          ".NETFramework/v4.7/Facades/System.Threading.Timer.dll": {}
         }
       },
       "system.xml.xdocument/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Xml.XDocument.dll": {}
+          ".NETFramework/v4.7/Facades/System.Xml.XDocument.dll": {}
         }
       },
       "system.xml.xmlserializer/0.0.0.0": {
         "compile": {
-          ".NETFramework/v4.6.2/Facades/System.Xml.XmlSerializer.dll": {}
+          ".NETFramework/v4.7/Facades/System.Xml.XmlSerializer.dll": {}
         }
       },
       "libuv/1.9.1": {
@@ -1238,7 +1223,7 @@
       },
       "system.appcontext/4.3.0": {
         "compile": {
-          "ref/net46/System.AppContext.dll": {}
+          "ref/net463/System.AppContext.dll": {}
         }
       },
       "system.buffers/4.3.0": {
@@ -1309,8 +1294,16 @@
           "ref/net46/System.IO.FileSystem.Primitives.dll": {}
         }
       },
-      "system.linq/4.3.0": {},
-      "system.linq.expressions/4.3.0": {},
+      "system.linq/4.3.0": {
+        "compile": {
+          "ref/net463/System.Linq.dll": {}
+        }
+      },
+      "system.linq.expressions/4.3.0": {
+        "compile": {
+          "ref/net463/System.Linq.Expressions.dll": {}
+        }
+      },
       "system.net.http/4.3.0": {
         "dependencies": {
           "System.Diagnostics.DiagnosticSource": "4.3.0",
@@ -1369,7 +1362,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/net462/System.Runtime.InteropServices.dll": {}
+          "ref/net463/System.Runtime.InteropServices.dll": {}
         }
       },
       "system.runtime.interopservices.runtimeinformation/4.3.0": {
@@ -1380,10 +1373,13 @@
       "system.runtime.numerics/4.3.0": {},
       "system.security.cryptography.algorithms/4.3.0": {
         "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Security.Cryptography.Encoding": "4.3.0",
           "System.Security.Cryptography.Primitives": "4.3.0"
         },
         "compile": {
-          "ref/net461/System.Security.Cryptography.Algorithms.dll": {}
+          "ref/net463/System.Security.Cryptography.Algorithms.dll": {}
         }
       },
       "system.security.cryptography.encoding/4.3.0": {
@@ -1413,7 +1409,11 @@
           "lib/netstandard1.0/System.Text.Encodings.Web.dll": {}
         }
       },
-      "system.text.regularexpressions/4.3.0": {},
+      "system.text.regularexpressions/4.3.0": {
+        "compile": {
+          "ref/net463/System.Text.RegularExpressions.dll": {}
+        }
+      },
       "system.threading/4.3.0": {},
       "system.threading.tasks/4.3.0": {},
       "system.threading.tasks.extensions/4.3.0": {
@@ -1438,7 +1438,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.6.2/win7-x86": {
+    ".NETFramework,Version=v4.7/win7-x86": {
       "roboruckus/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Diagnostics": "1.1.0",
@@ -2359,7 +2359,7 @@
       },
       "system.appcontext/4.3.0": {
         "runtime": {
-          "lib/net46/System.AppContext.dll": {}
+          "lib/net463/System.AppContext.dll": {}
         }
       },
       "system.buffers/4.3.0": {
@@ -2438,8 +2438,16 @@
           "lib/net46/System.IO.FileSystem.Primitives.dll": {}
         }
       },
-      "system.linq/4.3.0": {},
-      "system.linq.expressions/4.3.0": {},
+      "system.linq/4.3.0": {
+        "runtime": {
+          "lib/net463/System.Linq.dll": {}
+        }
+      },
+      "system.linq.expressions/4.3.0": {
+        "runtime": {
+          "lib/net463/System.Linq.Expressions.dll": {}
+        }
+      },
       "system.net.http/4.3.0": {
         "dependencies": {
           "System.Diagnostics.DiagnosticSource": "4.3.0",
@@ -2498,7 +2506,7 @@
           "System.Runtime": "4.3.0"
         },
         "runtime": {
-          "lib/net462/System.Runtime.InteropServices.dll": {}
+          "lib/net463/System.Runtime.InteropServices.dll": {}
         }
       },
       "system.runtime.interopservices.runtimeinformation/4.3.0": {
@@ -2509,10 +2517,13 @@
       "system.runtime.numerics/4.3.0": {},
       "system.security.cryptography.algorithms/4.3.0": {
         "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Security.Cryptography.Encoding": "4.3.0",
           "System.Security.Cryptography.Primitives": "4.3.0"
         },
         "runtime": {
-          "runtimes/win/lib/net461/System.Security.Cryptography.Algorithms.dll": {}
+          "runtimes/win/lib/net463/System.Security.Cryptography.Algorithms.dll": {}
         }
       },
       "system.security.cryptography.encoding/4.3.0": {
@@ -2546,7 +2557,11 @@
           "lib/netstandard1.0/System.Text.Encodings.Web.dll": {}
         }
       },
-      "system.text.regularexpressions/4.3.0": {},
+      "system.text.regularexpressions/4.3.0": {
+        "runtime": {
+          "lib/net463/System.Text.RegularExpressions.dll": {}
+        }
+      },
       "system.threading/4.3.0": {},
       "system.threading.tasks/4.3.0": {},
       "system.threading.tasks.extensions/4.3.0": {
@@ -3707,16 +3722,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "system.linq/0.0.0.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "system.linq.expressions/0.0.0.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
     "system.linq.parallel/0.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
@@ -3848,11 +3853,6 @@
       "sha512": ""
     },
     "system.text.encoding.extensions/0.0.0.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "system.text.regularexpressions/0.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""

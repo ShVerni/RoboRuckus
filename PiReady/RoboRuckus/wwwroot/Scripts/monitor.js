@@ -17,6 +17,15 @@
 
     // Loads board background image
     $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
+
+    // Check if game is started
+    if ($("startButton").data("started") == "True") {
+        $("#startButton").hide();
+        $("#controlButtons").show();
+    } else {
+        $("#startButton").show();
+        $("#controlButtons").hide();
+    }
  
     // Start a timer to check the game status every second
     var fetcher = new Interval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
@@ -249,14 +258,30 @@
         }
     }
 
+    // Starts the game
+    $("#startGame").button().click(function (event) {
+        $.get("/Setup/startGame?status=0", function (data) {
+            // alert(data);
+            $("#startButton").hide();
+            $("#controlButtons").show();
+        });
+    });
+
     // Resets the current game
     $("#reset").button().click(function (event) {
         $.get("/Setup/Reset?resetAll=0", function (data) { alert(data) });
+        $("#startButton").show();
+        $("#controlButtons").hide();
     });
 
     //Resets the game the very start power on state
     $("#resetAll").button().click(function (event) {
-        $.get("/Setup/Reset?resetAll=1", function (data) { alert(data); window.location = "/Setup"; });
+        $.get("/Setup/Reset?resetAll=1", function (data) {
+            alert(data);
+            setTimeout(function () {
+                window.location.assign("/Setup");
+            }, 1);
+        });
     });
 
     // Timer button toggle effects

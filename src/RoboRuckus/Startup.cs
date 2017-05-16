@@ -18,7 +18,7 @@ namespace RoboRuckus
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://localhost:8082")
+                .UseUrls("http://*:8082")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();

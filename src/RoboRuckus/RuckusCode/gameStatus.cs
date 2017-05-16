@@ -34,6 +34,7 @@ namespace RoboRuckus.RuckusCode
         public static int numPlayers = 0;
         public static int numPlayersInGame = 0;
         public static bool gameReady = false;
+        public static bool gameStarted = false;
         public static List<Robot> robotPen = new List<Robot>();
         public static List<Robot> robots = new List<Robot>();
         public static List<Player> players = new List<Player>();

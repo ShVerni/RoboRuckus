@@ -3,7 +3,7 @@
     ViewBag.Title = "Setup";
 }
 <div class="row">
-    @using (Html.BeginForm("startGame", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, false, new { @class = "", role = "form", @id="setupForm"}))
+    @using (Html.BeginForm("setupGame", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, false, new { @class = "", role = "form", @id="setupForm"}))
     {
 
         <h4>Setup Game</h4>

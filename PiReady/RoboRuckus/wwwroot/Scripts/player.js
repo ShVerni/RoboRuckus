@@ -79,7 +79,7 @@
 
         if (_cards.length === 0 && _lockedCards.length === 0) {
             $("#shutdownLabel").css("background", "red");
-            $("#cardsContainer").html("<h2>Robot shutdown</h2>");
+            $("#cardsContainer").html("<h2>" + $("#roboName").data("name") + " is shutdown</h2>");
             isShutdown = true;
             return;
         }
@@ -150,24 +150,7 @@
         boxes = $(".dealtCard").length < 7 ? 7 : $(".dealtCard").length;
 
         // Set the width of the cards to fill the screen in one row
-        var imageWidth = (($(window).width() - 80) / boxes);
-        if (imageWidth < 350) {
-            var percent = (imageWidth / 350);
-            var imageHeight = percent * 520;
-            $(".order").css("font-size", percent * 4 + "em");
-            $(".face").css("font-size", percent * 11.8 + "em");
-            $(".details").css("font-size", percent * 2.5 + "em");
-            $("#cardsContainer img, .slot img").width(imageWidth);
-            $("#cardsContainer img,.slot img").height(imageHeight);
-            $("#cardsContainer li, .slot li").css({
-                "height": "",
-                "width": ""
-            });
-            $(".slot, #sendcards").width(imageWidth + 2);
-            $(".slot, #sendcards").height(imageHeight + 28);
-            $("#cardsContainer").css("min-height", imageHeight + 5);
-            $("#labelText").css("font-size", 1.35 + (0.3 * (9 - boxes)) + "vw");
-        }
+        resize();
 
         // Let the card elements be draggable
         $("li", "#cardsContainer").draggable({
@@ -206,19 +189,31 @@
         cardControl.server.dealMe($('#playerNum').data("player"));
     });
 
-    // Once the page loads, get the player's first hand
+    // Once the page loads, get the player's hand if needed
     $.connection.hub.start().done(function () {
-        cardControl.server.dealMe($('#playerNum').data("player"));
+        if ($("#slots").data("started") == "True") {
+            cardControl.server.dealMe($('#playerNum').data("player"));
+        }
+        else {
+            resize();
+            $("#cardsContainer").html("<h2 style='color: red;'>Please wait for the game to start.</h2>");
+            $("#shutdown").button("disable");
+        }
+
     });
 
     // Game has been reset, return to setup page
     cardControl.client.Reset = (function (resetAll) {
         if (resetAll == 0) {
-            window.location = "/Player/playerSetup/" + $('#playerNum').data("player") + "?reset=1";
+            setTimeout(function () {
+                window.location.assign("/Player/playerSetup/" + $('#playerNum').data("player") + "?reset=1");
+            }, 1);
         }
         else
         {
-            window.location = "/";
+            setTimeout(function () {
+                window.location.assign("/");
+            }, 1);
         }
     });
 
@@ -245,37 +240,7 @@
 
     // Resize the cards as the window resizes, this is inelegant but works for now, should switch to entirely CSS solution
     $(window).resize(function () {
-        var imageWidth = (($(window).width() - 80) / boxes);
-        if (imageWidth < 350) {
-            var percent = (imageWidth / 350);
-            var imageHeight = percent * 520;
-            $(".order").css("font-size", percent * 4 + "em");
-            $(".face").css("font-size", percent * 11.8 + "em");
-            $(".details").css("font-size", percent * 2.5 + "em");
-            $("#cardsContainer img, .slot img").width(imageWidth);
-            $("#cardsContainer img, .slot img").height(imageHeight);
-            $("#cardsContainer li, .slot li").css({
-                "height": "",
-                "width": ""
-            });
-            $(".slot, #sendcards").width(imageWidth + 2);
-            $(".slot, #sendcards").height(imageHeight + 28);
-            $("#cardsContainer").css("min-height", imageHeight + 5);
-        }
-        else
-        {
-            $(".order").css("font-size", "2.15em");
-            $("#cardsContainer img, .slot img").width(350);
-            $("#cardsContainer img, .slot img").height(520);
-            $("#cardsContainer li, .slot li").css({
-                "height": "",
-                "width": ""
-            });
-            $(".slot, #sendcards").width(352);
-            $(".slot, #sendcards").height(548);
-            $("#cardsContainer").css("min-height", 525);
-        }
-        $("#labelText").css("font-size", 1.35 + (0.3 * (9 - boxes)) + "vw");
+        resize();
     });
 
     // Let the slots be droppable, accepting the card elements
@@ -436,5 +401,40 @@
             $(".ui-draggable").draggable("option", "disabled", true).css("cursor", "default");
             setTimeout(sendCards, 1500);
         }
+    }
+
+    function resize()
+    {
+        var imageWidth = (($(window).width() - 80) / boxes);
+        if (imageWidth < 350) {
+            var percent = (imageWidth / 350);
+            var imageHeight = percent * 520;
+            $(".order").css("font-size", percent * 4 + "em");
+            $(".face").css("font-size", percent * 11.8 + "em");
+            $(".details").css("font-size", percent * 2.5 + "em");
+            $("#cardsContainer img, .slot img").width(imageWidth);
+            $("#cardsContainer img, .slot img").height(imageHeight);
+            $("#cardsContainer li, .slot li").css({
+                "height": "",
+                "width": ""
+            });
+            $(".slot, #sendcards").width(imageWidth + 2);
+            $(".slot, #sendcards").height(imageHeight + 28);
+            $("#cardsContainer").css("min-height", imageHeight + 5);
+        }
+        else
+        {
+            $(".order").css("font-size", "2.15em");
+            $("#cardsContainer img, .slot img").width(350);
+            $("#cardsContainer img, .slot img").height(520);
+            $("#cardsContainer li, .slot li").css({
+                "height": "",
+                "width": ""
+            });
+            $(".slot, #sendcards").width(352);
+            $(".slot, #sendcards").height(548);
+            $("#cardsContainer").css("min-height", 525);
+        }
+        $("#labelText").css("font-size", 1.35 + (0.3 * (9 - boxes)) + "vw");
     }
 });

@@ -32,9 +32,14 @@
 </div>
 <div class="clear"></div>
 <br />
-<a id="reset" href="#">Restart Game</a>
-<a id="resetAll" href="#">Reset Program</a>
-<div class="inline" id="timerContainer">
-    <input type="checkbox" name="timer" id="timer" checked="@ViewBag.timer"/>
-    <label id="timerLabel" for="timer"><span id="timerText">Timer Disabled</span></label>
+<div id="startButton" data-started="@ViewBag.started">
+    <a id="startGame" href="#">Start Game</a>
+</div>
+<div id="controlButtons">
+    <a id="reset" href="#">Restart Game</a>
+    <a id="resetAll" href="#">Reset Program</a>
+    <div class="inline" id="timerContainer">
+        <input type="checkbox" name="timer" id="timer" checked="@ViewBag.timer"/>
+        <label id="timerLabel" for="timer"><span id="timerText">Timer Disabled</span></label>
+    </div>
 </div>

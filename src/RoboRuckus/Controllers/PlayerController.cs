@@ -27,6 +27,7 @@ namespace RoboRuckus.Controllers
                 ViewBag.player = player;
                 ViewBag.robot = gameStatus.players[player - 1].playerRobot.robotName;
                 ViewBag.damage = gameStatus.players[player - 1].playerRobot.damage;
+                ViewBag.started = gameStatus.gameStarted;
                 return View();
             }
             else
