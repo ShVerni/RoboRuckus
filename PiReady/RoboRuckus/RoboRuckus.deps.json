@@ -2905,7 +2905,7 @@
     "microsoft.aspnetcore.websockets.protocol/0.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GMhLP6qzbMrYUG+3CaLML9swc0fdBmjF8IHAhqMbxtzF+EfUm7Ks2+g/3Wo9O+Nm9XEgz2FSLfP/wrCAdBf8Dw==",
+      "sha512": "sha512-0xtWJEnz0W6d4eBnLlG6dujOqsCz4qu5y/49HeFtizZPYp1keKXNxCew2r2Pn7M2qRYZ4jUiGPCQktp6mL6DAA==",
       "path": "microsoft.aspnetcore.websockets.protocol/0.1.0",
       "hashPath": "microsoft.aspnetcore.websockets.protocol.0.1.0.nupkg.sha512"
     },
@@ -2926,21 +2926,21 @@
     "microsoft.codeanalysis.analyzers/1.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-AbnVKQF64tJKWPTXGj1NZ3Bq4d1L2/X+AI1/Wu2hv/1UZKbpo9R9RwjZcdweGtmjTjnb2haL9YbtCZwpTCqdEg==",
+      "sha512": "sha512-I/1MkpAdkmlWC+dTOuG0wR1URQgOnVVar9t0c3cGF5a4EXfHjtaZz8M5eG0yyQmw1M9PtebOjYOV7/PhXlJ7KA==",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "hashPath": "microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512"
     },
     "microsoft.codeanalysis.common/1.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-uHry3vBBbT8MzvAweyqq2mqPtKUDOARx6MEMfdIdXAAiMZE0KRUhyDl5YIF8Mhz1swcGmj0ixeb7p/CnRxQI8A==",
+      "sha512": "sha512-tIShuJ5lSc2sIQYrkFa+8Q83v55SHVmmnphcnjNHFXtqZaem6PPa7yuVpivFIhIb7ipw4AqyvwGgdoUsP/9ujw==",
       "path": "microsoft.codeanalysis.common/1.3.0",
       "hashPath": "microsoft.codeanalysis.common.1.3.0.nupkg.sha512"
     },
     "microsoft.codeanalysis.csharp/1.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-R1ttPnZ/yvDwm6HfB6GDHQ99VkhxQfWtWUW13Vo44iePiCXW8Xw5FMwpJw7lyz7YKH9FbAGEyeOUmUqKGYm2nQ==",
+      "sha512": "sha512-VSxjIHkicqxZXnus2+cFRzE9G72NzFNFRjuc5ZVd1K6xi0FplnYNiepAX5NoueLU78MXbxfX/0K51M5YvuvSfA==",
       "path": "microsoft.codeanalysis.csharp/1.3.0",
       "hashPath": "microsoft.codeanalysis.csharp.1.3.0.nupkg.sha512"
     },
@@ -3248,14 +3248,14 @@
     "system.diagnostics.fileversioninfo/4.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ZXxbvPmOIsfRn0d+SskdM+RtxdwA7bZ8VU2GBbb3glNgQi5BncrkerBjYwsiAMapomaKutxm9mupus2mkfLTPg==",
+      "sha512": "sha512-3Dw156Y9RGc8kgytmu1gW9Mw7MkpbAz3HizlC/nWE/4T0SPGvbymSdrtraM6MMWC9gL158bwjaTNhBYuGnwAzw==",
       "path": "system.diagnostics.fileversioninfo/4.0.0",
       "hashPath": "system.diagnostics.fileversioninfo.4.0.0.nupkg.sha512"
     },
     "system.diagnostics.stacktrace/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kp4yZ6013ULLFqTtC2kf0Uooahl7mkoh6twnIvsr/7CHyuY+ZzyWishM0KOY/qs7GG3hSNVDHmt5qZw1WkEzPg==",
+      "sha512": "sha512-2aR/94e1WlA4bvmTG2zPoHeNdYLkhilHQNug6YAnmY/MbSjhGbuluRm5/gaVQtBdhDLhdZbiZtDiiTUjWcaXJw==",
       "path": "system.diagnostics.stacktrace/4.0.1",
       "hashPath": "system.diagnostics.stacktrace.4.0.1.nupkg.sha512"
     },
@@ -3276,7 +3276,7 @@
     "system.dynamic.runtime/4.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ZDLmlJL9ZpzBpEVLsDvz9IkkRIX/uvRsSOPL1vHgazw9JBQpx308nSKf57FmtC743rcUIYVhusLiqwerpyC07Q==",
+      "sha512": "sha512-y5d0CBiE/fqIGrLsd8kxkd4oBjMd5nu9WPe+dcKURqppEFnnAJrw9e49t5tuoz/toUW1rKX8tNtRGwZlMI/k3A==",
       "path": "system.dynamic.runtime/4.0.11",
       "hashPath": "system.dynamic.runtime.4.0.11.nupkg.sha512"
     },
@@ -3500,7 +3500,7 @@
     "system.text.encoding.codepages/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-CX8MgMZBbAkeAgsr8hzhx18MlXGHY7NP55KUZHEVzanbf+qfQgQ8QFthpGS68yLT+BPVC2o5m72uC+M+tHRKtw==",
+      "sha512": "sha512-8qNpPUbt45Pp6H2camr/t9NvFv0Hd3FkVpI15wCulyPSQvP5sPsibHn1DLJ4tUFkCMiuMVpTmj/4DBQFC3JGLw==",
       "path": "system.text.encoding.codepages/4.0.1",
       "hashPath": "system.text.encoding.codepages.4.0.1.nupkg.sha512"
     },
@@ -3549,14 +3549,14 @@
     "system.threading.tasks.parallel/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-cQtlYcytVTqRmGH2RnUaSFl0Any+vhDfR1qgOeGQGAJorD+VezmcwniI+ADR//tbFgZATegY2zQBpDQebzfTKQ==",
+      "sha512": "sha512-94efgGcaXy47cleOhcN2XtIE6I2RHFPMMLOf+yadrrHmIlO1dornT/m50xwSsIuPE+Y7jtWKpxtqc1ywbgjq2A==",
       "path": "system.threading.tasks.parallel/4.0.1",
       "hashPath": "system.threading.tasks.parallel.4.0.1.nupkg.sha512"
     },
     "system.threading.thread/4.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7R5Ob0teBq73BvgK62kGW4QtGphNY3XtGy0MbqaSOoOrUaccwfVG4z36bPOE++pmownSqcPm7aNL9aJ8a/qjLg==",
+      "sha512": "sha512-kyXmC3dqr5Q6c6b0vOA7NhDF7flAaUyUCCDaFthvzZUJqT3ab57px9wwk6XzpPGGutv9P+D1BD1g2HN90idI8g==",
       "path": "system.threading.thread/4.0.0",
       "hashPath": "system.threading.thread.4.0.0.nupkg.sha512"
     },
@@ -3584,21 +3584,21 @@
     "system.xml.xmldocument/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IiYQgdoWlLNYqAPDf1kkSsPK6l6/ugmHVyPVg28p0TF7h0f3Ie3kgg83M1XOKZX/fGRlKW0COK0L5gPwcK0MCg==",
+      "sha512": "sha512-zsZ2zcSWa1uOAHV6d9B5OvR3GbcTZsr9fqy8avaZE3GAIwV1FAESSZ6fpVg+ROH6dVyMWYOBr3JFMo8fvKyUig==",
       "path": "system.xml.xmldocument/4.0.1",
       "hashPath": "system.xml.xmldocument.4.0.1.nupkg.sha512"
     },
     "system.xml.xpath/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Yg5dvVpsrzgg0j7y0i2CL8rwzTY2/brvHh5zUnueaaBidTwAFCz+/ntGHWjDSO/EEMUrq0P8wRySc/eFEj92qw==",
+      "sha512": "sha512-PxuJRBOZVfZLeheHcyuo5ZElub5YF9UkbHMUOU67oKSDYLd6O3UTRjjRdvp/GNqFLIO2K+Cbb+bw0V0GBV6/SQ==",
       "path": "system.xml.xpath/4.0.1",
       "hashPath": "system.xml.xpath.4.0.1.nupkg.sha512"
     },
     "system.xml.xpath.xdocument/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9zTg8niX+BbC0oAmuuBcHUSlxc/s41Yl/Mdn3lL9CxHLsETHoJq1NV8PRofCNL88wLNF7sjYLN4WB4LgVM1IJg==",
+      "sha512": "sha512-4f9tJYSVTiBcpXdJN00es/9d4rWPkAd+vAmYTnmIivafN1kYAfa/JFjBHByMAm1dM44wPKAxXWRvDW+MYFer5A==",
       "path": "system.xml.xpath.xdocument/4.0.1",
       "hashPath": "system.xml.xpath.xdocument.4.0.1.nupkg.sha512"
     },

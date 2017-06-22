@@ -25,7 +25,7 @@
         <span class="lifeBox" id="lifeBox_3"></span>
     </span>
 </div>
-<h2 id="roboName" data-name="@ViewBag.robot">Robot: @ViewBag.robot</h2>
+<div id="secondRow"><h2 id="roboName" data-name="@ViewBag.robot">Robot: @ViewBag.robot</h2><button id="statusCheck">Check Statuses</button></div>
 <div class="row">
     <div class="ui-widget ui-helper-clearfix">
         <ul id="cardsContainer" class="cards ui-helper-reset ui-helper-clearfix">                    
@@ -45,6 +45,6 @@
     <div id="sendcards">
         <img id="submitButton" src=@Url.Content("~/images/cards/submit.png") alt="submt" />
         <hr />
-        <input type="checkbox" id="shutdown"><label id="shutdownLabel" for="shutdown"><span id="labelText">Shutdown Next Round</span></label>
+        <input type="checkbox" id="shutdown"><label id="shutdownLabel" for="shutdown"><span id="labelText">Shutdown Next Round &#x2610; Off</span></label>
     </div>
 </div>

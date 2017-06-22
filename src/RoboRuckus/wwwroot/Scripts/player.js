@@ -32,15 +32,37 @@
     $("#shutdown").button().click(function () {
         if ($('#shutdown').prop("checked"))
         {
-            $("#labelText").html("Shutdown Next Round On");
+            $("#labelText").html("Shutdown Next Round &#x2611 On");
         }
         else
         {
-            $("#labelText").html("Shutdown Next Round");
+            $("#labelText").html("Shutdown Next Round &#x2610 Off");
         }
     });
     $("#shutdownLabel").hover(function () {
         $(this).removeClass("ui-state-hover");
+    });
+
+    // Status check button
+    $("#statusCheck").button().click(function (event) {
+        event.stopImmediatePropagation();
+        $('<div id="dialog"></div>').load('/Player/Statuses/ #botStatuses').dialog({
+            autoOpen: true,
+            height: 'auto',
+            width: 'auto',
+            title: "Player Stats",
+            resizable: "false",
+            position: { my: "left top", at: "left top", of: window },
+            buttons: [
+                {
+                    text: "Close",
+                    icon: "ui-icon-close",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
     });
 
     // Set up arrays for card faces and details
@@ -71,7 +93,7 @@
         if ($("#submitted").length !== 0) {
             $("#submitted").remove();
         }
-        $("#labelText").html("Shutdown Next Round");
+        $("#labelText").html("Shutdown Next Round &#x2610 Off");
         $("#shutdown").prop("checked", false);
 
         var _cards = $.parseJSON(cards);
@@ -167,11 +189,40 @@
         });
     };
 
-    // Shows the current move being executed
+    // Shows the current register and move being executed 
     cardControl.client.showMove = function (card, robot, register) {
         if (curDamage < 10) {
+            // Shows register being executed
             $('.executing').removeClass('executing');
             $("#slot" + register + ' .ui-widget-header').addClass('executing');
+            // Shows card being executed to all players
+            /* Currently disabled
+            $("#cardsContainer").empty();
+            var _card = $.parseJSON(card);
+            var face;
+            var details;
+            if (_card.direction == "forward") {
+                face = _card.magnitude;
+                details = detail[_card.direction] + " " + _card.magnitude;
+            }
+            else {
+                face = faces[_card.direction];
+                details = detail[_card.direction];
+            }
+            // Add current card being executed to the card container
+            $("#cardsContainer").append("<li class='ui-widget-content dealtCard'>\
+                <div class='cardBody'>\
+                    <p class='order'>" + _card.priority + "</p>\
+                    <p class='face'>" + face + "</p>\
+                    <p class='details'>" + details + "</p>\
+                    <img src='/images/cards/bg.png'alt='card'>\
+                </div>\
+            </li>\
+            <li id='player'>Robot moving: " + robot + "<\li>"
+            );
+            resize();
+            $("#player").css("font-size", percent * 5.8 + "em");
+            */
         }
     };
 
@@ -289,7 +340,7 @@
         {
             healSound.play();
         }
-        $(".damageBox").css('background', 'none');
+        $(".damageBox").removeClass("filledDamageBox");
         if (damage >= 10) {
             $("#damage").html("Robot is dead! ");
             $("#cardsContainer").html("<h2>Your robot has died!</h2>");
@@ -299,7 +350,7 @@
         }
         for (var i = 0; i <= damage; i++)
         {
-            $("#damageBox_" + i).css('background', 'red');
+            $("#damageBox_" + i).addClass("filledDamageBox");
         }
         curDamage = damage;
         // Gets the flags the robot has touched
@@ -328,9 +379,9 @@
 
     // Updates the life boxes
     function updateLives(player) {
-        $(".lifeBox").css("background", "none");
+        $(".lifeBox").addClass("emptyLifeBox");
         for (var i = 1; i <= player.lives; i++) {
-            $("#lifeBox_" + i).css("background", "blue");
+            $("#lifeBox_" + i).removeClass("emptyLifeBox");
         }
         if (player.lives <=0)
         {

@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Player Stats";
+}
+
+@section Scripts {}
+<div id="botStatuses">
+    @{
+        int j = 1;
+    }
+    @foreach (string[] player in ViewBag.stats)
+    {
+        <div>
+            <h3 class="topRow">Player @j.ToString() as @player[0]: </h3>
+            <h3 class="topRow">Robot damage: </h3>
+            @{ 
+                j++;
+                int damage = int.Parse(player[1]);
+                int flags = int.Parse(player[2]);
+                int lives = int.Parse(player[3]);
+            }
+            @for (int i = 1; i <= 10; i++)
+            {
+                if (i <= damage)
+                {
+                    <span class="damageBox filledDamageBox"></span>
+                }
+                else
+                {
+                    <span class="damageBox"></span>
+                }
+            }
+
+            <h3 class="topRow flagInfo">Flags touched: </h3>
+            <span class="flagInfo">
+                @for (int i = 0; i < ViewBag.totalFlags; i++)
+                {
+                    if (flags > i)
+                    {
+                        <span class="flagBox touchedFlag"></span>
+                    }
+                    else
+                    {
+                        <span class="flagBox"></span>
+                    }
+                }
+            </span>
+
+            <h3 class="topRow">Lives remaining: </h3>
+            <span>
+            @for (int i = 1; i <= 3; i++)
+            {
+                if (i <= lives)
+                {
+                    <span class="lifeBox"></span>
+                }
+                else
+                {
+                    <span class="lifeBox emptyLifeBox"></span>
+                }
+            }
+            </span>
+      </div>
+    }
+</div>

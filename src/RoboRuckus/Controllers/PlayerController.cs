@@ -172,6 +172,31 @@ namespace RoboRuckus.Controllers
             return Content(result, "application/json");
         }
 
+        /// <summary>
+        /// Shows statuses of all current players
+        /// </summary>
+        /// <returns>The view</returns>
+        public IActionResult Statuses()
+        {
+            if (gameStatus.gameStarted)
+            {
+                string[][] stats = new string[gameStatus.numPlayersInGame][];
+                int i = 0;
+                foreach (Player player in gameStatus.players)
+                {
+                    stats[i] = new string[] { player.playerRobot.robotName, player.playerRobot.damage.ToString(), player.playerRobot.flags.ToString(), player.lives.ToString() };
+                    i++;
+                }
+                ViewBag.totalFlags = gameStatus.gameBoard.flags.Count();
+                ViewBag.stats = stats;
+                return View();
+            }
+            else
+            {
+                return Content("<h2>Game is not set up.</h2>", "text/html");
+            }
+        }
+
         public IActionResult Error()
         {
             return View("~/Views/Shared/Error.cshtml");

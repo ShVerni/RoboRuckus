@@ -24,7 +24,31 @@
 .ui-selectmenu-button.ui-button {
 
 }
-/* Card stuff*/
+
+/* Player page stuff */
+.topRow {
+    display: inline-block;
+}
+
+
+.topRow:not(:first-child) {
+    margin-left: 0.7em;
+}
+
+#botStatuses .topRow:not(:first-child) {
+    margin-left: 0 !important;
+}
+
+#roboName {
+    margin: -0.6em 0.2em .3em;
+    display: inline-block;
+}
+
+#statusCheck {
+    margin-top: -0.5em;
+}
+
+/* Card stuff */
 #cardsContainer {
     min-height: 525px; 
 }
@@ -133,17 +157,8 @@
     border-radius: 0.7em;
 }
 
-.topRow {
-    display: inline-block;
-}
-
-
-.topRow:not(:first-child) {
-   margin-left: 0.7em;
-}
-
-#roboName {
-    margin: -0.6em 0 .3em;
+.filledDamageBox {
+    background: red;
 }
 
 /* Flag boxes stuff */
@@ -154,6 +169,10 @@
     display: inline-block;
 }
 
+.touchedFlag {
+    background: green;
+}
+
 /* Life boxes stuff */
 .lifeBox {
     display: inline-block;
@@ -161,13 +180,14 @@
     height: 0.7em;
     width: 0.7em;
     border-radius: 0.7em;
+    background: blue;
 }
 
-.touchedFlag {
-    background: green;
+.emptyLifeBox {
+    background: none;
 }
 
- /* Setup stuff*/
+ /* Setup stuff */
  .flags {
      height: 2.5em;
      width: 2.5em;

@@ -274,7 +274,7 @@
         $("#controlButtons").hide();
     });
 
-    //Resets the game the very start power on state
+    // Resets the game the very start power on state
     $("#resetAll").button().click(function (event) {
         $.get("/Setup/Reset?resetAll=1", function (data) {
             alert(data);
