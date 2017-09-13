@@ -87,7 +87,7 @@
     }
 
     /// <summary>
-    /// A convenient to group a robot and a conveyor to help facilitate movement
+    /// A convenient structure to group a robot and a conveyor to help facilitate movement
     /// </summary>
     public class conveyorModel
     {

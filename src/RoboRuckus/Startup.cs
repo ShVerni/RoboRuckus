@@ -23,14 +23,36 @@ namespace RoboRuckus
                 .UseStartup<Startup>()
                 .Build();
             
-            // Used to run game without physical bots.
-            if (args.Length >0 && args[0] == "botless")
+            // Used to parse args.
+            if (args.Length > 0)
             {
-                gameStatus.noBots = true;
-                Console.WriteLine("Botless Mode");
+                foreach (string arg in args)
+                {
+                    switch (arg.ToLower())
+                    {
+                        case "botless":
+                            gameStatus.noBots = true;
+                            Console.WriteLine("Botless mode enabled");
+                            break;
+                        case "edgecontrol":
+                            gameStatus.edgeControl = true;
+                            Console.WriteLine("Edge control enabled.");
+                            break;
+                    }
+                }
             }
 
-            host.Run();
+            // This block is here to catch a "Collection was of a fixed size" exception thrown by SignalR when exiting the program.
+            // Not sure if this is a SingalR bug or a result of SignalR not officially being supported on .Net Core yet. 
+            try
+            {
+                host.Run();
+            }
+            catch (System.NotSupportedException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Environment.Exit(0);
         }
 
         // This method gets called by the runtime.

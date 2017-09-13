@@ -16,7 +16,11 @@ namespace RoboRuckus.RuckusCode.Movement
             Left = 0,
             Right = 1,
             Forward = 2,
-            Backward = 3
+            Backward = 3,
+
+            // Not implemented yet.
+            slideLeft = 4,
+            slideRight = 5
         }
 
         /// <summary>
@@ -149,6 +153,21 @@ namespace RoboRuckus.RuckusCode.Movement
         {
             lock(gameStatus.locker)
             {
+                // Check if edge control is enabled
+                bool offBoardMessage = false;
+                if (gameStatus.edgeControl)
+                {
+                    // See if a robot is moving off the board
+                    if (order.offBoard)
+                    {
+                        offBoardMessage = true;
+                        // Prevent the robot from physically moving off the board
+                        if (order.magnitude > 0)
+                        {
+                            order.magnitude--;
+                        }
+                    }
+                }
                 Timer watchDog;
                 // For debugging/diagnostics
                 //System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -183,6 +202,14 @@ namespace RoboRuckus.RuckusCode.Movement
                 // For debugging/diagnostics
                 //stopwatch.Stop();
                 //Console.WriteLine(stopwatch.Elapsed.TotalMilliseconds);
+
+                if (offBoardMessage)
+                {
+                    // Display a message and pause the game to allow the GM to remove bots that are supposed to be off the board.
+                    playerSignals.Instance.showMessage(gameStatus.robots[order.botNumber].robotName + " is off the board and has died.");
+                    Thread.Sleep(4000);
+                }
+
                 return !timeout;
             }
         }
@@ -293,6 +320,8 @@ namespace RoboRuckus.RuckusCode.Movement
                 int newCordX = -1;
                 int newCordY = -1;
                 int[] destination = new int[2];
+                bool _offBoard = false;
+                bool botDied = false;
                 // Check for edge or obstacles
                 for (int i = 1; i <= magnitude; i++)
                 {
@@ -325,11 +354,19 @@ namespace RoboRuckus.RuckusCode.Movement
                         magnitude = i - 1;
                         break;
                     }
-                    // Check for edge of board and pits
-                    else if (newCordX > gameStatus.boardSizeX || newCordY > gameStatus.boardSizeY || newCordX < 0 || newCordY < 0 || boardEffects.onPit(destination))
+                    // Check for pits
+                    else if (boardEffects.onPit(destination))
                     {
                         magnitude = i;
-                        bot.damage = 10;
+                        botDied = true;
+                        break;
+                    }
+                    // Check for edge of board
+                    else if (newCordX > gameStatus.boardSizeX || newCordY > gameStatus.boardSizeY || newCordX < 0 || newCordY < 0)
+                    {
+                        _offBoard = true;
+                        botDied = true;
+                        magnitude = i;
                         break;
                     }
                 }
@@ -337,7 +374,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Check if there's no movement
                 if (magnitude == 0)
                 {
-                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = 0, outOfTurn = OutOfTurn });
+                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = 0, outOfTurn = OutOfTurn, offBoard = _offBoard });
                     return 0;
                 }
                 else
@@ -345,7 +382,7 @@ namespace RoboRuckus.RuckusCode.Movement
                     int remaining;
                     Robot botFound;
 
-                    // Robots on conveyors should have already been cleared of bumping into other robots
+                    // Robots on conveyors should have already been cleared of bumping into other robots in the moveConveyors method
                     if (!onConveyor)
                     {
                         // Check for, and resolve movements of, other robots in the way
@@ -392,16 +429,16 @@ namespace RoboRuckus.RuckusCode.Movement
                         switch (direction - bot.currentDirection)
                         {
                             case 0:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
                                 break;
                             case -2:
                             case 2:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
                                 break;
                             case 3:
                             case -1:
                                 orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, outOfTurn = OutOfTurn });
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
                                 // Robots on conveyors need to handle rotation correction separately in the conveyor method
                                 if (onConveyor)
                                 {
@@ -415,7 +452,7 @@ namespace RoboRuckus.RuckusCode.Movement
                             case -3:
                             case 1:
                                 orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, outOfTurn = OutOfTurn });
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
                                 // Robots on conveyors need to handle rotation correction separately in the conveyor method
                                 if (onConveyor)
                                 {
@@ -433,7 +470,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         int otherMoved = resolveMove(botFound, direction, remaining, ref orders, true);
                         if (otherMoved > 0)
                         {
-                            // Bot didn't move but now may need to rotate.
+                            // Bot didn't move but now may need to rotate
                             if (magnitude - remaining == 0)
                             {
                                 switch (direction - bot.currentDirection)
@@ -448,15 +485,15 @@ namespace RoboRuckus.RuckusCode.Movement
                                         break;
                                 }
                             }
-                            // Check if we're moving forward or backward.
+                            // Check if we're moving forward or backward
                             switch (direction - bot.currentDirection)
                             {
                                 case -2:
                                 case 2:
-                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = otherMoved, outOfTurn = OutOfTurn });
+                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = otherMoved, outOfTurn = OutOfTurn, offBoard = _offBoard });
                                     break;
                                 default:
-                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = otherMoved, outOfTurn = OutOfTurn });
+                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = otherMoved, outOfTurn = OutOfTurn, offBoard = _offBoard });
                                     break;
                             }
                             total += otherMoved;
@@ -497,6 +534,12 @@ namespace RoboRuckus.RuckusCode.Movement
                                 bot.y_pos -= total;
                                 break;
                         }
+                    }
+
+                    // Update if robot has died
+                    if (botDied)
+                    {
+                        bot.damage = 10;
                     }
                     return total;
                 }
@@ -578,6 +621,7 @@ namespace RoboRuckus.RuckusCode.Movement
         public moveCalculator.movement move;
         public int magnitude;
         public bool outOfTurn;
+        public bool offBoard = false;
 
         /// <summary>
         /// Creates a string represnetation of an orderModel which can be sent to the robots

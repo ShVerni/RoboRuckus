@@ -72,7 +72,7 @@ namespace RoboRuckus.Hubs
         /// Let's a player reques their health
         /// </summary>
         /// <param name="playerNum"></param>
-        /// <returns>The damae the robot has</returns>
+        /// <returns>The damage the robot has</returns>
         public int getHealth(int playerNum)
         {
             return gameStatus.players[playerNum - 1].playerRobot.damage;

@@ -210,7 +210,7 @@ namespace RoboRuckus.RuckusCode.Movement
                     moved.Remove(collided);
                 }
 
-                // REsolve the movement of each bot that is moving
+                // Resolve the movement of each bot that is moving
                 foreach (conveyorModel findMove in moved)
                 {
                     Robot.orientation oldFacing = findMove.bot.currentDirection;

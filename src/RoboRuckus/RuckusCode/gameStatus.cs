@@ -30,6 +30,9 @@ namespace RoboRuckus.RuckusCode
         }
         private static bool _noBots = false;
 
+        // Used to disable the option of letting robots drive over the edge of the board when required.
+        public static bool edgeControl = false;
+
         // Game state varaibles
         public static int numPlayers = 0;
         public static int numPlayersInGame = 0;
