@@ -58,7 +58,7 @@ Servo right;
 String server = "192.168.3.1";
 String port = "8082";
 String botNum;
-String connection = "AT+CIPSTART=1,\"TCP\",\"" + server + "\"," + port;
+String connection = "AT+CIPSTART=1,\"TCP\",\"";
 
 bool started = false;
 
@@ -113,6 +113,9 @@ void setup()
   */
   wifi.begin(115200);
   updateShiftRegister(16);
+
+  // Create connection string
+  connection = connection + server + "\"," + port;
 
   // Setup code
   #ifdef setup1
@@ -322,7 +325,7 @@ if (movement <= 3)
     // Ensure connection isn't already open
     sendCommand(F("AT+CIPCLOSE=1"), F("\nOK"));
     success = true;
-    // Connect to server
+    // Open TCP connection to server
     String response = sendCommand(connection, F("\nOK"));
     #ifdef debug
       Serial.println(response);
@@ -330,16 +333,17 @@ if (movement <= 3)
     if (response.indexOf(F("FAIL")) != -1 || response.indexOf(F("ERROR")) != -1)
     {
       #ifdef debug
-        Serial.println(F("Could not oppen connection"));
+        Serial.println(F("Could not open connection"));
       #endif
       success = false;
     }
     else
     {
       // This should really be a POST request, but GET is more reliable
-      String message = "GET /Bot/Done?bot=" + botNum + " HTTP/1.1\r\nHost: " + server + ":" + port + "\r\nConnection: close\r\n\r\n";
-      // Open TCP connection
-      response = sendCommand("AT+CIPSEND=1," + (String)message.length(), F("\nOK"));
+      String message = "GET /Bot/Done?bot=";
+      message = message + botNum + " HTTP/1.1\r\nHost: " + server + ":" + port + "\r\nConnection: close\r\n\r\n";
+      String command = "AT+CIPSEND=1,";
+      response = sendCommand(command + message.length(), F("\nOK"));
       #ifdef debug
         Serial.println(response);
       #endif
@@ -430,9 +434,13 @@ bool startup()
   delay(100);
 
   // Inform server of bot
-  String message = "GET /Bot/Index?ip=" + client + "&name=" + robotName + " HTTP/1.1\r\nHost: " + server + ":" + port + "\r\nConnection: close\r\n\r\n";
-  Serial.println(sendCommand("AT+CIPSEND=1," + (String)message.length(), F("\nOK")) + message);  
+  String message = "GET /Bot/Index?ip=";
+  message = message + client + "&name=" + robotName + " HTTP/1.1\r\nHost: " + server + ":" + port + "\r\nConnection: close\r\n\r\n";
+  Serial.println(message);
+  String command = "AT+CIPSEND=1,";
+  Serial.println(sendCommand(command + message.length(), F("\nOK")));  
   String response = sendCommand(message, F("AK\n"));
+  Serial.println(response);
   if (response.indexOf(F("ERROR")) != -1)
   {
     return false;
@@ -454,7 +462,7 @@ bool startup()
  */
 String sendCommand(String command, String EoT)
 {
-  String response;
+  String response = "";
   if (command != F(""))
   {
     wifi.println(command);

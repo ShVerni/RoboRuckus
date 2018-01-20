@@ -7,6 +7,12 @@
     <OutputType>Exe</OutputType>
     <PackageId>RoboRuckus</PackageId>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Content Update="wwwroot\**\*;Views\**\*;appsettings.json;web.config;GameConfig\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
