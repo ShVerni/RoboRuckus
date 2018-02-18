@@ -21,7 +21,7 @@ namespace RoboRuckus.Controllers
             {
                 int result = gameStatus.addBot(ip, name);
                 // Check if bot is already in pen
-                if (result != -1)
+                if (result != -1 && !gameStatus.tuneRobots)
                 {
                     // Check if bot already has player assigned
                     if ((result & 0x10000) != 0)

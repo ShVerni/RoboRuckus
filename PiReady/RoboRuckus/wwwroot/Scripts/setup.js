@@ -5,6 +5,8 @@
     $.validator.setDefaults({ ignore: null });
     $("#submitButton").button();
 
+    $("#tuningMode").button();
+
     // Enable the board selection menu
     $("#boardSel").selectmenu({
         width: null,

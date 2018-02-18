@@ -1,28 +1,28 @@
 #include <Servo.h>
 #include <i2c_t3.h>
+#include <EEPROM.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_HMC5883_U.h>
 #include <Adafruit_L3GD20_U.h>
 
 // Movement parameters and wheel speeds
-uint8_t leftForwardSpeed = 94;
-uint8_t rightForwardSpeed = 85;
-uint8_t rightBackwardSpeed = 100;
-uint8_t leftBackwardSpeed = 79;
+uint8_t leftForwardSpeed = EEPROM.read(100);
+uint8_t rightForwardSpeed = EEPROM.read(101);
+uint8_t rightBackwardSpeed = EEPROM.read(102);
+uint8_t leftBackwardSpeed = EEPROM.read(103);
 // Forward and backward movement 
-int16_t const Z_threshold = -100;
-uint8_t const turnBoost = 4;
-uint8_t const drift_threshold = 1;
-float const  turn_drift_threshold = 0.4;
+int16_t Z_threshold = 0;
+uint8_t turnBoost = EEPROM.read(106);
+uint8_t drift_threshold = EEPROM.read(107);
+float turn_drift_threshold = 0.0;
 // Turning
-float const turnFactor = 1.44;
+float turnFactor = 0.0;
+
 
 // Robot name, use URL encoding characters if needed  
-String robotName = "Beta%20Bot";
+String robotName = "";
 
-/* Use to tune wheel speeds and above movement parameters */
-//#define setup1
-//#define setup2
+/* Use to debug */
 //#define debug
 //#define debug2
 
@@ -39,7 +39,7 @@ String robotName = "Beta%20Bot";
 */
 
 // Pin assignments and constants
-uint8_t const piezo = 5;
+uint8_t setupBtn = 5;
 uint8_t const latchPin = 7;
 uint8_t const clockPin = 8;
 uint8_t const dataPin = 3;
@@ -68,7 +68,32 @@ IntervalTimer timeout;
 
 // Let's begin
 void setup()
-{
+{  
+  Serial.begin(115200);
+  // Get remaining value from EEPROM
+  EEPROM.get(104, Z_threshold);
+  EEPROM.get(108, turn_drift_threshold);
+  EEPROM.get(112, turnFactor);
+  robotName = loadName();
+  
+  // Set default values if none are set
+  if (leftForwardSpeed == 0 || leftForwardSpeed > 180)
+  {
+    leftForwardSpeed = 94;
+    rightForwardSpeed = 85;
+    rightBackwardSpeed = 94;
+    leftBackwardSpeed = 85;
+    Z_threshold = -100;
+    turnBoost = 4;
+    drift_threshold = 1;
+    turnFactor = 1.44;
+    turn_drift_threshold = 0.4;
+    robotName = "Beta%20Bot";
+    delay(100);
+    saveParameters();
+  }
+  Serial.println("Loaded EEEPROM");
+
   // Attach and initialize servos
   delay(1000);
   left.attach(4);
@@ -80,9 +105,10 @@ void setup()
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
-  
-  Serial.begin(115200);
 
+  // Set up setup mode button
+  pinMode(setupBtn, INPUT_PULLUP);
+  
   // Turn off onbaord LED
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
@@ -113,40 +139,16 @@ void setup()
   */
   wifi.begin(115200);
   updateShiftRegister(16);
-
+  
   // Create connection string
   connection = connection + server + "\"," + port;
 
-  // Setup code
-  #ifdef setup1
-    delay(1000);
-    left.write(leftForwardSpeed);
-    right.write(rightForwardSpeed);
-    delay(3000);
-    left.write(90);
-    right.write(90);
-    delay(500);
-    left.write(leftBackwardSpeed);
-    right.write(rightBackwardSpeed);
-    delay(3000);
-    left.write(90);
-    right.write(90);
-    while(true);
-  #endif
-  
-  #ifdef setup2
-    delay(1000);
-    driveForward(2);
-    delay(1000);
-    driveBackward(1);
-    delay(1000);
-    turn(0, 1);
-    delay(1000);
-    turn(1, 1);
-    delay(1000);
-    turn(0, 2);
-    while(true);
-  #endif
+  // Check for setup/tuning mode
+  if (!digitalRead(setupBtn))
+  {
+    Serial.println("Entering setup");
+    softAPSetup();
+  }
   
   #ifndef debug2
     // Initialize robot
@@ -164,108 +166,125 @@ void setup()
 void loop()
 {
   #ifndef debug2
-  if (wifi.available()) // Check if the WiFi has a message
-  {
-    if (wifi.find("+IPD,0,")) // Check if it's a message from the server
+    if (wifi.available()) // Check if the WiFi has a message
     {
-      delay(10);
-      wifi.find(":");
-      if (started)
+      if (wifi.find("+IPD,0,")) // Check if it's a message from the server
       {
-        uint8_t movement = wifi.read() - 48; // Convert from ASCII to Int
-        uint8_t magnitude = wifi.read() - 48;
-        uint8_t outOfTurn = wifi.read() - 48;
-        #ifdef debug
-          Serial.print(F(">>>>>>>Order: "));
-          Serial.print(movement);
-          Serial.print(magnitude);
-          Serial.println(outOfTurn);
-        #endif
-        // Empty the buffer, just in case
-        while (wifi.available())
+        delay(10);
+        wifi.find(":");
+        if (started)
         {
-          wifi.read(); // read the next character
-        }
-        // Respond and close the connection
-        #ifdef debug
-          Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
-          Serial.println(sendCommand(F("OK"), F("CLOSED")));
-        #else
-          sendCommand(F("AT+CIPSEND=0,2"), F("\nOK"));
-          sendCommand(F("OK"), F("CLOSED"));
-        #endif
-        if (outOfTurn == 2)
-        {
-          // Bot received reset command
-          started = false;
-          updateShiftRegister(175); // Letter A
+          uint8_t movement = wifi.read() - 48; // Convert from ASCII to Int
+          uint8_t magnitude = wifi.read() - 48;
+          uint8_t outOfTurn = wifi.read() - 48;
+          #ifdef debug
+            Serial.print(F(">>>>>>>Order: "));
+            Serial.print(movement);
+            Serial.print(magnitude);
+            Serial.println(outOfTurn);
+          #endif
+          // Empty the buffer, just in case
+          while (wifi.available())
+          {
+            wifi.read(); // read the next character
+          }
+          // Respond and close the connection
+          #ifdef debug
+            Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
+            Serial.println(sendCommand(F("OK"), F("CLOSED")));
+          #else
+            sendCommand(F("AT+CIPSEND=0,2"), F("\nOK"));
+            sendCommand(F("OK"), F("CLOSED"));
+          #endif
+          if (outOfTurn == 2)
+          {
+            // Bot received reset command
+            started = false;
+            updateShiftRegister(175); // Letter A
+          }
+          else
+          {
+            // Bot received move order
+            executeMove(movement, magnitude, outOfTurn);
+          }
         }
         else
         {
-          // Bot received move order
-          executeMove(movement, magnitude, outOfTurn);
+          String instruction_str = wifi.readStringUntil(':');
+          uint8_t instruction = instruction_str.toInt();
+          if (instruction == 0)
+          {
+            // Get assigned player
+            playerNumber = wifi.read() - 48;
+            // Get assigned bot number
+            botNum = wifi.readStringUntil('\n');
+            updateShiftRegister(numbers[playerNumber]);
+            // Empty the buffer, just in case
+            while (wifi.available())
+            {
+              wifi.read(); // Read the next character
+            }
+            // Respond and close the connection
+            #ifdef debug
+              Serial.print(F("Bot number: "));
+              Serial.println(botNum);
+              Serial.print(F("Player number: "));
+              Serial.println(playerNumber);
+              Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
+              Serial.println(sendCommand(F("OK"), F("CLOSED")));
+            #else
+              sendCommand(F("AT+CIPSEND=0,2"), F("\nOK"));
+              sendCommand(F("OK"), F("CLOSED"));
+            #endif
+            started = true;
+          }
+          else if (instruction == 1)
+          {
+            // Empty the buffer, just in case
+            while (wifi.available())
+            {
+              wifi.read(); // read the next character
+            }
+            sendCommand(F("AT+CIPSEND=0,2"), F("\nOK"));
+            sendCommand(F("OK"), F("CLOSE"));
+            Serial.println(F("Entering setup mode"));
+            setupMode();
+          }
         }
       }
       else
       {
-        // Get assigned player
-        playerNumber = wifi.read() - 48;
-        // Get assigned bot number
-        botNum = wifi.readStringUntil('\n');
-        updateShiftRegister(numbers[playerNumber]);
-        // Empty the buffer, just in case
+        // Empty the buffer
         while (wifi.available())
         {
           wifi.read(); // Read the next character
         }
-        // Respond and close the connection
-        #ifdef debug
-          Serial.print(F("Bot number: "));
-          Serial.println(botNum);
-          Serial.print(F("Player number: "));
-          Serial.println(playerNumber);
-          Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
-          Serial.println(sendCommand(F("OK"), F("CLOSED")));
-        #else
-          sendCommand(F("AT+CIPSEND=0,2"), F("\nOK"));
-          sendCommand(F("OK"), F("CLOSED"));
-        #endif
-        started = true;
       }
     }
-    else
-    {
-      // Empty the buffer
-      while (wifi.available())
-      {
-        wifi.read(); // Read the next character
-      }
-    }
-  }
   #endif
   // Enable debug2 to communicate directly to the WiFi module over the serial console
   #ifdef debug2
-  if (wifi.available())
-  {
-    while (wifi.available())
-       {
-         Serial.write(wifi.read()); // read the next character.
-       }
-  }
-
-   if (Serial.available())
-   {
-     delay(1000);
-
-     String command = "";
-
-     while (Serial.available()) // read the command character by character
+    if (wifi.available())
+    {
+      while (wifi.available())
+         {
+           Serial.write(wifi.read()); // Read the next character.
+         }
+    }
+  
+     if (Serial.available())
      {
-       // read one character
-       command += (char)Serial.read();
+       delay(1000);
+  
+       String command = "";
+  
+       while (Serial.available()) // Read the command character by character
+       {
+         // read one character
+         command += (char)Serial.read();
+       }
+       wifi.println(command); // Send the read character to the esp8266
      }
-     wifi.println(command); // send the read character to the esp8266
-   }
    #endif
 }
 
@@ -300,7 +319,6 @@ if (movement <= 3)
     else
     {
       // Robot trying to move, but is blocked
-      tone(piezo, 250, 1000);
       updateShiftRegister(206);
       delay(1000);    
     }
@@ -389,14 +407,11 @@ if (movement <= 3)
 //Shows the damage the bot has taken
 void takeDamage(int damage)
 {
-  tone(piezo, 250, 400);
   if (damage < 10 && damage >= 0)
   {
     updateShiftRegister(numbers[damage]);
   }
   delay(800);
-  tone(piezo, 250, 400);
-  delay(200);    
 }
 
 // Sets up the robot, connecting to the Wi-Fi, informing the server of itself, and so on.
@@ -407,13 +422,25 @@ bool startup()
   {
     wifi.read(); // Read the next character
   }
+  
   // Stop server just in case
   Serial.println(sendCommand(F("AT+CIPSERVER=0"), F("\nOK")));
 
   // Initialize radio
   Serial.println(sendCommand(F("AT+CWMODE=1"), F("\nOK")));
-  //Join WiFi network
+
+  // Disable DHCP server
+  Serial.println(sendCommand(F("AT+CWDHCP=1,1"), F("\nOK")));  
+  
+  // Restart the module to enable changes
+  Serial.println(sendCommand(F("AT+RST"), F("\nOK")));
+  delay(2000);
+  
+  // Join WiFi network
   Serial.println(sendCommand(F("AT+CWJAP=\"RoboRuckus\","), F("\nOK")));
+
+  // Swap this with the above line for a protected network
+  // Serial.println(sendCommand(F("AT+CWJAP=\"RoboRuckus\",\"passphrase\""), F("\nOK")));
 
   // Enable multiplexing (necessary for server operations)
   Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));
@@ -431,7 +458,7 @@ bool startup()
 
   // Connect to server
   Serial.println(sendCommand(connection, F("\nOK")));
-  delay(100);
+  delay(200);
 
   // Inform server of bot
   String message = "GET /Bot/Index?ip=";
@@ -451,6 +478,261 @@ bool startup()
 
   return true;
 }
+
+// Configures the software access point
+void softAPSetup()
+{
+  // Empty buffer
+  while (wifi.available())
+  {
+    wifi.read(); // Read the next character
+  }
+  
+  // Stop server just in case
+  Serial.println(sendCommand(F("AT+CIPSERVER=0"), F("\nOK")));
+
+  // Initialize radio
+  Serial.println(sendCommand(F("AT+CWMODE=2"), F("\nOK")));
+  
+  // Restart the module to enable changes
+  Serial.println(sendCommand(F("AT+RST"), F("\nOK")));
+  delay(3000);
+  
+  // Create WiFi network softAP
+  Serial.println(sendCommand(F("AT+CWSAP=\"RuckusSetup\",\"Ruckus_C0nf\",5,3"), F("\nOK")));
+  
+  // Set the softAP IP address
+   Serial.println(sendCommand(F("AT+CIPAP=\"192.168.3.1\""), F("\nOK")));
+   
+  // Enable DHCP server
+  Serial.println(sendCommand(F("AT+CWDHCP=0,1"), F("\nOK")));
+  
+  // Enable multiplexing (necessary for server operations)
+  Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));
+
+  // Start server
+  Serial.println(sendCommand(F("AT+CIPSERVER=1,8080"), F("\nOK")));
+
+  // Enter setup mode
+  setupMode();
+}
+
+// Allows robot to be configured
+void setupMode()
+{
+  // Dsiplay ready
+  updateShiftRegister(numbers[0]);
+  
+  // Start listening for instructions
+  bool quit = false;
+  while (!quit) {
+    if (wifi.available()) // Check if the WiFi has a message
+    {
+      if (wifi.find("+IPD,0,")) // Check if it's a message from the server
+      {
+        delay(10);
+  
+        // Read instruction
+        wifi.find(":");
+        String instruction_str = wifi.readStringUntil(':');
+        uint8_t instruction = instruction_str.toInt();
+        Serial.print("Instruction received: ");
+        Serial.println(instruction);
+  
+        // Read data
+        String data = "";
+        while (wifi.available())
+        {
+          data += (char)wifi.read();
+        }       
+
+        // Process instruction
+        bool success = false;
+        uint8_t newInt = 0;
+        float newFloat = 0.0;
+        char buff[32];
+        String curStatus = "";
+        String command = "AT+CIPSEND=0,";
+        Serial.print("Data: ");
+        Serial.println(data);
+        switch(instruction) 
+        {
+          case 0:
+            newInt = (uint8_t)data.toInt();
+            if (newInt != 0)
+            {
+              leftForwardSpeed = newInt;
+              success = true;
+            }
+            break;
+          case 1:
+            newInt = (uint8_t)data.toInt();
+            if (newInt != 0)
+            {
+              leftBackwardSpeed = newInt;
+              success = true;
+            }
+            break;
+          case 2:
+            newInt = (uint8_t)data.toInt();
+            if (newInt != 0)
+            {
+              rightForwardSpeed = newInt;
+              success = true;
+            }
+            break;
+          case 3:
+            newInt = (uint8_t)data.toInt();
+            if (newInt != 0)
+            {
+              rightBackwardSpeed = newInt;
+              success = true;
+            }
+            break;
+          case 4:
+            data.toCharArray(buff, sizeof(buff));
+            newFloat = atof(buff);
+            if (newFloat != 0.0)
+            {
+              Z_threshold = (int16_t)newFloat;
+              success = true;
+            }
+            break;
+          case 5:
+            newInt = (uint8_t)data.toInt();
+            if (newInt != 0)
+            {
+              turnBoost = newInt;
+              success = true;
+            }
+            break;
+          case 6:
+            newInt = (uint8_t)data.toInt();
+            if (newInt != 0)
+            {
+              drift_threshold = newInt;
+              success = true;
+            }
+            break;
+          case 7:
+            data.toCharArray(buff, sizeof(buff));
+            newFloat = atof(buff);
+            if (newFloat != 0.0)
+            {
+              turn_drift_threshold = newFloat;
+              success = true;
+            }
+            break;
+          case 8:
+            data.toCharArray(buff, sizeof(buff));
+            newFloat = atof(buff);
+            if (newFloat != 0.0)
+            {
+              turnFactor = newFloat;
+              success = true;
+            }
+            break;
+          case 9:
+            if (data != "" && data.length() < 100)
+            {
+              robotName = data.trim();
+              success = true;
+            }
+            break;
+          case 10:
+            curStatus = curStatus + leftForwardSpeed + "," + rightForwardSpeed + "," + rightBackwardSpeed + "," + leftBackwardSpeed + "," + Z_threshold + "," + turnBoost + "," + drift_threshold + "," + turn_drift_threshold + "," + turnFactor + "," + robotName + "\n";
+            command = command + curStatus.length();
+            Serial.println(sendCommand(command, F("\nOK")));
+            Serial.println(sendCommand(curStatus, F("CLOSE")));
+            break;
+          case 11:
+            delay(50);
+            Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
+            Serial.println(sendCommand(F("OK"), F("CLOSE")));
+            speedTest();
+            break;
+          case 12:
+            delay(50);
+            Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
+            Serial.println(sendCommand(F("OK"), F("CLOSE")));
+            navTest();
+            break;
+          case 13:
+            quit = true;
+            success = true;
+            break;
+        }
+
+        // Respond and close the connection
+        if (instruction < 10 || instruction > 12)
+        {
+          if (success)
+          {
+            Serial.println(sendCommand(F("AT+CIPSEND=0,2"), F("\nOK")));
+            Serial.println(sendCommand(F("OK"), F("CLOSE")));
+          }
+          else
+          {
+            Serial.println(sendCommand(F("AT+CIPSEND=0,5"), F("\nOK")));
+            Serial.println(sendCommand(F("ER"), F("CLOSE")));
+          }
+        }
+        else
+        {
+          Serial.println(sendCommand(F("AT+CIPSERVER=1,8080"), F("\nOK"))); // May be unnecessary
+        }
+        // Empty the buffer, just in case
+        while (wifi.available())
+        {
+          wifi.read(); // Read the next character
+        }
+      }
+      else
+      {
+        // Empty the buffer
+        while (wifi.available())
+        {
+          wifi.read(); // Read the next character
+        }
+      }
+    }
+  }
+  saveParameters();
+  updateShiftRegister(16);
+}
+
+
+// Has the robot drive forward and backward to see if it drives staight
+// and at a good speed.
+void speedTest()
+{
+  left.write(leftForwardSpeed);
+  right.write(rightForwardSpeed);
+  delay(3000);
+  left.write(90);
+  right.write(90);
+  delay(500);
+  left.write(leftBackwardSpeed);
+  right.write(rightBackwardSpeed);
+  delay(3000);
+  left.write(90);
+  right.write(90);
+}
+
+// Has the robot drive a pattern on the bord to test its navigation
+void navTest()
+{
+  driveForward(2);
+  delay(1000);
+  driveBackward(1);
+  delay(1000);
+  turn(0, 1);
+  delay(1000);
+  turn(1, 1);
+  delay(1000);
+  turn(0, 2);
+}
+
 
 /* Send command to WiFi module
  * command is the command to send (blank for read data back)
@@ -495,3 +777,53 @@ void updateShiftRegister(byte data)
   shiftOut(dataPin, clockPin, LSBFIRST, data);
   digitalWrite(latchPin, HIGH);
 }
+
+
+// Saves all robot settings to the EEPROM 
+void saveParameters()
+{
+  Serial.println("Saving EEPROM");
+  EEPROM.update(100, leftForwardSpeed);
+  EEPROM.update(101, rightForwardSpeed);
+  EEPROM.update(102, rightBackwardSpeed);
+  EEPROM.update(103, leftBackwardSpeed);
+  EEPROM.put(104, Z_threshold);
+  EEPROM.update(106, turnBoost);
+  EEPROM.update(107, drift_threshold);
+  EEPROM.put(108, turn_drift_threshold);
+  EEPROM.put(112, turnFactor);
+
+  // Save the robot name
+  int str_len = robotName.length() + 1;
+  char char_array[str_len];
+  robotName.toCharArray(char_array, str_len);
+  for (int i = 0; i < str_len; i++)
+  {
+    EEPROM.update(i, char_array[i]);
+  }
+  EEPROM.update(str_len + 1, 0x00);
+}
+
+
+// Loads the robot's name from the EEPROM
+String loadName()
+{
+   String strBuffer = "";
+   char char_buffer = '\0';
+   int i = 0;
+   do
+   {
+      char_buffer = EEPROM.read(i);
+      strBuffer = strBuffer + char_buffer;
+      i++;
+   } while (char_buffer != 0x00 && char_buffer != '\0' && i < 100);
+   strBuffer.trim();
+   // I don't know why, but if the string isn't copied to a char[] and back, it won't work properly
+   int str_len = strBuffer.length() + 1;
+   char char_array[str_len];
+   strBuffer.toCharArray(char_array, str_len);
+   String result(char_array);
+   return result;
+}
+
+

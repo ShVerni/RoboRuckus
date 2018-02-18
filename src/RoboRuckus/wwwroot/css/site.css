@@ -253,6 +253,21 @@ select {
      margin-right: 1em;
  }
 
+ /* Bot tuning stuff */
+
+.tuneFactor {
+    margin-bottom: 30px;
+}
+
+.ui-slider-handle {
+    width: 3em !important;
+    height: 1.6em !important;
+    top: 50% !important;
+    margin-top: -.8em !important;
+    text-align: center !important;
+    line-height: 1.6em !important;
+}
+
  /* Bot re-entry */
   .bots {
      height: 2.5em;

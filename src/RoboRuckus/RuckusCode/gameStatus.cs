@@ -38,6 +38,7 @@ namespace RoboRuckus.RuckusCode
         public static int numPlayersInGame = 0;
         public static bool gameReady = false;
         public static bool gameStarted = false;
+        public static bool tuneRobots = false;
         public static List<Robot> robotPen = new List<Robot>();
         public static List<Robot> robots = new List<Robot>();
         public static List<Player> players = new List<Player>();
@@ -93,7 +94,7 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="player">The player being assigned to</param>
         /// <param name="robotName">The robot name to assign</param>
-        /// <returns></returns>
+        /// <returns>True on success</returns>
         public static bool assignBot(int player, string robotName)
         {
             Player sender = players[player - 1];

@@ -22,6 +22,10 @@ namespace RoboRuckus.Controllers
             {
                 return RedirectToAction("Monitor");
             }
+            else if (gameStatus.tuneRobots)
+            {
+                return RedirectToAction("Tuning");
+            }
             // Get a list of currently loaded boards and add it to the model
             IEnumerable<SelectListItem> _boards = gameStatus.boards.OrderBy(b => b.name).Select(b => new SelectListItem
             {
@@ -114,6 +118,10 @@ namespace RoboRuckus.Controllers
                 ViewBag.timer = gameStatus.playerTimer;
                 ViewBag.started = gameStatus.gameStarted;
                 return View();
+            }
+            if (gameStatus.tuneRobots)
+            {
+                return RedirectToAction("Tuning");
             }
             else
             {
@@ -241,6 +249,262 @@ namespace RoboRuckus.Controllers
                 }
             }
             return Content("<h1>Error</h1>", "text/HTML");
+        }
+
+        /// <summary>
+        /// Used to tune the robot settings
+        /// </summary>
+        /// <returns>The view</returns>
+        public IActionResult Tuning()
+        {
+            lock (gameStatus.locker)
+            {
+                lock (gameStatus.setupLocker)
+                {
+                    // Check if game is started
+                    if (!gameStatus.gameStarted)
+                    {
+                        // Check if already tuning robots
+                        if (!gameStatus.tuneRobots)
+                        {
+                            // Collect all the robots
+                            foreach (Robot r in gameStatus.robots)
+                            {
+                                r.y_pos = -1;
+                                r.x_pos = -1;
+                                r.damage = 0;
+                                r.flags = 0;
+                                gameStatus.robotPen.Add(r);
+
+                            }
+                            gameStatus.robots.Clear();
+                            byte i = 0;
+                            // Assign a number to each bot
+                            foreach (Robot bot in gameStatus.robotPen)
+                            {
+                                bot.robotNum = i;
+                                // Add dummy player to bot
+                                bot.controllingPlayer = new Player(i);
+                                i++;
+                                gameStatus.robots.Add(bot);
+                            }
+                            gameStatus.robotPen.Clear();
+                            gameStatus.tuneRobots = true;
+                        }
+                        // Build the JSON string of all the robots
+                        string bots = "[";
+                        bool first = true;
+                        foreach (Robot bot in gameStatus.robots)
+                        {
+                            if (!first)
+                            {
+                                bots += ",";
+                            }
+                            else
+                            {
+                                first = false;
+                            }
+                            bots += "{\"number\":" + bot.robotNum + ", \"name\":" + "\"" + bot.robotName + "\"}";
+                        }
+                        bots += "]";
+                        ViewBag.Robots = bots;
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Monitor");
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Sends a configuration instruction to a robot in setup mode
+        /// </summary>
+        /// <param name="choice">The action/parameter to set</param>
+        /// <param name="value">The value to set</param>
+        /// <returns>Thre response from the robot</returns>
+        [HttpGet]
+        public IActionResult botConfig(int bot, int choice, string value)
+        {
+            string result = "ER";
+
+            // Put robot in setup mode
+            if (choice == -1)
+            {
+                int i = -1;
+                bool success = false;
+                Console.WriteLine("Entering setup mode");
+                do
+                {
+                    success = botSignals.enterSetupMode(bot);
+                    Thread.Sleep(50);
+                    i++;
+                } while (!success && i < 5);
+                if (success)
+                {
+                    result = "OK";
+                }
+            }
+            // Get robot's status
+            else if (choice == 10)
+            {
+                Console.WriteLine("Getting status");
+                int i = -1;
+                do
+                {
+                    result = botSignals.getRobotSettings(bot);
+                    Thread.Sleep(50);
+                    i++;
+                } while (result == "ER" && i < 5);
+                Console.WriteLine(result);
+            }
+            // Run a speed test
+            else if (choice == 11)
+            {
+                string[] values = value.Split(',');
+                int j = 0;
+                int i = -1;
+                bool success = false;
+                foreach (string param in values)
+                {
+                    i = -1;
+                    success = false;
+                    do
+                    {
+                        success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, int.Parse(param));
+                        Thread.Sleep(50);
+                        i++;
+                    } while (!success && i < 5);                    
+                    j++;
+                }
+                i = -1;
+                success = false;
+                do
+                {
+                    success = botSignals.sendConfigParameter(bot, botSignals.configParameters.speedTest, 0);
+                    Thread.Sleep(50);
+                    i++;
+                } while (!success && i < 5);
+                if (success)
+                {
+                    result = "OK";
+                }
+            }
+            // Run a navigation test
+            else if (choice == 12)
+            {
+                string[] values = value.Split(',');
+                int j = 4;
+                int i = -1;
+                bool success = false;
+                foreach (string param in values)
+                {
+                    i = -1;
+                    success = false;
+                    do
+                    {
+                        if (j == 4 || j == 7 || j == 8)
+                        {
+                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, float.Parse(param));
+                        }
+                        else
+                        {
+                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, int.Parse(param));
+                        }
+                        Thread.Sleep(50);
+                        i++;
+                    } while (!success && i < 5);
+                    j++;
+                }
+                i = -1;
+                success = false;
+                do
+                {
+                    success = botSignals.sendConfigParameter(bot, botSignals.configParameters.navTest, 0);
+                    Thread.Sleep(50);
+                    i++;
+                } while (!success && i < 5);
+                if (success)
+                {
+                    result = "OK";
+                }
+            }
+            // Quit
+            else if (choice == 13)
+            {
+                string[] values = value.Split(',');
+                int j = 0;
+                int i = -1;
+                bool success = false;
+                foreach (string param in values)
+                {
+                    i = -1;
+                    success = false;
+                    do
+                    {
+                        if (j == 4 || j == 7 || j == 8)
+                        {
+                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, float.Parse(param));
+                        }
+                        else if (j == 9)
+                        {
+                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, param);
+                        }
+                        else
+                        {
+                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, int.Parse(param));
+                        }
+                        Thread.Sleep(50);
+                        i++;
+                    } while (!success && i < 5);
+                    j++;
+                }
+                i = -1;
+                success = false;
+                do
+                {
+                    success = botSignals.sendConfigParameter(bot, botSignals.configParameters.quit, 0);
+                    Thread.Sleep(50);
+                    i++;
+                } while (!success && i < 5);
+                if (success)
+                {
+                    result = "OK";
+                }
+            }
+            return Content(result, "text/plain");
+        }
+
+
+        /// <summary>
+        /// Exits the bot tuning mode
+        /// </summary>
+        /// <returns>A redirect to the setup index page</returns>
+        public IActionResult finishBotConfig()
+        {
+            lock(gameStatus.locker)
+            {
+                lock(gameStatus.setupLocker)
+                {
+                    if (gameStatus.tuneRobots)
+                    {
+                        foreach (Robot r in gameStatus.robots)
+                        {
+                            r.y_pos = -1;
+                            r.x_pos = -1;
+                            r.damage = 0;
+                            r.flags = 0;
+                            r.controllingPlayer = null;
+                            gameStatus.robotPen.Add(r);
+                        }
+                        gameStatus.robots.Clear();
+                        gameStatus.tuneRobots = false;
+                    }
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         /// <summary>
