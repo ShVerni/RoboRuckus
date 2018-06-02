@@ -81,11 +81,14 @@
 
     var boxes = 9;
 
-    // Start connection to player hub
-    var cardControl = $.connection.playerHub;
+    // Create connection to player hub
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/playerHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
 
     // Processes and displays cards dealt to the player
-    cardControl.client.deal = function (cards, lockedCards) {
+    connection.on("deal", (cards, lockedCards) => { 
         $('.executing').removeClass('executing');
         submitted = true;
         isShutdown = false;
@@ -184,13 +187,13 @@
         submitted = false;
         $("#submitButton").attr("src", "/images/cards/submit.png");
         // Get bot's current status
-        cardControl.server.getHealth($('#playerNum').data("player")).done(function (damage) {
+        connection.invoke("getHealth", $('#playerNum').data("player")).then(function (damage) {
             updateHealth(damage);
-        });
-    };
+        }).catch (err => console.error(err.toString()));
+    });
 
     // Shows the current register and move being executed 
-    cardControl.client.showMove = function (card, robot, register) {
+    connection.on("showMove", (card, robot, register) => { 
         if (curDamage < 10) {
             // Shows register being executed
             $('.executing').removeClass('executing');
@@ -224,38 +227,25 @@
             $("#player").css("font-size", percent * 5.8 + "em");
             */
         }
-    };
+    });
 
     // Bind update damage function
-    cardControl.client.UpdateHealth = function (damage) {
+    connection.on("UpdateHealth", (damage) => { 
         var curHealth = $.parseJSON(damage);
         var player = parseInt($('#playerNum').data("player"));
         var myDamage = curHealth[player - 1];
         updateHealth(myDamage);
-    };
-
-    // When called, requests a deal from the server
-    cardControl.client.requestdeal = (function () {
-        $("#shutdown").prop("checked", false).button("refresh");
-        cardControl.server.dealMe($('#playerNum').data("player"));
     });
 
-    // Once the page loads, get the player's hand if needed
-    $.connection.hub.start().done(function () {
-        if ($("#slots").data("started") == "True") {
-            cardControl.server.dealMe($('#playerNum').data("player"));
-        }
-        else {
-            resize();
-            $("#cardsContainer").html("<h2 style='color: red;'>Please wait for the game to start.</h2>");
-            $("#shutdown").button("disable");
-        }
-
+    // When called, requests a deal from the server
+    connection.on("requestdeal", () => { 
+        $("#shutdown").prop("checked", false).button("refresh");
+        connection.invoke("dealMe", $('#playerNum').data("player")).catch(err => console.error(err.toString()));
     });
 
     // Game has been reset, return to setup page
-    cardControl.client.Reset = (function (resetAll) {
-        if (resetAll == 0) {
+    connection.on("Reset", (resetAll) => { 
+        if (resetAll === 0) {
             setTimeout(function () {
                 window.location.assign("/Player/playerSetup/" + $('#playerNum').data("player") + "?reset=1");
             }, 1);
@@ -269,7 +259,7 @@
     });
 
     // Displays a message from the server
-    cardControl.client.displayMessage = (function (message, sound) {
+    connection.on("displayMessage", (message, sound) => { 
         if (curDamage < 10) {
             $("#cardsContainer").html("<h2>" + message + "</h2>");
             switch (sound) {
@@ -288,6 +278,29 @@
             }
         }
     });
+
+    // Starts the countdown timer
+    connection.on("startTimer", () => {
+        if (!submitted && !isShutdown) {
+            timeRemaining = 30;
+            $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
+            timerStarted.play();
+            timer = setInterval(timerHandler, 1000);
+        }
+    });
+
+    // Start the connection to the player hub
+    connection.start().then(function () {
+        // Once the page loads, get the player's hand if needed
+        if ($("#slots").data("started") === "True") {
+            connection.invoke("dealMe", $('#playerNum').data("player")).catch(err => console.error(err.toString()));
+        }
+        else {
+            resize();
+            $("#cardsContainer").html("<h2 style='color: red;'>Please wait for the game to start.</h2>");
+            $("#shutdown").button("disable");
+        }
+    }).catch(err => console.error(err.toString()));
 
     // Resize the cards as the window resizes, this is inelegant but works for now, should switch to entirely CSS solution
     $(window).resize(function () {
@@ -416,21 +429,11 @@
                 if ($('#shutdown').prop("checked")) {
                     shutdown = true;
                 }
-                cardControl.server.sendCards($('#playerNum').data("player"), move, shutdown);
+                connection.invoke("sendCards", $('#playerNum').data("player"), move, shutdown).catch(err => console.error(err.toString()));
                 $("#slots").prepend("<h3 id='submitted' style='color: red'>Program Submitted</h3>");
             }
         }
     }
-
-    // Starts the countdown timer
-    cardControl.client.startTimer = (function () {
-        if (!submitted && !isShutdown) {            
-            timeRemaining = 30;
-            $("#timer").html("<h2 style='color: red'>Time remaining: " + timeRemaining + "</h2>");
-            timerStarted.play();
-            timer = setInterval(timerHandler, 1000);
-        }
-    });
     
     // Handles the countdown timer
     function timerHandler()

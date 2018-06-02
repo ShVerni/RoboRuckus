@@ -5,54 +5,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RoboRuckus.RuckusCode;
 using System;
-using System.IO;
+using RoboRuckus.Hubs;
 
 namespace RoboRuckus
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; set; }
+        private readonly IConfiguration _configuration;
 
-        public static void Main(string[] args)
+        // Construction for DI of configuration.
+        public Startup(IConfiguration configuration)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://*:8082")
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
-            
-            // Used to parse args.
-            if (args.Length > 0)
-            {
-                foreach (string arg in args)
-                {
-                    switch (arg.ToLower())
-                    {
-                        case "botless":
-                            gameStatus.noBots = true;
-                            Console.WriteLine("Botless mode enabled");
-                            break;
-                        case "edgecontrol":
-                            gameStatus.edgeControl = true;
-                            Console.WriteLine("Edge control enabled.");
-                            break;
-                    }
-                }
-            }
-
-            // This block is here to catch a "Collection was of a fixed size" exception thrown by SignalR when exiting the program.
-            // Not sure if this is a SingalR bug or a result of SignalR not officially being supported on .Net Core yet. 
-            try
-            {
-                host.Run();
-            }
-            catch (System.NotSupportedException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            Environment.Exit(0);
+            _configuration = configuration;
         }
 
         // This method gets called by the runtime.
@@ -66,11 +30,9 @@ namespace RoboRuckus
         }
 
         // Configure is called after ConfigureServices is called.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IConfiguration configuration)
         {
-            // Setup configuration sources. May be unnecessary
-            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json").AddEnvironmentVariables(); ;
-            Configuration = builder.Build();
+            // Add console to log
             loggerFactory.AddConsole();
 
             serviceHelpers.rootPath = env.ContentRootPath;
@@ -95,8 +57,35 @@ namespace RoboRuckus
                 );
             });
 
+            // Add fileserver to app.
             app.UseFileServer();
-            app.UseSignalR();
+
+            // Add SignalR to app.
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<playerHub>("/playerHub");
+            });
+
+            // Parse command line arguments.
+            string options = configuration.GetValue<string>("options");
+            if (options != null)
+            {
+                string[] args = options.Split(",");
+                foreach (string arg in args)
+                {
+                    switch (arg)
+                    {
+                        case "botless":
+                            gameStatus.noBots = true;
+                            Console.WriteLine("Botless mode enabled");
+                            break;
+                        case "edgecontrol":
+                            gameStatus.edgeControl = true;
+                            Console.WriteLine("Edge control enabled.");
+                            break;
+                    }
+                }
+            }
         }
     }
 }

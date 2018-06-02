@@ -19,7 +19,7 @@ namespace RoboRuckus.RuckusCode.Movement
         {
             lock (gameStatus.locker)
             {
-                playerSignals.Instance.showMessage("Turntables Rotating");
+                serviceHelpers.signals.showMessage("Turntables Rotating");
                 // Find all bots on turntables
                 Robot[] bots = gameStatus.robots.Where(r => gameStatus.gameBoard.turntables.Any(t => (t.location[0] == r.x_pos && t.location[1] == r.y_pos))).ToArray();
                 foreach (Robot _bot in bots)
@@ -28,7 +28,7 @@ namespace RoboRuckus.RuckusCode.Movement
                     turntable table = gameStatus.gameBoard.turntables.Single(t => (t.location[0] == _bot.x_pos && t.location[1] == _bot.y_pos));
                     moveModel movement = new moveModel
                     {
-                        card = new Hubs.cardModel
+                        card = new cardModel
                         {
                             direction = table.dir,
                             cardNumber = 1,
@@ -52,9 +52,9 @@ namespace RoboRuckus.RuckusCode.Movement
             lock (gameStatus.locker)
             {
                 Dictionary<int, sbyte> botsHit = new Dictionary<int, sbyte>();
-                playerSignals.Instance.showMessage("Firing lasers!", "laser");
-                bool botHit = boardEffects.fireBotLasers(ref botsHit);
-                bool boardHit = boardEffects.fireBoardLasers(ref botsHit);
+                serviceHelpers.signals.showMessage("Firing lasers!", "laser");
+                bool botHit = fireBotLasers(ref botsHit);
+                bool boardHit = fireBoardLasers(ref botsHit);
                 if (botHit || boardHit)
                 {
                     Timer watchDog;
@@ -86,7 +86,7 @@ namespace RoboRuckus.RuckusCode.Movement
         {
             lock (gameStatus.locker)
             {
-                playerSignals.Instance.showMessage("Wrenches and flags healing");
+                serviceHelpers.signals.showMessage("Wrenches and flags healing");
                 return gameStatus.robots.Where(r => !r.controllingPlayer.dead && (gameStatus.gameBoard.wrenches.Any(w => w[0] == r.x_pos && w[1] == r.y_pos) || gameStatus.gameBoard.flags.Any(f => f[0] == r.x_pos && f[1] == r.y_pos))).ToArray();
             }
         }
@@ -100,7 +100,7 @@ namespace RoboRuckus.RuckusCode.Movement
             lock (gameStatus.locker)
             {
                 List<int[]> found = new List<int[]>();
-                playerSignals.Instance.showMessage("Touching flags");
+                serviceHelpers.signals.showMessage("Touching flags");
                 for (int i = 0, n = gameStatus.gameBoard.flags.Length; i < n; i++)
                 {
                     int[] flag = gameStatus.gameBoard.flags[i];
@@ -187,12 +187,12 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Check if express conveyor movement, then find all robots on the conveyors
                 if (express)
                 {
-                    playerSignals.Instance.showMessage("Express conveyors moving");
+                    serviceHelpers.signals.showMessage("Express conveyors moving");
                     onConveyors = gameStatus.robots.Where(r => (gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1])))).ToArray();
                 }
                 else
                 {
-                    playerSignals.Instance.showMessage("All conveyors moving");
+                    serviceHelpers.signals.showMessage("All conveyors moving");
                     onConveyors = gameStatus.robots.Where(r => (gameStatus.gameBoard.conveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))) || (gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1])))).ToArray();
                 }
                 List<conveyorModel> moved = new List<conveyorModel>();

@@ -97,7 +97,7 @@ namespace RoboRuckus.Controllers
         public IActionResult startGame(int status)
         {
             gameStatus.gameStarted = true;
-            playerSignals.Instance.dealPlayers();
+            serviceHelpers.signals.dealPlayers();
             return Content("Done", "text/plain");
         }
 
@@ -153,7 +153,7 @@ namespace RoboRuckus.Controllers
                         bot.currentDirection = (Robot.orientation)Enum.Parse(typeof(Robot.orientation), enter[3].ToString());
                         sender.dead = false;
                     }
-                    playerSignals.Instance.dealPlayers();
+                    serviceHelpers.signals.dealPlayers();
                     gameStatus.playersNeedEntering = false;
                 }
                 return Content("OK", "text/plain");
@@ -244,7 +244,7 @@ namespace RoboRuckus.Controllers
                         bot.currentDirection = (Robot.orientation)botDir;
                         bot.flags = flags;
                     }
-                    playerSignals.Instance.updateHealth();
+                    serviceHelpers.signals.updateHealth();
                     return View();
                 }
             }
@@ -554,7 +554,7 @@ namespace RoboRuckus.Controllers
         [HttpGet]
         public IActionResult Reset(int resetAll = 0)
         {
-            playerSignals.Instance.resetGame(resetAll);
+            serviceHelpers.signals.resetGame(resetAll);
             return Content("Done", "text/plain");
         }
 

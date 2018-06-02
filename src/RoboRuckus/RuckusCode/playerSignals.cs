@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Linq;
-using Microsoft.AspNetCore.SignalR.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Cryptography;
 using RoboRuckus.RuckusCode.Movement;
+using RoboRuckus.Hubs;
 
 namespace RoboRuckus.RuckusCode
 {
@@ -14,7 +15,7 @@ namespace RoboRuckus.RuckusCode
     /// </summary>
     public class playerSignals
     {
-        private readonly static Lazy<playerSignals> _instance = new Lazy<playerSignals>(() => new playerSignals());
+        // RNG provider  
         private readonly RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
         // There can be no more than 256 cards in the deck
         private byte numberOfCards;
@@ -22,27 +23,17 @@ namespace RoboRuckus.RuckusCode
         private bool timerStarted = false;
 
         /// <summary>
-        /// Singleton instance for thread saftey
+        /// Plaeyr hub context.
         /// </summary>
-        public static playerSignals Instance
-        {
-            get
-            {
-                return _instance.Value;
-            }
-        }
-
-        /// <summary>
-        /// Players connected to player hub
-        /// </summary>
-        private static IHubConnectionContext<dynamic> Clients;
+        private static IHubContext<playerHub> _playerHub;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        private playerSignals()
+        /// <param name="hubcontext">DI for hub context</param>
+        public playerSignals(IHubContext<playerHub> hubcontext)
         {
-            Clients = serviceHelpers.playerHubContext.Clients;
+            _playerHub = hubcontext;
             numberOfCards = (byte)gameStatus.movementCards.Length;
         }
 
@@ -52,7 +43,7 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="caller">The player client submitting the move</param>
         /// <param name="cards">The cards submitted for their move</param>
-        public void submitMove(Player caller, Hubs.cardModel[] cards)
+        public void submitMove(Player caller, cardModel[] cards)
         {
             lock (gameStatus.locker)
             {
@@ -99,7 +90,7 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                Clients.All.displayMessage(message, sound);
+                _playerHub.Clients.All.SendAsync("displayMessage", message, sound);
             }
         }
 
@@ -110,7 +101,7 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                Clients.All.requestdeal();
+                _playerHub.Clients.All.SendAsync("requestdeal");
             }
         }
 
@@ -124,7 +115,7 @@ namespace RoboRuckus.RuckusCode
             {
                 string card = gameStatus.movementCards[move.card.cardNumber];
                 string robot = move.bot.robotName;
-                Clients.All.showMove(card, robot, register + 1);
+                _playerHub.Clients.All.SendAsync("showMove", card, robot, register + 1);
             }
         }
 
@@ -191,7 +182,7 @@ namespace RoboRuckus.RuckusCode
                     result += inGame.playerRobot.damage.ToString();
                 }
                 result += "]";
-                Clients.All.UpdateHealth(result);
+                _playerHub.Clients.All.SendAsync("UpdateHealth", result);
             }
         }
 
@@ -243,7 +234,7 @@ namespace RoboRuckus.RuckusCode
                 {
                     gameStatus.robots.Clear();
                 }
-                Clients.All.Reset(resetAll);
+                _playerHub.Clients.All.SendAsync("Reset", resetAll);
             }
         }
 
@@ -319,7 +310,7 @@ namespace RoboRuckus.RuckusCode
                     if (!gameStatus.players.All(p => p.lives <= 0) && gameStatus.players.All(p => p.shutdown || p.lives <= 0))
                     {
                         // Clear dealt cards
-                        Clients.All.deal(new byte[0], new byte[0]);
+                        _playerHub.Clients.All.SendAsync("deal", new byte[0], new byte[0]);                        
 
                         // Alert players to what's happening
                         showMessage("All active players are shutdown, next round starting now.");
@@ -350,7 +341,7 @@ namespace RoboRuckus.RuckusCode
             if (gameStatus.playerTimer && gameStatus.players.Count(p => !p.dead) > 1 && gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown)) == (gameStatus.numPlayersInGame - 1))
             {
                 timerStarted = true;
-                Clients.All.startTimer();
+                _playerHub.Clients.All.SendAsync("startTimer");
                 return true;
             }
             return false;

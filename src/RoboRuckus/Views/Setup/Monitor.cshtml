@@ -3,13 +3,13 @@
 }
 
 @section scripts
-{
-    <script type="text/javascript" src=@Url.Content("~/signalr/hubs")></script>
+    {
+    <script type="text/javascript" src=@Url.Content("~/lib/signalr/signalr.min.js")></script>
     <script type="text/javascript" src=@Url.Content("~/Scripts/monitor.js")></script>
 }
 <h2>Number of players: @ViewBag.players</h2>
 <div id="board" class="left" data-board="@ViewBag.board" data-flag='@ViewBag.flags'>
-    @for(int i = ViewBag.board_y; i >= 0; i--)
+    @for (int i = ViewBag.board_y; i >= 0; i--)
     {
         <div class="boardRow" id="y_@i">
             @for (int j = 0; j <= ViewBag.board_x; j++)
@@ -39,7 +39,7 @@
     <a id="reset" href="#">Restart Game</a>
     <a id="resetAll" href="#">Reset Program</a>
     <div class="inline" id="timerContainer">
-        <input type="checkbox" name="timer" id="timer" checked="@ViewBag.timer"/>
+        <input type="checkbox" name="timer" id="timer" checked="@ViewBag.timer" />
         <label id="timerLabel" for="timer"><span id="timerText">Timer Disabled</span></label>
     </div>
 </div>

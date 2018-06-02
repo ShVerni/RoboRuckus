@@ -5,11 +5,6 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6B630745-A033-4178-B2F9-EC9491EE6848}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A9C9D465-C8F7-4416-815F-4778B855EB9F}"
-	ProjectSection(SolutionItems) = preProject
-		NuGet.config = NuGet.config
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoboRuckus", "src\RoboRuckus\RoboRuckus.csproj", "{0E5BC079-0252-43B5-A03B-BD0BA1BA23FA}"
 EndProject
 Global

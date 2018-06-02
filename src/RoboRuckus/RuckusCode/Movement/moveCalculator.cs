@@ -38,17 +38,17 @@ namespace RoboRuckus.RuckusCode.Movement
                     {
                         // Move robots
                         executePlayerMoves(i);
-                        playerSignals.Instance.updateHealth();
+                        serviceHelpers.signals.updateHealth();
                         Thread.Sleep(1000);
 
                         // Move express conveyors
                         boardEffects.moveConveyors(true);
-                        playerSignals.Instance.updateHealth();
+                        serviceHelpers.signals.updateHealth();
                         Thread.Sleep(1000);
 
                         // Move all conveyors
                         boardEffects.moveConveyors(false);
-                        playerSignals.Instance.updateHealth();
+                        serviceHelpers.signals.updateHealth();
                         Thread.Sleep(1000);
 
                         // Rotate turntables
@@ -59,7 +59,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         if (boardEffects.fireLasers())
                         {
                             Thread.Sleep(800);
-                            playerSignals.Instance.updateHealth();
+                            serviceHelpers.signals.updateHealth();
                             Thread.Sleep(2000);
                         }
                         else
@@ -87,7 +87,7 @@ namespace RoboRuckus.RuckusCode.Movement
                             }
                             if (i == 4)
                             {
-                                playerSignals.Instance.updateHealth();
+                                serviceHelpers.signals.updateHealth();
                                 Thread.Sleep(1650);
                             }
                         }
@@ -112,7 +112,7 @@ namespace RoboRuckus.RuckusCode.Movement
                                     }
                                     if (sound)
                                     {
-                                        playerSignals.Instance.showMessage("Touching flags", "flagTouch");
+                                        serviceHelpers.signals.showMessage("Touching flags", "flagTouch");
                                         Thread.Sleep(1000);
                                     }
                                 }
@@ -132,7 +132,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         // Check for winner                       
                         if (winner != null)
                         {
-                            playerSignals.Instance.showMessage((winner.robotName).ToString() + " has won!", "winner");
+                            serviceHelpers.signals.showMessage((winner.robotName).ToString() + " has won!", "winner");
                             gameStatus.winner = true;
                             Thread.Sleep(250);
                             // Do a victory dance
@@ -206,7 +206,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 if (offBoardMessage)
                 {
                     // Display a message and pause the game to allow the GM to remove bots that are supposed to be off the board.
-                    playerSignals.Instance.showMessage(gameStatus.robots[order.botNumber].robotName + " is off the board and has died.");
+                    serviceHelpers.signals.showMessage(gameStatus.robots[order.botNumber].robotName + " is off the board and has died.");
                     Thread.Sleep(4000);
                 }
 
@@ -574,7 +574,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Check if robot has died during the register
                 if (!move.bot.controllingPlayer.dead)
                 {
-                    playerSignals.Instance.displayMove(move, regsiter);
+                    serviceHelpers.signals.displayMove(move, regsiter);
                     orders = calculateMove(move);
                     // Send each order to the appropriate robot
                     foreach (orderModel order in orders)
@@ -608,7 +608,7 @@ namespace RoboRuckus.RuckusCode.Movement
     /// </summary>
     public class moveModel
     {
-        public Hubs.cardModel card;
+        public cardModel card;
         public Robot bot;
     }
 

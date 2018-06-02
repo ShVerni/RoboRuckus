@@ -1,26 +1,17 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Infrastructure;
-using Microsoft.AspNetCore.SignalR.Hubs;
 using RoboRuckus.RuckusCode;
 
 namespace RoboRuckus.Hubs
 {
-    [HubName("playerHub")]
     public class playerHub : Hub
     {
-        // The shared player signals instance
-        private readonly playerSignals _signals;
-
         /// <summary>
         /// Constructs the player hub
         /// </summary>
-        /// <param name="manager">The player hub connection manager</param>
-        public playerHub(IConnectionManager manager)
+        public playerHub(IHubContext<playerHub> context)
         {
-            // Make sure the player hub context is avaiable when needed.
-            serviceHelpers.playerHubContext = manager.GetHubContext<playerHub>();
-            // Create or get the playerSignals instance
-            _signals = playerSignals.Instance;
+            // Create instance of player signal class passing hub context (there's probably a better way to use DI)
+            serviceHelpers.signals = new playerSignals(context);
         }
 
         /// <summary>
@@ -50,7 +41,7 @@ namespace RoboRuckus.Hubs
 
                 // Build the dealt cards string
                 first = true;
-                byte[] cards = _signals.dealPlayer(caller);
+                byte[] cards = serviceHelpers.signals.dealPlayer(caller);
                 string dealtCards = "[";
                 foreach (byte card in cards)
                 {
@@ -64,7 +55,7 @@ namespace RoboRuckus.Hubs
                 }
                 dealtCards += "]";
 
-                Clients.Caller.deal(dealtCards, locked);
+                Clients.Caller.SendAsync("deal", dealtCards, locked);
             }
         }
 
@@ -89,29 +80,8 @@ namespace RoboRuckus.Hubs
             if (!sender.dead)
             {
                 sender.willShutdown = shutdown;
-                _signals.submitMove(sender, cards);
-            }      
-        }
-    }
-
-    /// <summary>
-    /// A convenient way to organize card data
-    /// </summary>
-    public class cardModel
-    {
-        public string direction;
-        public int priority;
-        public int magnitude;
-        public byte cardNumber;
-
-        /// <summary>
-        /// A string representaion of a card that matches
-        /// the one generated and sent to the player cleints.
-        /// </summary>
-        /// <returns>The string representation of a card</returns>
-        public override string ToString()
-        {
-            return "{ \"direction\": \"" + direction + "\", \"priority\": " + priority.ToString() + ", \"magnitude\": " + magnitude.ToString() + ", \"cardNumber\": " + cardNumber.ToString() + "}";
+                serviceHelpers.signals.submitMove(sender, cards);
+            }
         }
     }
 }

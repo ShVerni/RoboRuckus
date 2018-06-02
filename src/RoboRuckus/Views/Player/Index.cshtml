@@ -4,7 +4,7 @@
 
 @section scripts
 {
-    <script type="text/javascript" src="~/signalr/js"></script>
+    <script type="text/javascript" src=@Url.Content("~/lib/signalr/signalr.min.js")></script>
     <script type="text/javascript" src=@Url.Content("~/Scripts/player.js")></script>
 }
 <div>
@@ -18,7 +18,7 @@
     <h3 class="topRow flagInfo">Flags touched: </h3>
     <span id="flagBoxes" class="flagInfo"></span>
 
-    <h3  class="topRow">Lives remaining: </h3>
+    <h3 class="topRow">Lives remaining: </h3>
     <span id="lifeBoxes">
         <span class="lifeBox" id="lifeBox_1"></span>
         <span class="lifeBox" id="lifeBox_2"></span>
@@ -28,8 +28,7 @@
 <div id="secondRow"><h2 id="roboName" data-name="@ViewBag.robot">Robot: @ViewBag.robot</h2><button id="statusCheck">Check Statuses</button></div>
 <div class="row">
     <div class="ui-widget ui-helper-clearfix">
-        <ul id="cardsContainer" class="cards ui-helper-reset ui-helper-clearfix">                    
-        </ul>
+        <ul id="cardsContainer" class="cards ui-helper-reset ui-helper-clearfix"></ul>
     </div>
 </div>
 <span id="timer"></span>
@@ -38,8 +37,7 @@
     {
         <div id="slot@(j + 1)" class="slot ui-widget ui-widget-content">
             <h4 class="ui-widget-header">Slot @(j + 1)</h4>
-            <ul class="slotList">               
-            </ul>
+            <ul class="slotList"></ul>
         </div>
     }
     <div id="sendcards">

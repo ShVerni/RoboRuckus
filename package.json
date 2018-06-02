@@ -1,0 +1,23 @@
+{
+  "name": "Repository",
+  "version": "1.0.0",
+  "description": "RoboRuckus game, currently in progress.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShVerni/RoboRuckus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShVerni/RoboRuckus/issues"
+  },
+  "homepage": "https://github.com/ShVerni/RoboRuckus#readme",
+  "dependencies": {
+    "@aspnet/signalr": "^1.0.0"
+  }
+}

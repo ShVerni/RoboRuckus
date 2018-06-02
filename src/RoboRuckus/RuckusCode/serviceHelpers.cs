@@ -1,29 +1,27 @@
-﻿using Microsoft.AspNetCore.SignalR;
-
-namespace RoboRuckus.RuckusCode
+﻿namespace RoboRuckus.RuckusCode
 {
     /// <summary>
     /// A group of static enviromental interfaces for reference from other parts of code
     /// </summary>
     public static class serviceHelpers
     {
-        private static volatile IHubContext _playerHubContext = null;
         private static volatile string _rootPath;
+        private static volatile playerSignals _signals;
 
         /// <summary>
-        /// The player hub context
+        /// A single instance of the player signals class .
         /// </summary>
-        public static IHubContext playerHubContext
+        public static playerSignals signals
         {
             get
             {
-                return _playerHubContext;
+                return _signals;
             }
             set
             {
-                if (_playerHubContext == null)
+                if (_signals == null)
                 {
-                    _playerHubContext = value;
+                    _signals = value;
                 }
             }
         }

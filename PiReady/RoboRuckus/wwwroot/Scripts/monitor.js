@@ -30,12 +30,15 @@
     // Start a timer to check the game status every second
     var fetcher = new Interval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
     fetcher.start();
-    // Start connection to player hub
-    var cardControl = $.connection.playerHub;
-    $.connection.hub.start();
+
+    // Create connection to player hub
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/playerHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();    
 
     // Makes sure the monitor is ready for a round if multiple monitors are being used
-    cardControl.client.requestdeal = (function (cards, lockedCards) {
+    connection.on("requestdeal", () => {
         if (!fetcher.isRunning()) {
             $(".ui-droppable").droppable("destroy");
             $("#cardsContainer").empty();
@@ -45,7 +48,7 @@
     });
 
     // Shows the current move being executed
-    cardControl.client.showMove = (function showCard (card, robot, register) {
+    connection.on("showMove", (card, robot, register) => { 
         $("#cardsContainer").empty();
         var _card = $.parseJSON(card);
         var face;
@@ -193,9 +196,12 @@
     }
 
     // Display a message from the server
-    cardControl.client.displayMessage = (function (message, sound) {
+    connection.on("displayMessage", (message, sound) => { 
         $("#cardsContainer").html("<h2>" + message + "</h2>");
     });
+
+    // Start the connection to the player hub
+    connection.start().catch(err => console.error(err.toString()));
 
     // Sends bot info to server for re-entry
     function sendBots() {

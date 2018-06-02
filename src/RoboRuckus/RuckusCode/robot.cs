@@ -96,7 +96,7 @@ namespace RoboRuckus.RuckusCode
                                     // Is the player shutdown and taking damage? (Ouch!)
                                     if (controllingPlayer.shutdown)
                                     {
-                                        card = playerSignals.Instance.drawCard();
+                                        card = serviceHelpers.signals.drawCard();
                                     }
                                     else
                                     {

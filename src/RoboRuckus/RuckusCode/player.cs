@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RoboRuckus.RuckusCode;
 
 namespace RoboRuckus.RuckusCode
 {
@@ -19,7 +20,7 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// The player's submitted move
         /// </summary>
-        public Hubs.cardModel[] move = null;
+        public cardModel[] move = null;
 
         /// <summary>
         /// The player's currently locked cards
