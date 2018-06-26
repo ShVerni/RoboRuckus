@@ -261,6 +261,11 @@ namespace RoboRuckus.Controllers
             {
                 lock (gameStatus.setupLocker)
                 {
+                    // Check if physical bots are being used.
+                    if (gameStatus.botless)
+                    {
+                        return RedirectToAction("Index");                        
+                    }
                     // Check if game is started
                     if (!gameStatus.gameStarted)
                     {

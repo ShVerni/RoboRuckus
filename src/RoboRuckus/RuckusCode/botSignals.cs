@@ -160,7 +160,7 @@ namespace RoboRuckus.RuckusCode
             byte[] responseBuffer = new byte[256];
             string response = "";
             Robot bot = gameStatus.robots[botNumber];
-            if (gameStatus.noBots)
+            if (gameStatus.botless)
             {
                 bot.moving.Set();
                 return "OK";

@@ -76,7 +76,7 @@ namespace RoboRuckus
                     switch (arg)
                     {
                         case "botless":
-                            gameStatus.noBots = true;
+                            gameStatus.botless = true;
                             Console.WriteLine("Botless mode enabled");
                             break;
                         case "edgecontrol":

@@ -10,13 +10,13 @@ namespace RoboRuckus.RuckusCode
 {
     public static class gameStatus
     {
-        // Use launch switch "botless" to play game without physical bots
-        public static bool noBots
+        // Use launch switch "botless" to play game without physical bots.
+        public static bool botless
         {
-            get { return _noBots; }
+            get { return _botless; }
             set
             {
-                _noBots = value;
+                _botless = value;
                 if (value)
                 {
                     addBot("0.0.0.0", "Botimus Prime");
@@ -28,7 +28,7 @@ namespace RoboRuckus.RuckusCode
                 }
             }
         }
-        private static bool _noBots = false;
+        private static bool _botless = false;
 
         // Used to disable the option of letting robots drive over the edge of the board when required.
         public static bool edgeControl = false;
@@ -112,7 +112,7 @@ namespace RoboRuckus.RuckusCode
                 // Assign player to bot
                 bot.controllingPlayer = sender;
                 sender.playerRobot = bot;
-                if (!_noBots)
+                if (!_botless)
                 {
                     SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, sender.playerNumber + 1));
                 }         

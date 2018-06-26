@@ -53,7 +53,7 @@ public static void Main(string[] args)
             switch (arg.ToLower())
             {
                 case "botless":
-                    gameStatus.noBots = true;
+                    gameStatus.botless = true;
                     Console.WriteLine("Botless mode enabled");
                     break;
                 case "edgecontrol":

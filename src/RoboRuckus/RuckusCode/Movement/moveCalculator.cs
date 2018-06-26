@@ -582,7 +582,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         processMoveOrder(order);
                     }
                 }
-                if (gameStatus.noBots)
+                if (gameStatus.botless)
                 {
                     Thread.Sleep(1000);
                 }
