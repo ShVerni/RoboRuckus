@@ -3,7 +3,7 @@
 #include <EEPROM.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_HMC5883_U.h>
-#include <Adafruit_L3GD20_U.h>
+#include <Adafruit_LSM9DS0.h>
 
 // Movement parameters and wheel speeds
 uint8_t leftForwardSpeed = EEPROM.read(100);
@@ -12,8 +12,10 @@ uint8_t rightBackwardSpeed = EEPROM.read(102);
 uint8_t leftBackwardSpeed = EEPROM.read(103);
 // Forward and backward movement 
 int16_t Z_threshold = 0;
+float const Z_threshold_backup = 2.5;
 uint8_t turnBoost = EEPROM.read(106);
 uint8_t drift_threshold = EEPROM.read(107);
+float const drift_threshold_backup = 0.2;
 float turn_drift_threshold = 0.0;
 // Turning
 float turnFactor = 0.0;
@@ -39,14 +41,13 @@ String robotName = "";
 */
 
 // Pin assignments and constants
-uint8_t setupBtn = 5;
+uint8_t setupBtn = 0;
 uint8_t const latchPin = 7;
 uint8_t const clockPin = 8;
 uint8_t const dataPin = 3;
 
 Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(31, 1);
-Adafruit_HMC5883_Unified mag2 = Adafruit_HMC5883_Unified(32, 0);
-Adafruit_L3GD20_Unified gyro = Adafruit_L3GD20_Unified(20);
+Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);
 
 uint8_t const numbers[] = {231, 33, 203, 107, 45, 110, 238, 35, 239, 111, 16};
 
@@ -86,8 +87,8 @@ void setup()
     Z_threshold = -100;
     turnBoost = 4;
     drift_threshold = 1;
-    turnFactor = 1.44;
-    turn_drift_threshold = 0.4;
+    turnFactor = 80;
+    turn_drift_threshold = 12;
     robotName = "Beta%20Bot";
     delay(100);
     saveParameters();
@@ -107,30 +108,26 @@ void setup()
   pinMode(clockPin, OUTPUT);
 
   // Set up setup mode button
-  pinMode(setupBtn, INPUT_PULLUP);
+  //pinMode(setupBtn, INPUT_PULLUP);
   
   // Turn off onbaord LED
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
-
-  // Set up sensors
+  
   if (!mag.begin())
   {
-    Serial.println(F("mag not detected"));
+    Serial.println(F("Mag not detected ... Check your wiring or I2C ADDR!"));
     while(true);
-  }
-  mag.setMagGain(HMC5883_MAGGAIN_4_0);
-  if (!mag2.begin())
+  }  
+  mag.setMagGain(HMC5883_MAGGAIN_4_7);
+  if(!lsm.begin())
   {
-    Serial.println(F("mag2 not detected"));
+    Serial.print(F("No LSM9DS0 detected ... Check your wiring or I2C ADDR!"));
     while(true);
   }
-  mag2.setMagGain(HMC5883_MAGGAIN_4_0);
-  if (!gyro.begin())
-  {
-    Serial.println(F("gyro not detected"));
-    while(true);
-  }
+  lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_8G);
+  lsm.setupMag(lsm.LSM9DS0_MAGGAIN_4GAUSS);
+  lsm.setupGyro(lsm.LSM9DS0_GYROSCALE_500DPS);
 
   /*
   * Your WiFi radio's baud rate might be different, default baud is
@@ -144,7 +141,7 @@ void setup()
   connection = connection + server + "\"," + port;
 
   // Check for setup/tuning mode
-  if (!digitalRead(setupBtn))
+  if (false)//!digitalRead(setupBtn))
   {
     Serial.println("Entering setup");
     softAPSetup();

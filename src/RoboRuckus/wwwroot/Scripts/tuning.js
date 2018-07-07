@@ -39,13 +39,13 @@
     $("#drift_threshold").slider("option", "min", 0);
     $("#drift_threshold").slider("option", "step", 1);
 
-    $("#turnFactor").slider("option", "max", 2);
-    $("#turnFactor").slider("option", "min", 0.5);
-    $("#turnFactor").slider("option", "step", 0.01);
+    $("#turnFactor").slider("option", "max", 130);
+    $("#turnFactor").slider("option", "min", 50);
+    $("#turnFactor").slider("option", "step", 1);
 
-    $("#turn_drift_threshold").slider("option", "max", 1.5);
+    $("#turn_drift_threshold").slider("option", "max", 50);
     $("#turn_drift_threshold").slider("option", "min", 0);
-    $("#turn_drift_threshold").slider("option", "step", 0.1);
+    $("#turn_drift_threshold").slider("option", "step", 1);
 
     $("#finish").button().click(finish);
     $("#speedtest").button().click(speedTest);

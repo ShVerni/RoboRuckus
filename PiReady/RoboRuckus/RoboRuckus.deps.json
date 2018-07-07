@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1/linux-arm",
-    "signature": "bdafbef97dbec79856db9b22a72ef3989ee3d99f"
+    "signature": "c6b64de99c7dd13533f33f5597799ffc2af807d8"
   },
   "compilationOptions": {
     "defines": [
@@ -37,7 +37,7 @@
           "Microsoft.Extensions.DependencyInjection": "2.1.0",
           "Microsoft.Extensions.Logging": "2.1.0",
           "Microsoft.Extensions.Logging.Console": "2.1.0",
-          "Microsoft.NETCore.App": "2.1.1",
+          "Microsoft.NETCore.App": "2.1.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
           "Newtonsoft.Json": "11.0.2"
         },
@@ -1809,13 +1809,13 @@
           "lib/netstandard2.0/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.NETCore.App/2.1.1": {
+      "Microsoft.NETCore.App/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetHostPolicy": "2.1.1",
+          "Microsoft.NETCore.DotNetHostPolicy": "2.1.0",
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "NETStandard.Library": "2.0.3",
-          "runtime.linux-arm.Microsoft.NETCore.App": "2.1.1"
+          "runtime.linux-arm.Microsoft.NETCore.App": "2.1.0"
         },
         "compile": {
           "ref/netcoreapp2.1/Microsoft.CSharp.dll": {},
@@ -1963,25 +1963,25 @@
           "ref/netcoreapp2.1/netstandard.dll": {}
         }
       },
-      "Microsoft.NETCore.DotNetAppHost/2.1.1": {
+      "Microsoft.NETCore.DotNetAppHost/2.1.0": {
         "dependencies": {
-          "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost": "2.1.1"
+          "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost": "2.1.0"
         }
       },
-      "Microsoft.NETCore.DotNetHostPolicy/2.1.1": {
+      "Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetHostResolver": "2.1.1",
-          "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy": "2.1.1"
+          "Microsoft.NETCore.DotNetHostResolver": "2.1.0",
+          "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy": "2.1.0"
         }
       },
-      "Microsoft.NETCore.DotNetHostResolver/2.1.1": {
+      "Microsoft.NETCore.DotNetHostResolver/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetAppHost": "2.1.1",
-          "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver": "2.1.1"
+          "Microsoft.NETCore.DotNetAppHost": "2.1.0",
+          "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver": "2.1.0"
         }
       },
       "Microsoft.NETCore.Platforms/2.1.0": {},
-      "Microsoft.NETCore.Targets/2.0.0": {},
+      "Microsoft.NETCore.Targets/2.1.0": {},
       "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "2.1.0",
@@ -2001,7 +2001,7 @@
       "Microsoft.Win32.Primitives/4.0.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2054,22 +2054,22 @@
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
-      "runtime.linux-arm.Microsoft.NETCore.App/2.1.1": {},
-      "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost/2.1.1": {},
-      "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy/2.1.1": {
+      "runtime.linux-arm.Microsoft.NETCore.App/2.1.0": {},
+      "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost/2.1.0": {},
+      "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetHostResolver": "2.1.1"
+          "Microsoft.NETCore.DotNetHostResolver": "2.1.0"
         }
       },
-      "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver/2.1.1": {
+      "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetAppHost": "2.1.1"
+          "Microsoft.NETCore.DotNetAppHost": "2.1.0"
         }
       },
       "runtime.native.System/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "runtime.native.System.Data.SqlClient.sni/4.4.0": {
@@ -2082,13 +2082,13 @@
       "runtime.native.System.IO.Compression/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "runtime.native.System.Net.Http/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "runtime.native.System.Security.Cryptography.Apple/4.3.0": {
@@ -2130,7 +2130,7 @@
       "System.Collections/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2174,7 +2174,7 @@
       "System.Console/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.Runtime": "4.3.0",
           "System.Text.Encoding": "4.3.0"
@@ -2199,7 +2199,7 @@
       "System.Diagnostics.Debug/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2228,14 +2228,14 @@
       "System.Diagnostics.Tools/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Diagnostics.Tracing/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2260,14 +2260,14 @@
       "System.Globalization/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Globalization.Calendars/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Globalization": "4.3.0",
           "System.Runtime": "4.3.0"
         }
@@ -2303,7 +2303,7 @@
       "System.IO/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0",
           "System.Text.Encoding": "4.3.0",
           "System.Threading.Tasks": "4.3.0"
@@ -2331,7 +2331,7 @@
       "System.IO.FileSystem/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.IO.FileSystem.Primitives": "4.3.0",
           "System.Runtime": "4.3.0",
@@ -2426,7 +2426,7 @@
       "System.Net.Primitives/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0",
           "System.Runtime.Handles": "4.3.0"
         }
@@ -2434,7 +2434,7 @@
       "System.Net.Sockets/4.1.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.Net.Primitives": "4.3.0",
           "System.Runtime": "4.3.0",
@@ -2496,7 +2496,7 @@
       "System.Reflection/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.Reflection.Primitives": "4.3.0",
           "System.Runtime": "4.3.0"
@@ -2529,7 +2529,7 @@
       "System.Reflection.Extensions/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Reflection": "4.3.0",
           "System.Runtime": "4.3.0"
         }
@@ -2538,7 +2538,7 @@
       "System.Reflection.Primitives/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2551,7 +2551,7 @@
       "System.Resources.ResourceManager/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Globalization": "4.3.0",
           "System.Reflection": "4.3.0",
           "System.Runtime": "4.3.0"
@@ -2560,7 +2560,7 @@
       "System.Runtime/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "System.Runtime.CompilerServices.Unsafe/4.5.0": {
@@ -2571,21 +2571,21 @@
       "System.Runtime.Extensions/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Runtime.Handles/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Reflection": "4.3.0",
           "System.Reflection.Primitives": "4.3.0",
           "System.Runtime": "4.3.0",
@@ -2805,7 +2805,7 @@
       "System.Text.Encoding/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2818,7 +2818,7 @@
       "System.Text.Encoding.Extensions/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0",
           "System.Text.Encoding": "4.3.0"
         }
@@ -2847,7 +2847,7 @@
       "System.Threading.Tasks/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2872,7 +2872,7 @@
       "System.Threading.Timer/4.0.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -2996,7 +2996,7 @@
           "Microsoft.Extensions.DependencyInjection": "2.1.0",
           "Microsoft.Extensions.Logging": "2.1.0",
           "Microsoft.Extensions.Logging.Console": "2.1.0",
-          "Microsoft.NETCore.App": "2.1.1",
+          "Microsoft.NETCore.App": "2.1.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
           "Newtonsoft.Json": "11.0.2"
         },
@@ -5230,34 +5230,34 @@
           }
         }
       },
-      "Microsoft.NETCore.App/2.1.1": {
+      "Microsoft.NETCore.App/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetHostPolicy": "2.1.1",
+          "Microsoft.NETCore.DotNetHostPolicy": "2.1.0",
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "NETStandard.Library": "2.0.3",
-          "runtime.linux-arm.Microsoft.NETCore.App": "2.1.1"
+          "runtime.linux-arm.Microsoft.NETCore.App": "2.1.0"
         }
       },
-      "Microsoft.NETCore.DotNetAppHost/2.1.1": {
+      "Microsoft.NETCore.DotNetAppHost/2.1.0": {
         "dependencies": {
-          "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost": "2.1.1"
+          "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost": "2.1.0"
         }
       },
-      "Microsoft.NETCore.DotNetHostPolicy/2.1.1": {
+      "Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetHostResolver": "2.1.1",
-          "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy": "2.1.1"
+          "Microsoft.NETCore.DotNetHostResolver": "2.1.0",
+          "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy": "2.1.0"
         }
       },
-      "Microsoft.NETCore.DotNetHostResolver/2.1.1": {
+      "Microsoft.NETCore.DotNetHostResolver/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetAppHost": "2.1.1",
-          "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver": "2.1.1"
+          "Microsoft.NETCore.DotNetAppHost": "2.1.0",
+          "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver": "2.1.0"
         }
       },
       "Microsoft.NETCore.Platforms/2.1.0": {},
-      "Microsoft.NETCore.Targets/2.0.0": {},
+      "Microsoft.NETCore.Targets/2.1.0": {},
       "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "2.1.0",
@@ -5280,7 +5280,7 @@
       "Microsoft.Win32.Primitives/4.0.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -5345,7 +5345,7 @@
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
-      "runtime.linux-arm.Microsoft.NETCore.App/2.1.1": {
+      "runtime.linux-arm.Microsoft.NETCore.App/2.1.0": {
         "runtime": {
           "runtimes/linux-arm/lib/netcoreapp2.1/Microsoft.CSharp.dll": {
             "assemblyVersion": "4.0.4.0",
@@ -5933,7 +5933,7 @@
           },
           "runtimes/linux-arm/lib/netcoreapp2.1/mscorlib.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "4.6.26606.5"
+            "fileVersion": "4.6.26515.6"
           },
           "runtimes/linux-arm/lib/netcoreapp2.1/netstandard.dll": {
             "assemblyVersion": "2.0.0.0",
@@ -6007,16 +6007,16 @@
           }
         }
       },
-      "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost/2.1.1": {
+      "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost/2.1.0": {
         "native": {
           "runtimes/linux-arm/native/apphost": {
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy/2.1.1": {
+      "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetHostResolver": "2.1.1"
+          "Microsoft.NETCore.DotNetHostResolver": "2.1.0"
         },
         "native": {
           "runtimes/linux-arm/native/libhostpolicy.so": {
@@ -6024,9 +6024,9 @@
           }
         }
       },
-      "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver/2.1.1": {
+      "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver/2.1.0": {
         "dependencies": {
-          "Microsoft.NETCore.DotNetAppHost": "2.1.1"
+          "Microsoft.NETCore.DotNetAppHost": "2.1.0"
         },
         "native": {
           "runtimes/linux-arm/native/libhostfxr.so": {
@@ -6037,7 +6037,7 @@
       "runtime.native.System/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "runtime.native.System.Data.SqlClient.sni/4.4.0": {
@@ -6050,13 +6050,13 @@
       "runtime.native.System.IO.Compression/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "runtime.native.System.Net.Http/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "runtime.native.System.Security.Cryptography.Apple/4.3.0": {
@@ -6098,7 +6098,7 @@
       "System.Collections/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -6149,7 +6149,7 @@
       "System.Console/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.Runtime": "4.3.0",
           "System.Text.Encoding": "4.3.0"
@@ -6177,7 +6177,7 @@
       "System.Diagnostics.Debug/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -6213,14 +6213,14 @@
       "System.Diagnostics.Tools/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Diagnostics.Tracing/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -6245,14 +6245,14 @@
       "System.Globalization/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Globalization.Calendars/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Globalization": "4.3.0",
           "System.Runtime": "4.3.0"
         }
@@ -6294,7 +6294,7 @@
       "System.IO/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0",
           "System.Text.Encoding": "4.3.0",
           "System.Threading.Tasks": "4.3.0"
@@ -6322,7 +6322,7 @@
       "System.IO.FileSystem/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.IO.FileSystem.Primitives": "4.3.0",
           "System.Runtime": "4.3.0",
@@ -6420,7 +6420,7 @@
       "System.Net.Primitives/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0",
           "System.Runtime.Handles": "4.3.0"
         }
@@ -6428,7 +6428,7 @@
       "System.Net.Sockets/4.1.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.Net.Primitives": "4.3.0",
           "System.Runtime": "4.3.0",
@@ -6493,7 +6493,7 @@
       "System.Reflection/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.IO": "4.3.0",
           "System.Reflection.Primitives": "4.3.0",
           "System.Runtime": "4.3.0"
@@ -6526,7 +6526,7 @@
       "System.Reflection.Extensions/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Reflection": "4.3.0",
           "System.Runtime": "4.3.0"
         }
@@ -6542,7 +6542,7 @@
       "System.Reflection.Primitives/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -6555,7 +6555,7 @@
       "System.Resources.ResourceManager/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Globalization": "4.3.0",
           "System.Reflection": "4.3.0",
           "System.Runtime": "4.3.0"
@@ -6564,7 +6564,7 @@
       "System.Runtime/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0"
+          "Microsoft.NETCore.Targets": "2.1.0"
         }
       },
       "System.Runtime.CompilerServices.Unsafe/4.5.0": {
@@ -6578,21 +6578,21 @@
       "System.Runtime.Extensions/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Runtime.Handles/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Reflection": "4.3.0",
           "System.Reflection.Primitives": "4.3.0",
           "System.Runtime": "4.3.0",
@@ -6833,7 +6833,7 @@
       "System.Text.Encoding/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -6852,7 +6852,7 @@
       "System.Text.Encoding.Extensions/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0",
           "System.Text.Encoding": "4.3.0"
         }
@@ -6887,7 +6887,7 @@
       "System.Threading.Tasks/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -6912,7 +6912,7 @@
       "System.Threading.Timer/4.0.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0",
-          "Microsoft.NETCore.Targets": "2.0.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
           "System.Runtime": "4.3.0"
         }
       },
@@ -7681,7 +7681,7 @@
     "Microsoft.AspNetCore.WebSockets.Protocol/0.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-0xtWJEnz0W6d4eBnLlG6dujOqsCz4qu5y/49HeFtizZPYp1keKXNxCew2r2Pn7M2qRYZ4jUiGPCQktp6mL6DAA==",
+      "sha512": "sha512-GMhLP6qzbMrYUG+3CaLML9swc0fdBmjF8IHAhqMbxtzF+EfUm7Ks2+g/3Wo9O+Nm9XEgz2FSLfP/wrCAdBf8Dw==",
       "path": "microsoft.aspnetcore.websockets.protocol/0.1.0",
       "hashPath": "microsoft.aspnetcore.websockets.protocol.0.1.0.nupkg.sha512"
     },
@@ -8080,7 +8080,7 @@
     "Microsoft.Extensions.PlatformAbstractions/1.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zyjUzrOmuevOAJpIo3Mt5GmpALVYCVdLZ99keMbmCxxgQH7oxzU58kGHzE6hAgYEiWsdfMJLjVR7r+vSmaJmtg==",
+      "sha512": "sha512-PcMVUFeEuq1J9SpNoTjX9Vj/thoBodQoEZEtZHXzPSyjI2VAyGgRpOY4usTk6Gw7/QTBQBV4UlY6ltoFZdM5pw==",
       "path": "microsoft.extensions.platformabstractions/1.0.0",
       "hashPath": "microsoft.extensions.platformabstractions.1.0.0.nupkg.sha512"
     },
@@ -8154,33 +8154,33 @@
       "path": "microsoft.net.http.headers/2.1.0",
       "hashPath": "microsoft.net.http.headers.2.1.0.nupkg.sha512"
     },
-    "Microsoft.NETCore.App/2.1.1": {
+    "Microsoft.NETCore.App/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-PpxWvhwEHWdXhGjJpYPZaShBOihPFhH+TkMNte8DgyfNY2NECLFNDOC6TqMruXWIHOCMOu4g6fCGj1/zsQLBnQ==",
-      "path": "microsoft.netcore.app/2.1.1",
-      "hashPath": "microsoft.netcore.app.2.1.1.nupkg.sha512"
+      "sha512": "sha512-AvT774nTFgU8cYcGO9j1EMwuayKslxqYTurg32HGpWa2hEYNuW2+XgYVVNcZe6Ndbr84QX6fwaOZfd5n+1m2OA==",
+      "path": "microsoft.netcore.app/2.1.0",
+      "hashPath": "microsoft.netcore.app.2.1.0.nupkg.sha512"
     },
-    "Microsoft.NETCore.DotNetAppHost/2.1.1": {
+    "Microsoft.NETCore.DotNetAppHost/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dOC2eGalN34B4KI/33EdVWNRBWFjOmDAPPvx82+TgeUgeORJBVrXXrR15Ho5g70Vnlei5+LaUOXOaOo2cz7FTA==",
-      "path": "microsoft.netcore.dotnetapphost/2.1.1",
-      "hashPath": "microsoft.netcore.dotnetapphost.2.1.1.nupkg.sha512"
+      "sha512": "sha512-f/47I60Wg3SrveTvnecCQhCZCAMYlUujWF15EQ/AZTqF/54qeEJjbCIAxKcZI8ToUYzSg6JdfrHggsgjCyCE9Q==",
+      "path": "microsoft.netcore.dotnetapphost/2.1.0",
+      "hashPath": "microsoft.netcore.dotnetapphost.2.1.0.nupkg.sha512"
     },
-    "Microsoft.NETCore.DotNetHostPolicy/2.1.1": {
+    "Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KfcY3mVOdYGGn8zE6ReoiiDwxdR5gEtHkljgcGa8xd9rQQYisxLposNENTZzVkuZUjK8ewmISWEnElMB7oKRnQ==",
-      "path": "microsoft.netcore.dotnethostpolicy/2.1.1",
-      "hashPath": "microsoft.netcore.dotnethostpolicy.2.1.1.nupkg.sha512"
+      "sha512": "sha512-p50yZYKzhH64lmArJgoKjtvsNehECa+/sAuOQzZh5uDNBTbRKxjN8IXP1e517xdVsgrFcSNxSEVDKZIOWVjGcQ==",
+      "path": "microsoft.netcore.dotnethostpolicy/2.1.0",
+      "hashPath": "microsoft.netcore.dotnethostpolicy.2.1.0.nupkg.sha512"
     },
-    "Microsoft.NETCore.DotNetHostResolver/2.1.1": {
+    "Microsoft.NETCore.DotNetHostResolver/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-jMvMw1WipFS5BPpR9xZvxduEGT5ZskfR2MrVB5Dh9DLS2C4L20zuqvwOYqGbOsrgYSC0x7GMPJDywJtLa1s9Ig==",
-      "path": "microsoft.netcore.dotnethostresolver/2.1.1",
-      "hashPath": "microsoft.netcore.dotnethostresolver.2.1.1.nupkg.sha512"
+      "sha512": "sha512-fS9D8a+y55n6mHMbNqgHXaPGkjmpVH9h97OyrBxsCuo3Z8aQaFMJ5xIfmzji2ntUd/3truhMbSgSfIelHOkQpg==",
+      "path": "microsoft.netcore.dotnethostresolver/2.1.0",
+      "hashPath": "microsoft.netcore.dotnethostresolver.2.1.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/2.1.0": {
       "type": "package",
@@ -8189,12 +8189,12 @@
       "path": "microsoft.netcore.platforms/2.1.0",
       "hashPath": "microsoft.netcore.platforms.2.1.0.nupkg.sha512"
     },
-    "Microsoft.NETCore.Targets/2.0.0": {
+    "Microsoft.NETCore.Targets/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-odP/tJj1z6GylFpNo7pMtbd/xQgTC3Ex2If63dRTL38bBNMwsBnJ+RceUIyHdRBC0oik/3NehYT+oECwBhIM3Q==",
-      "path": "microsoft.netcore.targets/2.0.0",
-      "hashPath": "microsoft.netcore.targets.2.0.0.nupkg.sha512"
+      "sha512": "sha512-etaYwrLZQUS+b3UWTpCnUggd6SQ/ZIkZ5pHnoR7+dIWt/wp2Rv3CvMKOZISsrt7FYCHKwCxfcepuuyEWkQxADg==",
+      "path": "microsoft.netcore.targets/2.1.0",
+      "hashPath": "microsoft.netcore.targets.2.1.0.nupkg.sha512"
     },
     "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.1.0": {
       "type": "package",
@@ -8266,33 +8266,33 @@
       "path": "runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
-    "runtime.linux-arm.Microsoft.NETCore.App/2.1.1": {
+    "runtime.linux-arm.Microsoft.NETCore.App/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yT3Agj1ZP+9nsDi8BvHD+J4Xv42nvAmTsphO3Peds0aAw2AK+4XKO5xieQmk1Qwd3KxwB/RnE3/Q5MtLGhC39Q==",
-      "path": "runtime.linux-arm.microsoft.netcore.app/2.1.1",
-      "hashPath": "runtime.linux-arm.microsoft.netcore.app.2.1.1.nupkg.sha512"
+      "sha512": "sha512-+4OxWX4vvCHuogSoDvHKBeaTUUMAHihDvj6+Makwdq2B26ON5SmzC6rRsCcLQ1dUdkr0TV/mnu1adezIxFdlQg==",
+      "path": "runtime.linux-arm.microsoft.netcore.app/2.1.0",
+      "hashPath": "runtime.linux-arm.microsoft.netcore.app.2.1.0.nupkg.sha512"
     },
-    "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost/2.1.1": {
+    "runtime.linux-arm.Microsoft.NETCore.DotNetAppHost/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-PVBptHzHHKIMT9M2apR8nCssBf5BjNx8EMs8UU4+jnzGC5piY5NnVJ/6OQocKUd1MltKobqMzvcufcOt68OlWw==",
-      "path": "runtime.linux-arm.microsoft.netcore.dotnetapphost/2.1.1",
-      "hashPath": "runtime.linux-arm.microsoft.netcore.dotnetapphost.2.1.1.nupkg.sha512"
+      "sha512": "sha512-q499fxp0RI0qnYiGobpPIRXdEfb4wm7AFTt2Venbl8vX0cT0ltYkBSd34NKegcQERn5eWS0UW4uMg544I3yB2Q==",
+      "path": "runtime.linux-arm.microsoft.netcore.dotnetapphost/2.1.0",
+      "hashPath": "runtime.linux-arm.microsoft.netcore.dotnetapphost.2.1.0.nupkg.sha512"
     },
-    "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy/2.1.1": {
+    "runtime.linux-arm.Microsoft.NETCore.DotNetHostPolicy/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6bQDw1RThqrdTl9+EWQcvoTeikATJUW2dZ2zFtyhKtCNx35zLS8M3N6MGEeyEIpXvm4AlTYuhOj9dl0VtMANvw==",
-      "path": "runtime.linux-arm.microsoft.netcore.dotnethostpolicy/2.1.1",
-      "hashPath": "runtime.linux-arm.microsoft.netcore.dotnethostpolicy.2.1.1.nupkg.sha512"
+      "sha512": "sha512-f9mtfn44AH0jU/TRZEN1hxqOvEucTBe/L6LtBJpCrA6yIUqMoDGVo2CSL4BOpvjGGRc2dCfcF78E0PQdMRMxFw==",
+      "path": "runtime.linux-arm.microsoft.netcore.dotnethostpolicy/2.1.0",
+      "hashPath": "runtime.linux-arm.microsoft.netcore.dotnethostpolicy.2.1.0.nupkg.sha512"
     },
-    "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver/2.1.1": {
+    "runtime.linux-arm.Microsoft.NETCore.DotNetHostResolver/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Nyb5AbHHbADFbOHe0EOgWXPNIFZDQbK/4Ec/3/sxVVlFnhEGE/mkOUP59IDEyK3o+iKDEw/hB5bYPN/h0/etNQ==",
-      "path": "runtime.linux-arm.microsoft.netcore.dotnethostresolver/2.1.1",
-      "hashPath": "runtime.linux-arm.microsoft.netcore.dotnethostresolver.2.1.1.nupkg.sha512"
+      "sha512": "sha512-chZsMc69m4yCZQNaxlTSyA0TooITKlsr5ChTvOrlL2+89iMoIO5TRWxR1c9UE4ZDtyDgVEsX5PJpvM3PEYcSsQ==",
+      "path": "runtime.linux-arm.microsoft.netcore.dotnethostresolver/2.1.0",
+      "hashPath": "runtime.linux-arm.microsoft.netcore.dotnethostresolver.2.1.0.nupkg.sha512"
     },
     "runtime.native.System/4.3.0": {
       "type": "package",

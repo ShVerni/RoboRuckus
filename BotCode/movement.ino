@@ -1,81 +1,72 @@
-// Used to trigger a timeout so the bot won't drive forever if it misses a stop
 bool timeUp = false;
-// Corrects drift in the gyroscope
-double gyroCorrect = 0.015;
-// Used to prevent bot from slowing down too much
+double gyroCorrect =  -7.1;
+
 uint8_t rightForwardSpeed_max = rightForwardSpeed;
 uint8_t rightBackwardSpeed_min = rightBackwardSpeed;
 
-
 void driveForward(uint8_t spaces)
 {
-  // Initialize some variables
+  sensors_event_t accel, mag2, gyro, temp;
+  lsm.getEvent(&accel, &mag2, &gyro, &temp);
+  
   int Z_threshold = 0;
   uint8_t count = 0;
   bool crossing = false;
   sensors_event_t event;
-  sensors_event_t event2;
   int Y_calibration = 0;
-  uint8_t countdown = 1;
+  uint8_t countdown = 5;
   elapsedMillis mils;
   elapsedMillis speedAdjust;
   float turn_drift = 0;
 
-  // Get starting Y and Z axis magnetometer readings, averaging 10 readings
   for (int i = 0; i < 10; i++)
   {
     mag.getEvent(&event);
     Y_calibration += event.magnetic.y;
     delay(10);
   }
+  
   double cur = 0;
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < 10; i++)
   {
-    gyro.getEvent(&event2);
-    cur += event2.gyro.z;
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
+    cur += gyro.gyro.z;
     delay(10);
   }
-  gyroCorrect = cur / 20.0;  
+  gyroCorrect = cur / 10.0;  
   Y_calibration /= 10;
   
-  // Define a maximum time the robot should drive
   timeUp = false;
-  timeout.begin(timedOut, 1001000 * spaces);
+  timeout.begin(timedOut, 881000 * spaces);
    
-  mils = 0;
-  speedAdjust = 0;
-  // Start driving
   left.write(leftForwardSpeed);
   right.write(rightForwardSpeed);
 
-  // Make sure the robot is clear of the current square's magnet
-  mag.getEvent(&event);
-  while (event.magnetic.z < Z_threshold)
+  mils = 0;
+  speedAdjust = 0;
+
+  while (event.magnetic.z < Z_threshold) 
   {
-    delay(5);
+    delay(50);
     #ifdef debug
-      Serial.println(event.magnetic.z);
       Serial.println("Waiting...");
     #endif
     mag.getEvent(&event);
   }
-  // Start movement
+  
   while (countdown > 0 && !timeUp)
   {
-    Serial.println(mils);
-    // Get gyro and magnetometer readings
-    gyro.getEvent(&event2);
-    turn_drift += ((event2.gyro.z - gyroCorrect) / 1000) * mils;
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
+    turn_drift += ((gyro.gyro.z - gyroCorrect) / 1000) * mils;
     mils = 0;
     mag.getEvent(&event);
     #ifdef debug
-     Serial.print("Gryo: "); Serial.println(turn_drift);
+      Serial.print("Gryo: "); Serial.println(turn_drift);
       Serial.print("X: "); Serial.print(event.magnetic.x); Serial.print("  ");
       Serial.print("Y: "); Serial.print(event.magnetic.y); Serial.print("  ");
       Serial.print("Z: "); Serial.print(event.magnetic.z); Serial.print("  ");
       Serial.println("uT");
     #endif
-    // Check if gyro detects the bot has drifted off course, and correct accordingly
     if (abs(turn_drift) > turn_drift_threshold)
     {
       if (turn_drift > 0)
@@ -94,9 +85,8 @@ void driveForward(uint8_t spaces)
         left.write(leftForwardSpeed + turnBoost);
         right.write(rightForwardSpeed);
       }
-    }
-    // Check if magnetometer has detected the robot has drifted off couse, and correct accordingly
-    else if (event.magnetic.y < (Y_calibration - drift_threshold))
+    }    
+    else if (event.magnetic.y < (Y_calibration + drift_threshold))
     {
       #ifdef debug
         Serial.println("Turn left");
@@ -104,7 +94,7 @@ void driveForward(uint8_t spaces)
       left.write(leftForwardSpeed);
       right.write(rightForwardSpeed - turnBoost);
     }
-    else if (event.magnetic.y > (Y_calibration + drift_threshold))
+    else if (event.magnetic.y > (Y_calibration - drift_threshold_backup))
     {
       #ifdef debug
         Serial.println("Turn right");
@@ -117,33 +107,34 @@ void driveForward(uint8_t spaces)
       left.write(leftForwardSpeed);
       right.write(rightForwardSpeed);
     }
-    // Check if robot has entered a board square, making sure enough time has passed since the last square
-    if (speedAdjust > 300 && event.magnetic.z <= Z_threshold)
+    if (speedAdjust > 350 && event.magnetic.z <= Z_threshold)
     {
       if (!crossing)
       {
         crossing = true;
       }
       #ifdef debug
-        Serial.println("Crossing");
+        Serial.println("<<<Crossing");
       #endif
     }
     else
     {
       if (crossing)
       {
-        // Check to see if the robot's speed needs to be adjusted
         uint16_t elapsed = speedAdjust;
-        if (elapsed > 980)
+        if (elapsed > 1300)
         {
           rightForwardSpeed--;
           leftForwardSpeed++;
         }
-        else if (elapsed < 850 && rightForwardSpeed < rightForwardSpeed_max)
+        else if (elapsed < 1000 && rightForwardSpeed < rightForwardSpeed_max)
         {
           rightForwardSpeed++;
           leftForwardSpeed--;
         }
+        #ifdef debug
+          Serial.println(">>>Done Crossing");
+        #endif
         speedAdjust = 0;
         crossing = false;
         count++;
@@ -155,40 +146,41 @@ void driveForward(uint8_t spaces)
     }
     delay(6);
   }
-  // Stop moving
   timeout.end();
   left.write(90);
   right.write(90);
 }
 
-// This is identical to drive forward, except the drive speeds and turn correction speeds are reversed
 void driveBackward(uint8_t spaces)
 {
+  sensors_event_t accel, mag2, gyro, temp;
+  lsm.getEvent(&accel, &mag2, &gyro, &temp);
+  
   int Z_threshold = 0;
   uint8_t count = 0;
   bool crossing = false;
-  sensors_event_t event;
-  sensors_event_t event2;
   int X_calibration = 0;
-  uint8_t countdown = 1;
+  uint8_t countdown = 5;
   elapsedMillis mils;
   elapsedMillis speedAdjust;
   float turn_drift = 0;
 
    for (int i = 0; i < 10; i++)
   {
-    mag2.getEvent(&event);
-    X_calibration += event.magnetic.x;
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
+    X_calibration += mag2.magnetic.x;
     delay(10);
   }
+
   double cur = 0;
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < 10; i++)
   {
-    gyro.getEvent(&event2);
-    cur += event2.gyro.z;
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
+    cur += gyro.gyro.z;
     delay(10);
   }
-  gyroCorrect = cur / 20.0;  
+  gyroCorrect = cur / 10.0;
+  
   X_calibration /= 10;
 
   timeUp = false;
@@ -196,31 +188,30 @@ void driveBackward(uint8_t spaces)
    
   mils = 0;
   speedAdjust = 0;
+  
   left.write(leftBackwardSpeed);
   right.write(rightBackwardSpeed);
-
-  mag2.getEvent(&event);
-  while (event.magnetic.z < Z_threshold)
+  
+  lsm.getEvent(&accel, &mag2, &gyro, &temp);
+  while (mag2.magnetic.z >=  Z_threshold_backup) 
   {
-    delay(5);
+    delay(50);
     #ifdef debug
-      Serial.println(event.magnetic.z);
       Serial.println("Waiting...");
     #endif
-    mag2.getEvent(&event);
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
   }
   
   while (countdown > 0 && !timeUp)
   {
-    gyro.getEvent(&event2);
-    turn_drift += ((event2.gyro.z - gyroCorrect) / 1000) * mils;
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
+    turn_drift += ((gyro.gyro.z - gyroCorrect) / 1000) * mils;
     mils = 0;
-    mag2.getEvent(&event);
     #ifdef debug
       Serial.print("Gryo: "); Serial.println(turn_drift);
-      Serial.print("X: "); Serial.print(event.magnetic.x); Serial.print("  ");
-      Serial.print("Y: "); Serial.print(event.magnetic.y); Serial.print("  ");
-      Serial.print("Z: "); Serial.print(event.magnetic.z); Serial.print("  ");
+      Serial.print("X: "); Serial.print(mag2.magnetic.x); Serial.print("  ");
+      Serial.print("Y: "); Serial.print(mag2.magnetic.y); Serial.print("  ");
+      Serial.print("Z: "); Serial.print(mag2.magnetic.z); Serial.print("  ");
       Serial.println("uT");
     #endif
     if (abs(turn_drift) > turn_drift_threshold)
@@ -242,7 +233,7 @@ void driveBackward(uint8_t spaces)
         right.write(rightBackwardSpeed + turnBoost);
       }
     }
-    else if (event.magnetic.x > (X_calibration + drift_threshold))
+    else if (mag2.magnetic.x > (X_calibration - drift_threshold_backup))
     {
       #ifdef debug
         Serial.println("Turn left");
@@ -250,7 +241,7 @@ void driveBackward(uint8_t spaces)
       right.write(rightBackwardSpeed);
       left.write(leftBackwardSpeed - turnBoost);
     }
-    else if (event.magnetic.x < (X_calibration - drift_threshold))
+    else if (mag2.magnetic.x < (X_calibration + drift_threshold_backup))
     {
       #ifdef debug
         Serial.println("Turn right");
@@ -263,7 +254,7 @@ void driveBackward(uint8_t spaces)
       left.write(leftBackwardSpeed);
       right.write(rightBackwardSpeed);
     }
-    if (event.magnetic.z < Z_threshold)
+    if (speedAdjust > 350 && abs(mag2.magnetic.z) >= Z_threshold_backup)
     {
       if (!crossing)
       {
@@ -275,12 +266,12 @@ void driveBackward(uint8_t spaces)
       if (crossing)
       {
         uint16_t elapsed = speedAdjust;
-        if (elapsed > 980)
+        if (elapsed > 1200)
         {
           rightBackwardSpeed++;
           leftBackwardSpeed--;
         }
-        else if (elapsed < 850 && rightBackwardSpeed > rightBackwardSpeed_min)
+        else if (elapsed < 950 && rightBackwardSpeed > rightBackwardSpeed_min)
         {
           rightBackwardSpeed--;
           leftBackwardSpeed++;
@@ -303,21 +294,22 @@ void driveBackward(uint8_t spaces)
 
 void turn(uint8_t dir, uint8_t magnitude)
 {
-  // Determine the what the final reading of the gyro should be
+  sensors_event_t accel, mag2, gyro, temp;
+  
   float threshold = magnitude * turnFactor;
   elapsedMillis mils;
-  sensors_event_t event;
   float total = 0;
   double cur = 0;
-  for (int i = 0; i < 20; i++)
+  
+  for (int i = 0; i < 10; i++)
   {
-    gyro.getEvent(&event);
-    cur += event.gyro.z;
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
+    cur += gyro.gyro.z;
     delay(10);
   }
-  gyroCorrect = cur / 20.0;  
+  gyroCorrect = cur / 10.0;
+  
   mils = 0;
-  // Start turning
   if (dir == 1)
   {
     left.write(leftBackwardSpeed);
@@ -328,23 +320,20 @@ void turn(uint8_t dir, uint8_t magnitude)
     left.write(leftForwardSpeed);
     right.write(rightBackwardSpeed);
   }
-  // Check how far the robot has turned
   while (total < threshold)
   {
-    gyro.getEvent(&event);
-    total += abs(((event.gyro.z - gyroCorrect) / 1000) * mils);
+    lsm.getEvent(&accel, &mag2, &gyro, &temp);
+    total += abs(((gyro.gyro.z - gyroCorrect) / 1000) * mils);
     mils = 0;
     #ifdef debug
       Serial.println(total);
     #endif
     delay(7);
   }
-  // Stop turning
   left.write(90);
   right.write(90);
 }
 
-// Used to stop the bot from driving forever
 void timedOut()
 {
   timeUp = true;

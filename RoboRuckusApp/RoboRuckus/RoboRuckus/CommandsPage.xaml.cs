@@ -82,11 +82,11 @@ namespace RoboRuckus
             drift_thresholdLabel = new Label { Text = "Drift Threshold: 1" };
             drift_threshold = new Slider(0, 10, 1);
 
-            turnFactorLabel = new Label { Text = "Turn Factor: 1.44" };
-            turnFactor = new Slider(0.5, 2, 1.44);
+            turnFactorLabel = new Label { Text = "Turn Factor: 90" };
+            turnFactor = new Slider(50, 130, 22);
 
-            turn_drift_thresholdLabel = new Label { Text = "Turn Drift Threshold: 0.4" };
-            turn_drift_threshold = new Slider(0, 1.5, 0.4);
+            turn_drift_thresholdLabel = new Label { Text = "Turn Drift Threshold: 22" };
+            turn_drift_threshold = new Slider(0, 50, 22);
 
 
             robotName = new Entry { Text = "Beta Bot", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.FillAndExpand };
@@ -334,16 +334,16 @@ namespace RoboRuckus
 
         private void Turn_drift_threshold_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-            double value = Math.Round(e.NewValue / 0.1) * 0.1;
+            double value = Math.Round(e.NewValue);
             ((Slider)sender).Value = value;
-            turn_drift_thresholdLabel.Text = "Turn Drift Threshold: " + value.ToString("N1");
+            turn_drift_thresholdLabel.Text = "Turn Drift Threshold: " + value.ToString("N0");
         }
 
         private void TurnFactor_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-            double value = Math.Round(e.NewValue / 0.01) * 0.01;
+            double value = Math.Round(e.NewValue);
             ((Slider)sender).Value = value;
-            turnFactorLabel.Text = "Turn Boost: " + value.ToString("N2");
+            turnFactorLabel.Text = "Turn Boost: " + value.ToString("N0");
         }
 
         private void Drift_threshold_ValueChanged(object sender, ValueChangedEventArgs e)
