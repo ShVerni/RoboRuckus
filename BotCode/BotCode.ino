@@ -1,9 +1,7 @@
 #include <Servo.h>
-#include <i2c_t3.h>
 #include <EEPROM.h>
-#include <Adafruit_Sensor.h>
 #include <Adafruit_HMC5883_U.h>
-#include <Adafruit_LSM9DS0.h>
+#include <Adafruit_LSM9DS1.h>
 
 // Movement parameters and wheel speeds
 uint8_t leftForwardSpeed = EEPROM.read(100);
@@ -47,7 +45,7 @@ uint8_t const clockPin = 8;
 uint8_t const dataPin = 3;
 
 Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(31, 1);
-Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);
+Adafruit_LSM9DS1 lsm = Adafruit_LSM9DS1(&Wire, 1);
 
 uint8_t const numbers[] = {231, 33, 203, 107, 45, 110, 238, 35, 239, 111, 16};
 
@@ -122,12 +120,12 @@ void setup()
   mag.setMagGain(HMC5883_MAGGAIN_4_7);
   if(!lsm.begin())
   {
-    Serial.print(F("No LSM9DS0 detected ... Check your wiring or I2C ADDR!"));
+    Serial.print(F("No LSM9DS1 detected ... Check your wiring or I2C ADDR!"));
     while(true);
   }
-  lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_8G);
-  lsm.setupMag(lsm.LSM9DS0_MAGGAIN_4GAUSS);
-  lsm.setupGyro(lsm.LSM9DS0_GYROSCALE_500DPS);
+  lsm.setupAccel(lsm.LSM9DS1_ACCELRANGE_8G);
+  lsm.setupMag(lsm.LSM9DS1_MAGGAIN_4GAUSS);
+  lsm.setupGyro(lsm.LSM9DS1_GYROSCALE_500DPS);
 
   /*
   * Your WiFi radio's baud rate might be different, default baud is

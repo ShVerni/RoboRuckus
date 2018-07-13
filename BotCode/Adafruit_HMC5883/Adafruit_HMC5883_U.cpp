@@ -1,6 +1,6 @@
 /***************************************************************************
 
-  THIS HAS BEEN MODIFIED TO WORK WITH TEENSY 3.X/LC 
+  THIS HAS BEEN MODIFIED TO WORK WITH TEENSY 3.X/LC by Sam Groveman
   
   This is a library for the HMC5883 magnentometer/compass
 
