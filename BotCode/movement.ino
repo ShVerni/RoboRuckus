@@ -159,7 +159,7 @@ void driveBackward(uint8_t spaces)
   int Z_threshold = 0;
   uint8_t count = 0;
   bool crossing = false;
-  int X_calibration = 0;
+  int Y_calibration = 0;
   uint8_t countdown = 5;
   elapsedMillis mils;
   elapsedMillis speedAdjust;
@@ -168,7 +168,7 @@ void driveBackward(uint8_t spaces)
    for (int i = 0; i < 10; i++)
   {
     lsm.getEvent(&accel, &mag2, &gyro, &temp);
-    X_calibration += mag2.magnetic.x;
+    Y_calibration += mag2.magnetic.y;
     delay(10);
   }
 
@@ -181,7 +181,7 @@ void driveBackward(uint8_t spaces)
   }
   gyroCorrect = cur / 10.0;
   
-  X_calibration /= 10;
+  Y_calibration /= 10;
 
   timeUp = false;
   timeout.begin(timedOut, 1001000 * spaces);
@@ -233,7 +233,7 @@ void driveBackward(uint8_t spaces)
         right.write(rightBackwardSpeed + turnBoost);
       }
     }
-    else if (mag2.magnetic.x > (X_calibration - drift_threshold_backup))
+    else if (mag2.magnetic.y > (Y_calibration - drift_threshold_backup))
     {
       #ifdef debug
         Serial.println("Turn left");
@@ -241,7 +241,7 @@ void driveBackward(uint8_t spaces)
       right.write(rightBackwardSpeed);
       left.write(leftBackwardSpeed - turnBoost);
     }
-    else if (mag2.magnetic.x < (X_calibration + drift_threshold_backup))
+    else if (mag2.magnetic.y < (Y_calibration + drift_threshold_backup))
     {
       #ifdef debug
         Serial.println("Turn right");
