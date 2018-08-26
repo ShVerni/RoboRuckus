@@ -39,7 +39,7 @@ namespace RoboRuckus
 
             // Add Error handling middleware which catches all application specific errors and
             // sends the request to the following path or controller action.
-            app.UseExceptionHandler("/Home/Error");
+            app.UseExceptionHandler("/Shared/Error");
             app.UseStaticFiles();
 
             // Add MVC to the request pipeline.

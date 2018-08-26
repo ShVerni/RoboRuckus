@@ -19,7 +19,7 @@
     $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
 
     // Check if game is started
-    if ($("startButton").data("started") == "True") {
+    if ($("startButton").data("started") === "True") {
         $("#startButton").hide();
         $("#controlButtons").show();
     } else {
@@ -28,7 +28,7 @@
     }
  
     // Start a timer to check the game status every second
-    var fetcher = new Interval(function () { $.get("/Setup/Status", function (data) { processData(data); }) }, 1000);
+    var fetcher = new Interval(function () { $.get("/Setup/Status", function (data) { processData(data); }); }, 1000);
     fetcher.start();
 
     // Create connection to player hub
@@ -53,7 +53,7 @@
         var _card = $.parseJSON(card);
         var face;
         var details;
-        if (_card.direction == "forward") {
+        if (_card.direction === "forward") {
             face = _card.magnitude;
             details = detail[_card.direction] + " " + _card.magnitude;
         }
@@ -98,11 +98,11 @@
         $("#botStatus").empty();
         $(".boardSquare").empty().css("background", "").removeClass("managePlayer").off("click");
         var i = 1;
-        if (flags != null) {
+        if (flags !== null) {
             flags.forEach(function (entry) {
                 $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>").addClass("hasFlag").data("flag", i);
                 i++;
-            });;
+            });
         }
         // Check if robots need to re-enter game
         if (data.entering) {
@@ -111,7 +111,7 @@
             // Get all the bots that need re-entering
             var content = '<div id="botContainer" class="ui-helper-reset">';
             $.each(data.players, function () {
-                if (this.reenter != 0) {
+                if (this.reenter !== 0) {
                     content += '<div class="bots" data-number="' + this.number.toString() + '" data-orientation="1"><p>' + (this.number + 1).toString() + '&#x2191;</p></div>';
                     content += '<p>Checkpoint: [' + this.last_x + ', ' + this.last_y + ']</p>';
                 }
@@ -127,7 +127,7 @@
                 containment: "document",
                 cursor: "move"
             }).attr('unselectable', 'on').on('selectstart', false).click(function () {
-                orient(this)
+                orient(this);
             });
 
             // Make the bot container dropppable
@@ -157,7 +157,7 @@
                             parent.append('<div class="flags"><p>' + parent.data("flag") + " &#x2690;</p></div>");
                         }
                     }
-                    $(ui.draggable).detach().css({ top: 0, left: 0, margin: "0 auto" }).appendTo(this);
+                    $(ui.draggable).detach().css({ top: "", left: "", margin: "0 auto", position: "" }).appendTo(this);
                 }
             });
             // Bind function to re-enter bots 
@@ -205,7 +205,7 @@
 
     // Sends bot info to server for re-entry
     function sendBots() {
-        if ($('#botContainer > .bots').length == 0) {
+        if ($('#botContainer > .bots').length === 0) {
             var result = "[";
             var first = true;
             $(".bots").each(function (index) {
@@ -236,13 +236,13 @@
                     break;
                 case 1:
                     direction = 0;
-                    break
+                    break;
                 case 2:
                     direction = 1;
-                    break
+                    break;
                 case 3:
                     direction = 2;
-                    break
+                    break;
             }
             $(bot).data("orientation", direction);
             var orientation;
@@ -275,7 +275,7 @@
 
     // Resets the current game
     $("#reset").button().click(function (event) {
-        $.get("/Setup/Reset?resetAll=0", function (data) { alert(data) });
+        $.get("/Setup/Reset?resetAll=0", function (data) { alert(data); });
         $("#startButton").show();
         $("#controlButtons").hide();
     });
@@ -294,7 +294,7 @@
     $("#timer").button().click(function () {
         if ($('#timer').prop("checked")) {
             $.get("/Setup/Timer?timerEnable=true", function (data) {
-                if (data == "OK") {
+                if (data === "OK") {
                     $("#timerText").html("Timer Enabled");
                 } else {
                     $('#timer').prop("checked", false);
@@ -303,7 +303,7 @@
             });
         } else {
             $.get("/Setup/Timer?timerEnable=false", function (data) {
-                if (data == "OK") {
+                if (data === "OK") {
                     $("#timerText").html("Timer Disabled");
                 } else {
                     $('#timer').prop("checked", true);

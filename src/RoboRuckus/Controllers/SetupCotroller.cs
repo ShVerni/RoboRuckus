@@ -7,6 +7,7 @@ using System.Linq;
 using RoboRuckus.Models;
 using Newtonsoft.Json;
 using System.Threading;
+using System.IO;
 
 namespace RoboRuckus.Controllers
 {
@@ -53,24 +54,22 @@ namespace RoboRuckus.Controllers
         /// <summary>
         /// Sets up a game
         /// </summary>
-        /// <param name="selBoard">The board selected to play on</param>
-        /// <param name="flags">The position of placed flags</param>
-        /// <param name="numberOfPlayers">The number of players</param>
+        /// <param name="gameData">The game data needed for setup</param>
         /// <returns>Redirects to the appropriate action</returns>
         [HttpPost]
-        public IActionResult setupGame(string selBoard, string flags, int numberOfPlayers = 0)
+        public IActionResult setupGame(setupViewModel gameData)
         {
-            if (numberOfPlayers > 0)
+            if (gameData.numberOfPlayers > 0)
             {
-                gameStatus.numPlayers = numberOfPlayers;
-                Board _board = gameStatus.boards.FirstOrDefault(b => b.name == selBoard);
+                gameStatus.numPlayers = gameData.numberOfPlayers;
+                Board _board = gameStatus.boards.FirstOrDefault(b => b.name == gameData.selBoard);
                 if (_board != null)
                 {
                     gameStatus.gameBoard = _board;
-                    if (flags != null && flags.Length > 1)
+                    if (gameData.flags != null && gameData.flags.Length > 1)
                     {                     
                         // Assign the flag coordinates, ordered according to the flag number
-                        gameStatus.gameBoard.flags = JsonConvert.DeserializeObject<int[][]>(flags).OrderBy(f => f[0]).Select(f => new int[] { f[1], f[2] }).ToArray();
+                        gameStatus.gameBoard.flags = JsonConvert.DeserializeObject<int[][]>(gameData.flags).OrderBy(f => f[0]).Select(f => new int[] { f[1], f[2] }).ToArray();
                     }
                     else
                     {
@@ -249,6 +248,128 @@ namespace RoboRuckus.Controllers
                 }
             }
             return Content("<h1>Error</h1>", "text/HTML");
+        }
+
+        /// <summary>
+        /// Delas a player a new hand of cards
+        /// </summary>
+        /// <param name="player">The player to deal</param>
+        /// <returns>The string OK</returns>
+        [HttpPost]
+        public IActionResult redealPlayer(int player)
+        {
+            if (gameStatus.gameStarted)
+            {
+                Player _player = gameStatus.players[player - 1];
+                foreach (byte card in _player.cards)
+                {
+                    gameStatus.deltCards.Remove(card);
+                }
+                _player.cards = null;
+                serviceHelpers.signals.dealPlayers(player);
+            }
+            return Content("OK", "text/plain");
+        }
+
+        /// <summary>
+        /// Used to create new game boards
+        /// </summary>
+        /// <returns>The view</returns>
+        public IActionResult boardMaker()
+        {
+            if (gameStatus.gameReady)
+            {
+                return RedirectToAction("Monitor");
+            }
+            else if (gameStatus.tuneRobots)
+            {
+                return RedirectToAction("Tuning");
+            }
+
+            // Get a list of currently loaded boards and add it to the model.
+            IEnumerable<SelectListItem> _boards = gameStatus.boards.OrderBy(b => b.name).Select(b => new SelectListItem
+            {
+                Text = b.name,
+                Value = b.name
+            });
+            boardMakerViewModel _model = new boardMakerViewModel { boards = _boards };
+            return View(_model);
+        }
+
+        /// <summary>
+        /// Creates a new board or overwrites an existing one
+        /// </summary>
+        /// <param name="newBoard">The board maker view model containing the board data</param>
+        /// <returns>A redirect to the board maker</returns>
+        [HttpPost]
+        public IActionResult makeBoard(boardMakerViewModel newBoard)
+        {
+            Board board = JsonConvert.DeserializeObject<Board>(newBoard.boardData);
+            int[][] corners = JsonConvert.DeserializeObject<int[][]>(newBoard.cornerData);
+            // Create the images for the baord
+            boardImageMaker.createImage(board, corners);
+            Board oldBoard = gameStatus.boards.FirstOrDefault(x => x.name == newBoard.name);
+            if (oldBoard != null)
+            {
+                // Remove old board from memory
+                gameStatus.boards.Remove(oldBoard);
+            }
+            char _separator = Path.DirectorySeparatorChar;
+            // Write new JSON file.
+            using (StreamWriter sw = new StreamWriter(serviceHelpers.rootPath + _separator + "GameConfig" + _separator + "Boards" + _separator + newBoard.name.Replace(" ", "") + ".json", false))
+            {
+                sw.Write(newBoard.boardData);
+                sw.Close();
+            }
+            // Add new board to memory
+            gameStatus.boards.Add(board);
+            return RedirectToAction("boardMaker");
+        }
+
+        /// <summary>
+        /// Gets the JSON encoding of a board in memory
+        /// </summary>
+        /// <param name="name">The name of the board to retrieve</param>
+        /// <returns>The JSON encoding of the board</returns>
+        [HttpGet]
+        public IActionResult getBoard(string name)
+        {
+            Board board = gameStatus.boards.FirstOrDefault(x => x.name == name);
+            return Content(JsonConvert.SerializeObject(board), "text/json");
+        }
+
+        /// <summary>
+        /// Deletes a board from the server
+        /// </summary>
+        /// <param name="name">The name of the board to delete</param>
+        /// <returns>The string OK</returns>
+        [HttpPost]
+        public IActionResult deleteBoard(string name)
+        {
+            Board board = gameStatus.boards.FirstOrDefault(x => x.name == name);
+            // Check if board exists
+            if (board != null)
+            {
+                char _separator = Path.DirectorySeparatorChar;
+                string _root = serviceHelpers.rootPath + _separator;
+                string filename = name.Replace(" ", "");
+                // Remove board from memory
+                gameStatus.boards.Remove(board);
+                // Delete board files
+                if (System.IO.File.Exists(_root + "wwwroot" + _separator + "images" + _separator + "printable_boards" + _separator + filename + ".png"))
+                {
+                    System.IO.File.Delete(_root + "wwwroot" + _separator + "images" + _separator + "printable_boards" + _separator + filename + ".png");
+                }
+                if (System.IO.File.Exists(_root + "wwwroot" + _separator + "images" + _separator + "boards" + _separator + filename + ".png"))
+                {
+                    System.IO.File.Delete(_root + "wwwroot" + _separator + "images" + _separator + "boards" + _separator + filename + ".png");
+                }
+                if (System.IO.File.Exists(_root + "GameConfig" + _separator + "Boards" + _separator + filename + ".json"))
+                {
+                    System.IO.File.Delete(_root + "GameConfig" + _separator + "Boards" + _separator + filename + ".json");
+                }
+            }
+            return Content("OK", "text/plain");
         }
 
         /// <summary>

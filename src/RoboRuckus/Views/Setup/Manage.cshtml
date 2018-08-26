@@ -1,6 +1,6 @@
 ﻿@model RoboRuckus.Models.manageViewModel
 @{
-    ViewBag.Title = "Manage Player";
+    ViewData["Title"] = "Manage Player";
 }
 
 @section Scripts {
@@ -36,7 +36,7 @@
     <br />
     @Html.LabelFor(m => m.botDir, new { @class = "" })
     <div>
-         @Html.DropDownListFor(m => m.botDir, Html.GetEnumSelectList(typeof(RoboRuckus.RuckusCode.Robot.orientation)))
+        @Html.DropDownListFor(m => m.botDir, Html.GetEnumSelectList(typeof(RoboRuckus.RuckusCode.Robot.orientation)))
     </div>
     <br />
     @Html.LabelFor(m => m.botName, new { @class = "" })
@@ -45,9 +45,9 @@
     </div>
     <br />
     <div class="">
-        <input id="button" type="submit" value="Update Player" class="" />
+        <input id="button" type="submit" value="Update Player" class="" style="display: inline-block" />
+        <button id="dealMe" type="button" style="display: inline-block" class="">Re-deal Player</button>
     </div>
-    <div id="form" class="hidden">
-        @Html.TextBoxFor(m => m.player, new { @class = "", @id = "player", type = "number" })
-    </div>
+    @Html.HiddenFor(m => m.player, new { @class = "", @id = "player" })
 }
+

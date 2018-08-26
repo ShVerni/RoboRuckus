@@ -5,7 +5,7 @@
     $.validator.setDefaults({ ignore: null });
     $("#submitButton").button();
 
-    $("#tuningMode").button();
+    $(".linkButtons").button();
 
     // Enable the board selection menu
     $("#boardSel").selectmenu({
@@ -21,10 +21,10 @@
                     for (var j = 0; j <= boardSize[0]; j++) {
                         board += '<div class="boardSquare" id="' + j + '_' + i + '"></div>';
                     }
-                    board += '<div class="clear"></div></div>';
+                    board += '</div>';
                 }
                 // Load board image
-                $("#board").html(board).css("background-image", 'url("/images/boards/' + name.replace(" ", "") + '.png")');;
+                $("#board").html(board).css("background-image", 'url("/images/boards/' + name.replace(" ", "") + '.png")');
                 //Enable flag placement
                 $(".boardSquare").droppable({
                     accept: "#flagContainer div, .boardSquare div",
@@ -34,7 +34,7 @@
                         if ($(ui.draggable).parent().hasClass("boardSquare")) {
                             $(ui.draggable).parent().droppable("enable");
                         }
-                        $(ui.draggable).detach().css({ top: 0, left: 0 }).appendTo(this);
+                        $(ui.draggable).detach().css({ top: "", left: "", position: "" }).appendTo(this);
                         assignFlags();
                     }
                 });
@@ -99,7 +99,7 @@
     // Check to make sure a flag is placed
     $("#setupForm").submit(function () {
         var placed = $("#flagString").val();
-        if (!placed || $("#flagString").val() == "[  ]") {
+        if (!placed || $("#flagString").val() === "[  ]") {
             $("#flagString").val("");
         }
     });

@@ -238,9 +238,11 @@
     });
 
     // When called, requests a deal from the server
-    connection.on("requestdeal", () => { 
-        $("#shutdown").prop("checked", false).button("refresh");
-        connection.invoke("dealMe", $('#playerNum').data("player")).catch(err => console.error(err.toString()));
+    connection.on("requestdeal", (player) => {
+        if (player === -1 || player === Number($('#playerNum').data("player"))) {
+            $("#shutdown").prop("checked", false).button("refresh");
+            connection.invoke("dealMe", $('#playerNum').data("player")).catch(err => console.error(err.toString()));
+        }
     });
 
     // Game has been reset, return to setup page
@@ -459,9 +461,9 @@
 
     function resize()
     {
-        var imageWidth = (($(window).width() - 80) / boxes);
+        var imageWidth = ($(window).width() - 80) / boxes;
         if (imageWidth < 350) {
-            var percent = (imageWidth / 350);
+            var percent = imageWidth / 350;
             var imageHeight = percent * 520;
             $(".order").css("font-size", percent * 4 + "em");
             $(".face").css("font-size", percent * 11.8 + "em");

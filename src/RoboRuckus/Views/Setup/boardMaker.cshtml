@@ -1,0 +1,124 @@
+﻿@model RoboRuckus.Models.boardMakerViewModel
+@{
+    ViewData["Title"] = "Board Maker";
+}
+
+<h2>Board Maker</h2>
+
+@using (Html.BeginForm("makeBoard", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, false, new { @class = "", role = "form", @id = "boardMakerForm" }))
+{
+<div>
+    <div>
+        @Html.DropDownListFor(m => m.selBoard, Model.boards, "New board", new { @id = "boardSel" })
+    </div>
+    <br />
+    @Html.ValidationSummary(true, "Please enter a name.", new { @class = "" })
+    <div class="" id="nameContainer">
+        @Html.LabelFor(m => m.name, new { @class = "" })
+        <div>
+            @Html.TextBoxFor(m => m.name, new { @class = "", @id = "name", type = "text" })
+            @Html.ValidationMessageFor(m => m.name, "", new { @class = "" })
+        </div>
+        <br />
+    </div>
+    <div class="left">
+        @Html.LabelFor(m => m.x_size, new { @class = "" })
+        <div>
+            @Html.TextBoxFor(m => m.x_size, new { @class = "boardSize", @id = "x_size", type = "number", max = "48", min = "1" })
+            @Html.ValidationMessageFor(m => m.x_size, "", new { @class = "" })
+        </div>
+    </div>
+    <div class="left">
+        @Html.LabelFor(m => m.y_size, new { @class = "" })
+        <div>
+            @Html.TextBoxFor(m => m.y_size, new { @class = "boardSize", @id = "y_size", type = "number", max = "48", min = "1" })
+            @Html.ValidationMessageFor(m => m.y_size, "", new { @class = "" })
+        </div>
+    </div>
+    <div class="left" id="trashCan">
+        <img src="~/images/maker/trash.png" />
+    </div>
+    <div class="clear"></div>
+    <br />
+    <div id="boardMaker" class="left"></div>
+    <div id="flagContainer" class="left ui-helper-reset">
+        <div data-orientation="0" class="element CCWR">
+            <img src="~/images/maker/CCWRotator.png" />
+        </div>
+        <div data-orientation="0" class="element CWR">
+            <img src="~/images/maker/CWRotator.png" />
+        </div>
+        <div data-orientation="0" class="element conveyor rotateable" data-shape="l">
+            <img src="~/images/maker/Conveyor.png" />
+        </div>
+        <div data-orientation="0" class="element exConveyor rotateable" data-shape="l">
+            <img src="~/images/maker/ExpressConveyor.png" />
+        </div>
+        <div data-orientation="0" class="element conveyorCurve rotateable" data-shape="c">
+            <img src="~/images/maker/ConveyorCurve.png" />
+        </div>
+        <div data-orientation="0" class="element exConveyorCurve rotateable" data-shape="c">
+            <img src="~/images/maker/ExpressConveyorCurve.png" />
+        </div>
+        <div data-orientation="0" class="element conveyorCurveS rotateable" data-shape="s">
+            <img src="~/images/maker/ConveyorCurveS.png" />
+        </div>
+        <div data-orientation="0" class="element exConveyorCurveS rotateable" data-shape="s">
+            <img src="~/images/maker/ExpressConveyorCurveS.png" />
+        </div>
+        <div data-orientation="0" class="element corner stackable rotateable">
+            <img src="~/images/maker/Corner.png" />
+        </div>
+        <div data-orientation="0" class="element wall stackable rotateable">
+            <img src="~/images/maker/Wall.png" />
+        </div>
+        <div data-orientation="0" class="element laser laser-1 stackable rotateable" data-strength="1">
+            <img src="~/images/maker/Laser-1.png" />
+        </div>
+        <div data-orientation="0" class="element beam-1 beam stackable rotateable">
+            <img src="~/images/maker/Beam-1.png" />
+        </div>
+        <div data-orientation="0" class="element laser laser-2 stackable rotateable" data-strength="2">
+            <img src="~/images/maker/Laser-2.png" />
+        </div>
+        <div data-orientation="0" class="element beam-2 beam stackable rotateable">
+            <img src="~/images/maker/Beam-2.png" />
+        </div>
+        <div data-orientation="0" class="element laser laser-3 stackable rotateable" data-strength="3">
+            <img src="~/images/maker/Laser-3.png" />
+        </div>
+        <div data-orientation="0" class="element beam-3 beam stackable rotateable">
+            <img src="~/images/maker/Beam-3.png" />
+        </div>
+        <div data-orientation="0" class="element pit">
+            <img src="~/images/maker/Pit.png" />
+        </div>
+        <div data-orientation="0" class="element wrench">
+            <img src="~/images/maker/Wrench.png" />
+        </div>
+    </div>
+    <div class="clear"></div>
+    <br />
+    <div>
+        @Html.HiddenFor(m => m.boardData, new { @class = "", @id = "boardData" })
+    </div>
+    <div>
+        @Html.HiddenFor(m => m.cornerData, new { @class = "", @id = "cornerData" })
+    </div>
+    <input id="submitButton" type="submit" value="Make Board" class="" />
+</div>
+}
+<br />
+<div style="display: none;" id="exButtons">
+    <button id="delete" style="display: inline-block;" type="button">Delete Board</button>
+    <a id="printImg" style="display :none;" href="" download>Get Printable Image</a>
+</div>
+<div id="dialog-confirm" title="Delete board?" style="display:none">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This board will be deleted from the server. Are you sure?</p>
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/lib/jquery-validation/jquery.validate.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>
+    <script type="text/javascript" src=@Url.Content("~/Scripts/boardMaker.js")></script>
+}

@@ -1,16 +1,15 @@
 ﻿@{
-    ViewBag.Title = "Player Updated";
+    ViewData["Title"] = "Player Updated";
 }
 
 <h1>Player Updated</h1>
 @section scripts{
 
     <script type="text/javascript">    
-
             function closeWindow() {
                 setTimeout(function () {
                     $(window.top.document).find('.ui-dialog').remove();
-                }, 2000);
+                }, 1000);
             }
             closeWindow();
     </script>

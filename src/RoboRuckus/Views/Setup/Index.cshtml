@@ -1,6 +1,6 @@
 ﻿@model RoboRuckus.Models.setupViewModel
 @{
-    ViewBag.Title = "Setup";
+    ViewData["Title"] = "Setup";
 }
 <div class="row">
     @using (Html.BeginForm("setupGame", "Setup", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, false, new { @class = "", role = "form", @id="setupForm"}))
@@ -49,7 +49,9 @@
     }
 </div>
 <br />
-<a id="tuningMode" href="/Setup/Tuning">Tune Robots</a>
+<div>
+    <a id="tuningModeBtn" class="linkButtons" style="display: inline-block;" href="/Setup/Tuning">Tune Robots</a>
+    <a id="boardMakerBtn" class="linkButtons" style="display: inline-block;" href="/Setup/boardMaker">Board Maker</a></div>
 @section Scripts {
     <script src="@Url.Content("~/lib/jquery-validation/jquery.validate.js")"></script>
     <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>

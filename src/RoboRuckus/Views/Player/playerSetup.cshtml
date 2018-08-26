@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Player Setup";
+    ViewData["Title"] = "Player Setup";
 }
 
 @section scripts
@@ -13,9 +13,7 @@
     {
         <div class="boardRow" id="y_@i">
             @for (int j = 0; j <= ViewBag.board_x; j++)
-            {
-                <div class="boardSquare" data-x="@j" data-y="@i" id="@(j)_@i"></div>
-            }
+            {<div class="boardSquare" data-x="@j" data-y="@i" id="@(j)_@i"></div>}
             <div class="clear"></div>
         </div>
     }

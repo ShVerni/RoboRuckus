@@ -1,6 +1,6 @@
 ﻿$(function () {
     // Sets a timer to retrieve the game's status at a regular interval
-    setInterval(function () { $.get("/Player/Status", function (data) { processData(data); }) }, 1000);
+    setInterval(function () { $.get("/Player/Status", function (data) { processData(data); }); }, 1000);
     $("#bots").selectmenu({
         width: null
     });
@@ -18,7 +18,7 @@
     // TODO: Restrict selection to predefined starting squares.
     $(".boardSquare").click(function () {
         if (!$(this).hasClass("occupied")) {
-            if ($("#button").button("option", "disabled") == true) {
+            if ($("#button").button("option", "disabled") === true) {
                 $("#button").button("option", "disabled", false);
             }
             $("#player").val(player);
@@ -29,13 +29,13 @@
                         break;
                     case 1:
                         direction = 0;
-                        break
+                        break;
                     case 2:
                         direction = 1;
-                        break
+                        break;
                     case 3:
                         direction = 2;
-                        break
+                        break;
                 }
                 $("#botDir").val(direction);
             }
@@ -67,7 +67,7 @@
     // Receives the locations of all bots that have selected starting squares, makes those slots unselectable, and updates list of available bots
     function processData(data) {
         var i = 1;
-        if (flags != null) {
+        if (flags !== null) {
             flags.forEach(function (entry) {
                 $("#" + entry[0] + "_" + entry[1]).html('<div class="flags"><p>' + i + " &#x2690;</p></div>");
                 i++;
@@ -78,7 +78,7 @@
         $.each(data.botNames, function () {
             $("#bots").append('<option value="' + this + '">' + this + "</option>");
         });
-        if (chosen != "" && 0 != $('#bots option[value="' + chosen + '"]').length)
+        if (chosen !== "" && 0 !== $('#bots option[value="' + chosen + '"]').length)
         {
             $("#bots").val(chosen);
         }
@@ -106,10 +106,10 @@
 
     $("#playerForm").submit(function () {
         $("#selMessage").empty();
-        if($("#bots").val() == "")
+        if($("#bots").val() === "")
         {
             $("#selMessage").html("Please select a robot");
-            return false
+            return false;
         }
         return true;
     });

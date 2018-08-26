@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RoboRuckus.Models;
 using RoboRuckus.RuckusCode;
 using System.Linq;
 
@@ -21,7 +22,7 @@ namespace RoboRuckus.Controllers
                 // See if player is not in game or needs setup
                 if (!gameStatus.players.Any(p => p.playerNumber == (player - 1)) || gameStatus.players[player - 1].playerRobot == null)
                 {
-                    return RedirectToAction("playerSetup", new { player = player });
+                    return RedirectToAction("playerSetup", new { player });
                 }
                 // Player is in game, return view
                 ViewBag.player = player;
@@ -84,12 +85,12 @@ namespace RoboRuckus.Controllers
             // Double check player is in game
             if (!gameStatus.players.Any(p => p.playerNumber == (player - 1)))
             {
-                return RedirectToAction("addPlayer", new { player = player });
+                return RedirectToAction("addPlayer", new { player });
             }
             // Check if player is already set up
             else if (gameStatus.players[player - 1].playerRobot != null && reset !=1)
             {
-                return RedirectToAction("Index", new { player = player });
+                return RedirectToAction("Index", new { player });
             }
             // Set up player
             else
@@ -111,37 +112,33 @@ namespace RoboRuckus.Controllers
         /// <summary>
         /// Let's a player setup their parameters
         /// </summary>
-        /// <param name="player">The player number</param>
-        /// <param name="botName">The chosen robot name</param>
-        /// <param name="botX">The player's bot's x position</param>
-        /// <param name="botY">The player's bot's y position</param>
-        /// <param name="botDir">The player's bot's direction</param>
+        /// <param name="playerData">The player data needed for setup</param>
         /// <returns>The view</returns>
         [HttpPost]
-        public IActionResult setupPlayer(int player, string botName, int botX, int botY, int botDir)
+        public IActionResult setupPlayer(playerSetupViewModel playerData)
         {
             lock (gameStatus.locker)
             {
                 lock (gameStatus.setupLocker)
                 {
                     // Check if robot was already assigned
-                    if (!gameStatus.assignBot(player, botName))
+                    if (!gameStatus.assignBot(playerData.player, playerData.botName))
                     {
-                        return RedirectToAction("playerSetup", new { player = player });
+                        return RedirectToAction("playerSetup", new { playerData.player });
                     }
                     // Check it robot's coordinates are taken
-                    if (gameStatus.robots.Any(r => (r.x_pos == botX && r.y_pos == botY)))
+                    if (gameStatus.robots.Any(r => (r.x_pos == playerData.botX && r.y_pos == playerData.botY)))
                     {
-                        return RedirectToAction("playerSetup", new { player = player });
+                        return RedirectToAction("playerSetup", new { playerData.player });
                     }
                     else
                     {
-                        Player sender = gameStatus.players[player - 1];
-                        sender.playerRobot.x_pos = botX;
-                        sender.playerRobot.y_pos = botY;
-                        sender.playerRobot.lastLocation = new int[] { botX, botY };
-                        sender.playerRobot.currentDirection = (Robot.orientation)botDir;
-                        return RedirectToAction("Index", new { player = player });
+                        Player sender = gameStatus.players[playerData.player - 1];
+                        sender.playerRobot.x_pos = playerData.botX;
+                        sender.playerRobot.y_pos = playerData.botY;
+                        sender.playerRobot.lastLocation = new int[] { playerData.botX, playerData.botY };
+                        sender.playerRobot.currentDirection = (Robot.orientation)playerData.botDir;
+                        return RedirectToAction("Index", new { playerData.player });
                     }
                 }
             }

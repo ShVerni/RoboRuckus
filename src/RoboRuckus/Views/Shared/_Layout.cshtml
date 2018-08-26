@@ -2,10 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/jqueryUI/jquery-ui.css" />
     <link rel="stylesheet" href="~/lib/jqueryUI/jquery-ui.structure.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" type="image/png" href="~/images/favicon.png" />
 </head>
 <body>
     <div class="container body-content">
@@ -15,8 +16,7 @@
     <script type="text/javascript" src=@Url.Content("~/lib/jquery/jquery.min.js")></script>  
     <script type="text/javascript" src=@Url.Content("~/lib/jqueryUI/jquery-ui.min.js")></script>
     <script type="text/javascript" src=@Url.Content("~/lib/jqueryPunch/jquery.ui.touch-punch.min.js")></script>
-    <script type="text/javascript" src=@Url.Content("~/lib/howler/howler.min.js")></script>
-    <script type="text/javascript" src=@Url.Content("~/lib/signalr/jquery.signalR.js")></script>  
+    <script type="text/javascript" src=@Url.Content("~/lib/howler/howler.min.js")></script> 
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -95,13 +95,14 @@ namespace RoboRuckus.RuckusCode
         }
 
         /// <summary>
-        /// Used to deal cards to all the players
+        /// Used to have players request a deal
         /// </summary>
-        public void dealPlayers()
+        /// <param name="player">the player to request a deal, -1 for all</param>
+        public void dealPlayers(int player = -1)
         {
             lock (gameStatus.locker)
             {
-                _playerHub.Clients.All.SendAsync("requestdeal");
+                _playerHub.Clients.All.SendAsync("requestdeal", player);
             }
         }
 
@@ -260,8 +261,7 @@ namespace RoboRuckus.RuckusCode
                     }
                     while (randomNumber[0] >= numberOfCards);
                     drawn = randomNumber[0];
-                }
-                while (gameStatus.deltCards.Contains(drawn) || gameStatus.lockedCards.Contains(drawn));
+                } while (gameStatus.deltCards.Contains(drawn) || gameStatus.lockedCards.Contains(drawn));
                 gameStatus.deltCards.Add(drawn);
                 return drawn;
             }

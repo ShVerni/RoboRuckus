@@ -45,7 +45,7 @@ uint8_t const clockPin = 8;
 uint8_t const dataPin = 3;
 
 Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(31, 1);
-Adafruit_LSM9DS1 lsm = Adafruit_LSM9DS1(&Wire, 1);
+Adafruit_LSM9DS1 lsm = Adafruit_LSM9DS1(&Wire, 0);
 
 uint8_t const numbers[] = {231, 33, 203, 107, 45, 110, 238, 35, 239, 111, 16};
 

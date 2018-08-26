@@ -25,7 +25,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 foreach (Robot _bot in bots)
                 {
                     // Determine in which direction to rotate that bot, and craft the movement
-                    turntable table = gameStatus.gameBoard.turntables.Single(t => (t.location[0] == _bot.x_pos && t.location[1] == _bot.y_pos));
+                    Turntable table = gameStatus.gameBoard.turntables.Single(t => (t.location[0] == _bot.x_pos && t.location[1] == _bot.y_pos));
                     moveModel movement = new moveModel
                     {
                         card = new cardModel
@@ -195,7 +195,7 @@ namespace RoboRuckus.RuckusCode.Movement
                     serviceHelpers.signals.showMessage("All conveyors moving");
                     onConveyors = gameStatus.robots.Where(r => (gameStatus.gameBoard.conveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1]))) || (gameStatus.gameBoard.expressConveyors.Any(c => (r.x_pos == c.location[0] && r.y_pos == c.location[1])))).ToArray();
                 }
-                List<conveyorModel> moved = new List<conveyorModel>();
+                List<ConveyorModel> moved = new List<ConveyorModel>();
 
                 // Check whether each robot will be able to move, or if it is blocked by another robot
                 foreach (Robot moving in onConveyors)
@@ -204,21 +204,21 @@ namespace RoboRuckus.RuckusCode.Movement
                 }
 
                 // Check to see if any robots are trying to move into the same space
-                conveyorModel[] collisions = moved.Where(r => (moved.Any(q => (r != q && q.destination[0] == r.destination[0] && q.destination[1] == r.destination[1])))).ToArray();
-                foreach (conveyorModel collided in collisions)
+                ConveyorModel[] collisions = moved.Where(r => (moved.Any(q => (r != q && q.destination[0] == r.destination[0] && q.destination[1] == r.destination[1])))).ToArray();
+                foreach (ConveyorModel collided in collisions)
                 {
                     moved.Remove(collided);
                 }
 
                 // Resolve the movement of each bot that is moving
-                foreach (conveyorModel findMove in moved)
+                foreach (ConveyorModel findMove in moved)
                 {
                     Robot.orientation oldFacing = findMove.bot.currentDirection;
                     moveCalculator.resolveMove(findMove.bot, findMove.space.exit, 1, ref orders, false, true);
                     Robot.orientation desiredFacing = oldFacing;
 
                     // Check if a robot is being moved onto a space that contains a conveyor
-                    conveyor entering = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
+                    Conveyor entering = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
                     if (entering == null)
                     {
                         entering = gameStatus.gameBoard.expressConveyors.FirstOrDefault(c => (c.location[0] == findMove.destination[0] && c.location[1] == findMove.destination[1]));
@@ -289,7 +289,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <param name="onCoveyors">An array of all robots that are on conveyors</param>
         /// <param name="movable">A reference to a list of robots on conveyors that are able to move</param>
         /// <returns>True if the robot can move</returns>
-        private static bool canMoveOnConveyor(Robot moving, Robot[] onCoveyors, ref List<conveyorModel> movable)
+        private static bool canMoveOnConveyor(Robot moving, Robot[] onCoveyors, ref List<ConveyorModel> movable)
         {
             // See if robot has already been cleared to move
             if (movable.Any(m => m.bot == moving))
@@ -298,7 +298,7 @@ namespace RoboRuckus.RuckusCode.Movement
             }
             int[] destination;
             // Get the conveyor space the robot is on
-            conveyor space = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == moving.x_pos && c.location[1] == moving.y_pos));
+            Conveyor space = gameStatus.gameBoard.conveyors.FirstOrDefault(c => (c.location[0] == moving.x_pos && c.location[1] == moving.y_pos));
             if (space == null)
             {
                 space = gameStatus.gameBoard.expressConveyors.First(c => (c.location[0] == moving.x_pos && c.location[1] == moving.y_pos));
@@ -335,7 +335,7 @@ namespace RoboRuckus.RuckusCode.Movement
                     {
                         // The robot can move
                         movable.Add(
-                            new conveyorModel
+                            new ConveyorModel
                             {
                                 space = space,
                                 destination = destination,
@@ -350,7 +350,7 @@ namespace RoboRuckus.RuckusCode.Movement
             {
                 // No bot in the way, the robot can move              
                 movable.Add(
-                    new conveyorModel
+                    new ConveyorModel
                     {
                         space = space,
                         destination = destination,
@@ -400,7 +400,7 @@ namespace RoboRuckus.RuckusCode.Movement
         {
             lock (gameStatus.locker)
             {
-                foreach (laser shooter in gameStatus.gameBoard.lasers)
+                foreach (Laser shooter in gameStatus.gameBoard.lasers)
                 {
                     int shot = LoS(shooter.start, shooter.facing, shooter.end);
                     if (shot != -1)

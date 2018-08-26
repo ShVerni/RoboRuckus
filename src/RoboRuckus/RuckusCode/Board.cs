@@ -9,7 +9,7 @@
         public int[] size;
         public int[][] wrenches;
         public int[][] pits;
-        public turntable[] turntables;
+        public Turntable[] turntables;
         public int[][] flags;
 
         /// <summary>
@@ -18,15 +18,15 @@
         /// </summary>
         public int[][][] walls;
 
-        public laser[] lasers;
-        public conveyor[] conveyors;
-        public conveyor[] expressConveyors;
+        public Laser[] lasers;
+        public Conveyor[] conveyors;
+        public Conveyor[] expressConveyors;
     }
 
     /// <summary>
     /// Represents a turntable element
     /// </summary>
-    public class turntable
+    public class Turntable
     {
         /// <summary>
         /// The [x,y] coordinates of the turntable
@@ -42,7 +42,7 @@
     /// <summary>
     /// Represents a spae on a conveyor belt
     /// </summary>
-    public class conveyor
+    public class Conveyor
     {
         /// <summary>
         /// The [x,y] coordinates of the conveyor space
@@ -63,7 +63,7 @@
     /// <summary>
     /// Represents a board laser
     /// </summary>
-    public class laser
+    public class Laser
     {
         /// <summary>
         /// The coordinate from which the laser is firing
@@ -89,12 +89,12 @@
     /// <summary>
     /// A convenient structure to group a robot and a conveyor to help facilitate movement
     /// </summary>
-    public class conveyorModel
+    public class ConveyorModel
     {
         /// <summary>
         /// The conveyor space on which the bot sits
         /// </summary>
-        public conveyor space;
+        public Conveyor space;
 
         /// <summary>
         /// The coordinate to where the conveyor will move the bot
