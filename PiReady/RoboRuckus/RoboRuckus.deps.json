@@ -8190,7 +8190,7 @@
     "Microsoft.AspNetCore.WebSockets.Protocol/0.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GMhLP6qzbMrYUG+3CaLML9swc0fdBmjF8IHAhqMbxtzF+EfUm7Ks2+g/3Wo9O+Nm9XEgz2FSLfP/wrCAdBf8Dw==",
+      "sha512": "sha512-0xtWJEnz0W6d4eBnLlG6dujOqsCz4qu5y/49HeFtizZPYp1keKXNxCew2r2Pn7M2qRYZ4jUiGPCQktp6mL6DAA==",
       "path": "microsoft.aspnetcore.websockets.protocol/0.1.0",
       "hashPath": "microsoft.aspnetcore.websockets.protocol.0.1.0.nupkg.sha512"
     },
@@ -8603,7 +8603,7 @@
     "Microsoft.Extensions.PlatformAbstractions/1.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-PcMVUFeEuq1J9SpNoTjX9Vj/thoBodQoEZEtZHXzPSyjI2VAyGgRpOY4usTk6Gw7/QTBQBV4UlY6ltoFZdM5pw==",
+      "sha512": "sha512-zyjUzrOmuevOAJpIo3Mt5GmpALVYCVdLZ99keMbmCxxgQH7oxzU58kGHzE6hAgYEiWsdfMJLjVR7r+vSmaJmtg==",
       "path": "microsoft.extensions.platformabstractions/1.0.0",
       "hashPath": "microsoft.extensions.platformabstractions.1.0.0.nupkg.sha512"
     },
