@@ -41,7 +41,10 @@ $(function () {
     $("#boardSel").selectmenu({
         width: null,
         change: function (event, ui) {
-            var name = $(this).val();
+            $("#startMaker").fadeOut();
+			$("#flagContainer").fadeIn();
+			$("#submitButton").fadeIn();
+			var name = $(this).val();
             if (name) {
                 $("#name").val(name);
                 $("#printImg").attr("href", "/images/printable_boards/" + name.replace(" ", "") + ".png");
@@ -63,11 +66,42 @@ $(function () {
         // Add corner date to form
         $("#cornerData").val(getCorners());
     });
+	
+	//Clear the value on click if 0
+	$("#x_size").on('click', function(e) {
+		console.log($("#x_size").val());
+		if($("#x_size").val() == 0){
+			$("#x_size").val('');
+		}
+	});
+	
+	//Clear the value on click if 0
+	$("#y_size").on('click', function(e) {
+		console.log($("#y_size").val());
+		if($("#y_size").val() == 0){
+			$("#y_size").val('');
+		}
+	});
+	
+	// Intercept startMaker button.
+	$("#startMaker").on('click', function(e) {
+		//Event.stop(event); // suppress submit
+		e.preventDefault();
+		drawBoard($("#x_size").val(), $("#y_size").val());
+		
+		// Redraw board on size change.
+		$(".boardSize").change(function () {
+			drawBoard($("#x_size").val(), $("#y_size").val());
+		});
+		
+		$("#startMaker").fadeOut();
+		$("#flagContainer").fadeIn();
+		$("#submitButton").fadeIn();
+		
+	});
 
-    // Redraw board on size change.
-    $(".boardSize").change(function () {
-        drawBoard($("#x_size").val(), $("#y_size").val());
-    });
+
+    
     
     // Makes board elements draggable.
     $(".element").draggable({

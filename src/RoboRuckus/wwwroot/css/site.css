@@ -212,7 +212,7 @@
      min-width: 5em;
      max-width: 7em;
      margin-top: 3em;
-     margin-left: 5em;
+     /*margin-left: 5em;*/
  }
 
  #flagContainer .flags {
@@ -274,6 +274,12 @@ select {
      margin-right: 1em;
  }
 
+ .center{
+	 margin-left:auto;
+	 margin-right:auto;
+	 text-align:center;
+ }
+ 
  /* Bot tuning stuff */
 
 .tuneFactor {
@@ -319,6 +325,11 @@ select {
     overflow: auto;
     white-space: nowrap;
     padding: 1em;
+	z-index:0;
+}
+
+.ui-draggable-dragging{
+	z-index:500;
 }
 
 #boardMaker .boardSquare {
@@ -326,6 +337,14 @@ select {
     line-height: 2.6em;
     vertical-align: middle;
     opacity: 1;
+}
+
+#startMakerDiv{
+	height:5px;
+}
+
+#startMaker{
+	margin-top:0.5em;
 }
 
 .element {
@@ -365,6 +384,9 @@ select {
 }
 
 #trashCan {
+	position: relative;
+	left: 0.5em;
+    top: -0.5em;
     height: 5em;
     width: 5em;
     background-size: contain;

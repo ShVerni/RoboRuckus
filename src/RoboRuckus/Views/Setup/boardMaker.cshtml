@@ -35,13 +35,17 @@
             @Html.ValidationMessageFor(m => m.y_size, "", new { @class = "" })
         </div>
     </div>
-    <div class="left" id="trashCan">
-        <img src="~/images/maker/trash.png" />
+    <div id="startMakerDiv" class="left clear">
+        <button id="startMaker" class="ui-button ui-widget ui-corner-all ">Set Size</button>
     </div>
+    
     <div class="clear"></div>
     <br />
-    <div id="boardMaker" class="left"></div>
-    <div id="flagContainer" class="left ui-helper-reset">
+    
+    <div id="flagContainer" class="left ui-helper-reset hidden">
+		<div id="trashCan">
+			<img src="~/images/maker/trash.png" />
+		</div>
         <div data-orientation="0" class="element CCWR">
             <img src="~/images/maker/CCWRotator.png" />
         </div>
@@ -97,6 +101,7 @@
             <img src="~/images/maker/Wrench.png" />
         </div>
     </div>
+	<div id="boardMaker" class="left"></div>
     <div class="clear"></div>
     <br />
     <div>
@@ -105,7 +110,7 @@
     <div>
         @Html.HiddenFor(m => m.cornerData, new { @class = "", @id = "cornerData" })
     </div>
-    <input id="submitButton" type="submit" value="Make Board" class="" />
+    <input id="submitButton" type="submit" value="Make Board" class="hidden" />
 </div>
 }
 <br />
