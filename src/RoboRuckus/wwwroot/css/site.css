@@ -99,6 +99,10 @@
     display: none;
 }
 
+.transparent {
+    opacity: 0;
+}
+
 .slot ul {
     list-style: none;
     padding: 0;

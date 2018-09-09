@@ -102,15 +102,15 @@ $(function () {
 		drawBoard($("#x_size").val(), $("#y_size").val());
 		$("#startMaker").fadeOut();
 		$("#flagContainer").fadeIn();
+		$("#boardMaker").fadeTo(500,1);
 		$("#submitButton").fadeIn();
-		// Redraw board on size change.
-		$(".boardSize").off("change"); //Prevent extras
-		$(".boardSize").on("change", function () {
-			drawBoard($("#x_size").val(), $("#y_size").val());
-		});
 	});
 	
 	
+	// Redraw board on size change.
+	$(".boardSize").on("change", function () {
+		drawBoard($("#x_size").val(), $("#y_size").val());
+	});
 
     
     // Makes board elements draggable.
@@ -513,12 +513,10 @@ function createBoard(boardName) {
                 .on('selectstart', false)
                 .css({ top: "", left: "", position: "" }); // Fix the CSS
         }, "json");
-		
-	// Redraw board on size change.
-	$(".boardSize").off("change"); //Prevent extras
-	$(".boardSize").on("change", function () {
-		drawBoard($("#x_size").val(), $("#y_size").val());
-	});
+		$("#startMaker").fadeOut();
+		$("#flagContainer").fadeIn();
+		$("#boardMaker").fadeTo(500,1);
+		$("#submitButton").fadeIn();
 		
 }
 
