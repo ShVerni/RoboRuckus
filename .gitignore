@@ -257,7 +257,7 @@ FakesAssemblies/
 
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
-node_modules/
+#node_modules/ #Include modules so JavaScript libraries can be added.
 
 # TypeScript v1 declaration files
 typings/

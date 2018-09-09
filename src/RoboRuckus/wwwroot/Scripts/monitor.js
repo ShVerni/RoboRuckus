@@ -19,7 +19,7 @@
     $("#board").css("background-image", 'url("/images/boards/' + $("#board").data("board") + '.png")');
 
     // Check if game is started
-    if ($("startButton").data("started") === "True") {
+    if ($("#startButton").data("started") === "True") {
         $("#startButton").hide();
         $("#controlButtons").show();
     } else {
