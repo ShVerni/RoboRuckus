@@ -136,13 +136,13 @@ $(function () {
     $("#boardMaker").on("click", ".boardSquare .rotateable", function (e) {
         console.log(e);
 		var rotation = 0;
-        var current = Number($(this).data("orientation"));
+        var current = Number($(this).attr("data-orientation"));
         if (current !== 3) {
             current++;
             rotation = -90 * current;
-            $(this).data("orientation", current);
+            $(this).attr("data-orientation", current);
         } else {
-            $(this).data("orientation", 0);
+            $(this).attr("data-orientation", 0);
         }
         $(this).css({ 'transform': 'rotate(' + rotation + 'deg)' });
     });
@@ -151,13 +151,16 @@ $(function () {
     $("#boardMaker").on("contextmenu", ".boardSquare .rotateable", function (e) {
         console.log(e);
 		var rotation = 0;
-        var current = Number($(this).data("orientation"));
-        if (current !== 3) {
+        var current = Number($(this).attr("data-orientation"));
+        if (current !== 1) {
             current--;
-            rotation = +90 * current;
-            $(this).data("orientation", current);
+			if (current == -1) {
+				current = 3;
+			}
+			rotation = -90 * current;
+            $(this).attr("data-orientation", current);
         } else {
-            $(this).data("orientation", 0);
+            $(this).attr("data-orientation", 0);
         }
         $(this).css({ 'transform': 'rotate(' + rotation + 'deg)' });
     });
