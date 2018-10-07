@@ -1,3 +1,4 @@
+/** @private */
 export declare class TextMessageFormat {
     static RecordSeparatorCode: number;
     static RecordSeparator: string;

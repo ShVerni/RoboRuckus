@@ -16,7 +16,7 @@ export declare enum LogLevel {
     /** Log level for diagnostic messages that indicate a failure that will terminate the entire application. */
     Critical = 5,
     /** The highest possible log level. Used when configuring logging to indicate that no log messages should be emitted. */
-    None = 6,
+    None = 6
 }
 /** An abstraction that provides a sink for diagnostic messages. */
 export interface ILogger {
