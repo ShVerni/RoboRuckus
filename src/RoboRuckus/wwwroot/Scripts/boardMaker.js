@@ -1,6 +1,11 @@
 ﻿// Maps the direction indicators to corresponding integer values
 var dirs = ["X", "Y", "NEG_X", "NEG_Y"];
 
+window.addEventListener('contextmenu', function(ev) {
+    ev.preventDefault();
+    return false;
+}, false);
+
 $(function () {
     // Create buttons.
     $("#submitButton").button();
@@ -41,17 +46,27 @@ $(function () {
     $("#boardSel").selectmenu({
         width: null,
         change: function (event, ui) {
-            var name = $(this).val();
+            
+			
+			
+			var name = $(this).val();
             if (name) {
                 $("#name").val(name);
                 $("#printImg").attr("href", "/images/printable_boards/" + name.replace(" ", "") + ".png");
                 $("#nameContainer").hide();
                 $("#exButtons").show();
-                createBoard(name);
+				$("#startMaker").fadeOut();
+				$("#flagContainer").fadeIn();
+				$("#submitButton").fadeIn();
+				createBoard(name);
+                
             } else {
                 $("#name").val("");
                 $("#nameContainer").show();
                 $("#exButtons").hide();
+				$("#startMaker").fadeOut();
+				$("#flagContainer").fadeIn();
+				$("#submitButton").fadeIn();
             }
         }
     });
@@ -63,11 +78,40 @@ $(function () {
         // Add corner date to form
         $("#cornerData").val(getCorners());
     });
+	
+	//Clear the value on click if 0
+	$("#x_size").on('click', function(e) {
+		console.log($("#x_size").val());
+		if($("#x_size").val() == 0){
+			$("#x_size").val('');
+		}
+	});
+	
+	//Clear the value on click if 0
+	$("#y_size").on('click', function(e) {
+		console.log($("#y_size").val());
+		if($("#y_size").val() == 0){
+			$("#y_size").val('');
+		}
+	});
+	
+	// Intercept startMaker button.
+	$("#startMaker").on('click', function(e) {
+		//Event.stop(event); // suppress submit
+		e.preventDefault();
+		drawBoard($("#x_size").val(), $("#y_size").val());
+		$("#startMaker").fadeOut();
+		$("#flagContainer").fadeIn();
+		$("#boardMaker").fadeTo(500,1);
+		$("#submitButton").fadeIn();
+	});
+	
+	
+	// Redraw board on size change.
+	$(".boardSize").on("change", function () {
+		drawBoard($("#x_size").val(), $("#y_size").val());
+	});
 
-    // Redraw board on size change.
-    $(".boardSize").change(function () {
-        drawBoard($("#x_size").val(), $("#y_size").val());
-    });
     
     // Makes board elements draggable.
     $(".element").draggable({
@@ -89,18 +133,38 @@ $(function () {
     });
 
     // Allow for rotateable elements to rotate.
-    $("#boardMaker").on("click", ".boardSquare .rotateable", function () {
-        var rotation = 0;
-        var current = Number($(this).data("orientation"));
+    $("#boardMaker").on("click", ".boardSquare .rotateable", function (e) {
+        console.log(e);
+		var rotation = 0;
+        var current = Number($(this).attr("data-orientation"));
         if (current !== 3) {
             current++;
             rotation = -90 * current;
-            $(this).data("orientation", current);
+            $(this).attr("data-orientation", current);
         } else {
-            $(this).data("orientation", 0);
+            $(this).attr("data-orientation", 0);
         }
         $(this).css({ 'transform': 'rotate(' + rotation + 'deg)' });
     });
+	
+	// Allow for rotateable elements to rotate.
+    $("#boardMaker").on("contextmenu", ".boardSquare .rotateable", function (e) {
+        console.log(e);
+		var rotation = 0;
+        var current = Number($(this).attr("data-orientation"));
+        if (current !== 1) {
+            current--;
+			if (current == -1) {
+				current = 3;
+			}
+			rotation = -90 * current;
+            $(this).attr("data-orientation", current);
+        } else {
+            $(this).attr("data-orientation", 0);
+        }
+        $(this).css({ 'transform': 'rotate(' + rotation + 'deg)' });
+    });
+	
 });
 
 // Draws the board
@@ -423,7 +487,8 @@ function createBoard(boardName) {
     $.get("/Setup/getBoard", { name: boardName },
         function (board) {
             $("#x_size").val(board.size[0] + 1);
-            $("#y_size").val(board.size[1] + 1).change();
+            $("#y_size").val(board.size[1] + 1);
+			drawBoard($("#x_size").val(), $("#y_size").val());
             placeWrenches(board.wrenches);
             placePits(board.pits);
             placeTurntables(board.turntables);
@@ -451,6 +516,11 @@ function createBoard(boardName) {
                 .on('selectstart', false)
                 .css({ top: "", left: "", position: "" }); // Fix the CSS
         }, "json");
+		$("#startMaker").fadeOut();
+		$("#flagContainer").fadeIn();
+		$("#boardMaker").fadeTo(500,1);
+		$("#submitButton").fadeIn();
+		
 }
 
 // Places wrences on a board based on their data
