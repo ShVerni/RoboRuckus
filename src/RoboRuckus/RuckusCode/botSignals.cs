@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Text;
 using System.Net.Sockets;
 using System.Threading;
@@ -110,7 +111,7 @@ namespace RoboRuckus.RuckusCode
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendConfigParameter(int botNumber, configParameters parameter, float value)
         {
-            if(parameter == configParameters.robotName || (parameter != configParameters.Z_threshold && parameter != configParameters.turn_drift_threshold && parameter != configParameters.turnFactor))
+            if (parameter == configParameters.robotName || (parameter != configParameters.Z_threshold && parameter != configParameters.turn_drift_threshold && parameter != configParameters.turnFactor))
             {
                 throw new ArgumentException("Must be a parameter that takes a float value", "parameter");
             }
@@ -127,7 +128,7 @@ namespace RoboRuckus.RuckusCode
         public static bool sendConfigParameter(int botNumber, configParameters parameter, string value)
         {
             if (parameter != configParameters.robotName)
-            { 
+            {
                 throw new ArgumentException("Must be the robot name for a string value", "parameter");
             }
             return sendDataToRobot(botNumber, ((int)parameter).ToString() + ":" + value.ToString()) == "OK";
@@ -147,13 +148,43 @@ namespace RoboRuckus.RuckusCode
         /// Adds a bot using IP
         /// </summary>
         /// <param name="ip">The IP address of the robot</param>
-        /// <returns>An AK acknowledging the accpeted robot</returns>
-        public static bool addBot(string ip, string name)
+        /// <returns>True acknowledging the accpeted robot</returns>
+        public static bool addBot(IPAddress ip, string name)
         {
             // Lock used so player assignment is sent after this method exits
             lock (_locker)
             {
                 int result = gameStatus.addBot(ip, name);
+                // Check if bot is already in pen
+                if (result != -1 && !gameStatus.tuneRobots)
+                {
+                    // Check if bot already has player assigned
+                    if ((result & 0x10000) != 0)
+                    {
+                        // Get assigned player number
+                        int player = (result & 0xffff) >> 8;
+                        // Get assigned bot number
+                        result &= 255;
+                        // Set thread to assign player to bot
+                        new Thread(() => alreadyAssigned(player + 1, result)).Start();
+                    }
+                }
+                // Send confirmation
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Adds a bot using Bluetooth
+        /// </summary>
+        /// <param name="BTAddress">The IP address of the robot</param>
+        /// <returns>True acknowledging the accpeted robot</returns>
+        public static bool addBot(string BTAddress, string name)
+        {
+            // Lock used so player assignment is sent after this method exits
+            lock (_locker)
+            {
+                int result = gameStatus.addBot(BTAddress, name);
                 // Check if bot is already in pen
                 if (result != -1 && !gameStatus.tuneRobots)
                 {
@@ -213,10 +244,14 @@ namespace RoboRuckus.RuckusCode
                 bot.moving.Set();
                 return "OK";
             }
+
+            // Check communication method used by bot
             switch (bot.mode)
             {
                 case Robot.communicationModes.IP:
                     return sendDataToRobotIP(bot, data);
+                case Robot.communicationModes.Bluetooth:
+                    return sendDataToRobotBT(bot, data);
             }
             return "";
         }
@@ -227,7 +262,7 @@ namespace RoboRuckus.RuckusCode
         /// <param name="bot">The robot to send the data to</param>
         /// <param name="data">The data to send</param>
         /// <returns>The response from the robot or an empty string on failure</returns>
-        private static string sendDataToRobotIP (Robot bot, string data)
+        private static string sendDataToRobotIP(Robot bot, string data)
         {
             byte[] responseBuffer = new byte[256];
             string response = "";
@@ -278,8 +313,20 @@ namespace RoboRuckus.RuckusCode
                     Console.WriteLine("{0} Exception caught.", e);
                     return "";
                 }
-                return response.TrimStart(); ;
+                return response.TrimStart();
             }
+        }
+
+        /// <summary>
+        /// Not implemented yet
+        /// Sends data to a robot via Bluetooth
+        /// </summary>
+        /// <param name="bot">The robot to send the data to</param>
+        /// <param name="data">The data to send</param>
+        /// <returns>The response from the robot or an empty string on failure</returns>
+        private static string sendDataToRobotBT(Robot bot, string data)
+        {
+            return "";
         }
     }
 }

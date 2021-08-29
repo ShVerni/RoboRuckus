@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using RoboRuckus.RuckusCode;
 
 namespace RoboRuckus.Controllers
@@ -13,7 +14,8 @@ namespace RoboRuckus.Controllers
         [HttpGet]
         public IActionResult Index(string ip, string name)
         {
-            botSignals.addBot(ip, name);
+            IPAddress botIP = IPAddress.Parse(ip);
+            botSignals.addBot(botIP, name);
             // Send acknowledgement to bot
             return Content("AK\n", "text/plain");
         }

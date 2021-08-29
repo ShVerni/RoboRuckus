@@ -149,17 +149,16 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="botIP">The IP address of the robot</param>
         /// <returns>The bot number</returns>
-        public static int addBot(string botIP, string name)
+        public static int addBot(IPAddress botIP, string name)
         {
             // Only one bot can be added at a time
             lock(robots)
             {
                 // Check if robot is already in game
-                IPAddress botAddress = IPAddress.Parse(botIP);
                 Robot bot = robots.FirstOrDefault(r => r.robotName == name);
                 if (bot != null)
                 {
-                   bot.robotAddress = botAddress;
+                   bot.robotAddress = botIP;
                    return bot.robotNum | 0x10000 | (bot.controllingPlayer.playerNumber << 8);
                 }
                  // Check if bot exists but is unassigned
@@ -167,14 +166,53 @@ namespace RoboRuckus.RuckusCode
                 if (bot == null)
                 {
                     // Add new robot to game
-                    robotPen.Add(new Robot { robotAddress = botAddress, robotName = name });
+                    robotPen.Add(new Robot { robotAddress = botIP, robotName = name });
                     bot = robotPen.FirstOrDefault(r => r.robotName == name);
                     bot.mode = Robot.communicationModes.IP;
                     return -1;
                 }
                 else
                 {
-                    bot.robotAddress = botAddress;
+                    bot.robotAddress = botIP;
+                    return bot.robotNum;
+                }
+            }
+        }
+
+        /// <summary>
+        /// TBD
+        /// Adds a robot to the list of available robots using Bluetooth interface
+        /// </summary>
+        /// <param name="botIP">The IP address of the robot</param>
+        /// <returns>The bot number</returns>
+        public static int addBot(string BTAddress, string name)
+        {
+            // Only one bot can be added at a time
+            lock (robots)
+            {
+                // Check if robot is already in game
+                Robot bot = robots.FirstOrDefault(r => r.robotName == name);
+                if (bot != null)
+                {
+                    // *** Change below to assign bot BT Address
+                    //bot.robotAddress = botIP;
+                    return bot.robotNum | 0x10000 | (bot.controllingPlayer.playerNumber << 8);
+                }
+                // Check if bot exists but is unassigned
+                bot = robotPen.FirstOrDefault(r => r.robotName == name);
+                if (bot == null)
+                {
+                    // Add new robot to game
+                    // *** Change below to assign bot BT Address
+                    //robotPen.Add(new Robot { robotAddress = botIP, robotName = name });
+                    bot = robotPen.FirstOrDefault(r => r.robotName == name);
+                    bot.mode = Robot.communicationModes.Bluetooth;
+                    return -1;
+                }
+                else
+                {
+                    // **** Change below to assign bot BT Address
+                    //bot.robotAddress = botIP;
                     return bot.robotNum;
                 }
             }
