@@ -9,7 +9,7 @@ namespace RoboRuckus.RuckusCode
     public static class botSignals
     {
         /// <summary>
-        /// Contains all the configuration options for a robot ins setup mode.
+        /// Contains all the configuration options for a robot in setup mode.
         /// </summary>
         public enum configParameters
         {
@@ -36,7 +36,6 @@ namespace RoboRuckus.RuckusCode
         /// Sends a movement command to a robot
         /// </summary>
         /// <param name="order">The order to send</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>The response from the bot</returns>
         public static string sendMoveCommand(orderModel order)
         {
@@ -48,7 +47,6 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="botNumber">The bot to send the value to</param>
         /// <param name="damage">The damage value</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>The response from the bot</returns>
         public static string sendDamage(int botNumber, sbyte damage)
         {
@@ -60,7 +58,6 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="botNumber">The bot to assign the player to</param>
         /// <param name="playerNumber">The player to assign</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendPlayerAssignment(int botNumber, int playerNumber)
         {
@@ -71,7 +68,6 @@ namespace RoboRuckus.RuckusCode
         /// Sends a reset order to a bot
         /// </summary>
         /// <param name="botNumber">The bot to reset</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendReset(int botNumber)
         {
@@ -82,7 +78,6 @@ namespace RoboRuckus.RuckusCode
         /// Puts an unassigned robot into setup mode
         /// </summary>
         /// <param name="botNumber">The bot to enter setup mode</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool enterSetupMode(int botNumber, int port = 8080)
         {
@@ -96,7 +91,6 @@ namespace RoboRuckus.RuckusCode
         /// <param name="botNumber">The robot to send the parameter to</param>
         /// <param name="parameter">The parameter to update</param>
         /// <param name="value">The new value</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendConfigParameter(int botNumber, configParameters parameter, int value)
         {
@@ -113,7 +107,6 @@ namespace RoboRuckus.RuckusCode
         /// <param name="botNumber">The robot to send the parameter to</param>
         /// <param name="parameter">The parameter to update</param>
         /// <param name="value">The new value</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendConfigParameter(int botNumber, configParameters parameter, float value)
         {
@@ -130,7 +123,6 @@ namespace RoboRuckus.RuckusCode
         /// <param name="botNumber">The robot to send the parameter to</param>
         /// <param name="parameter">The parameter to update</param>
         /// <param name="value">The new value</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendConfigParameter(int botNumber, configParameters parameter, string value)
         {
@@ -145,7 +137,6 @@ namespace RoboRuckus.RuckusCode
         /// Gets the current configuration settings from a robot in setup mode
         /// </summary>
         /// <param name="botNumber">The robot to get the settings from</param>
-        /// <param name="port">The port the robot is listening on</param>
         /// <returns>A comma separated list of values</returns>
         public static string getRobotSettings(int botNumber)
         {
