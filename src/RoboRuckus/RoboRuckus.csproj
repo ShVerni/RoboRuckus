@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>RoboRuckus</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -12,12 +12,13 @@
     <PackageProjectUrl>https://www.roboruckus.com/</PackageProjectUrl>
     <RepositoryType>GitHub</RepositoryType>
     <RepositoryUrl>https://github.com/ShVerni/RoboRuckus</RepositoryUrl>
-    <PackageLicenseUrl>https://github.com/ShVerni/RoboRuckus/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <NeutralLanguage />
     <UserSecretsId>762533f3-d4d7-48b2-b245-2a0af316841e</UserSecretsId>
+    <PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETCOREAPP;NETCOREAPP2_1</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Content Update="wwwroot\**\*;Views\**\*;appsettings.json;web.config;GameConfig\**\*">
@@ -25,23 +26,22 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebSockets.Server" Version="0.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink.Loader" Version="14.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Update="GameConfig\movementCards.txt">
@@ -111,23 +111,24 @@
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\printable_boards\" />
+    <Folder Include="wwwroot\lib\signalr\" />
   </ItemGroup>
   <Target Name="CopySignalR" BeforeTargets="AfterBuild">
     <ItemGroup>
-      <SignalRJSClientFiles Include="$(SolutionDir)node_modules\@aspnet\signalr\dist\browser\signalr.min.js" />
+      <SignalRJSClientFiles Include="$(SolutionDir)node_modules\@microsoft\signalr\dist\browser\signalr.min.js" />
     </ItemGroup>
     <Copy SourceFiles="@(SignalRJSClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\signalr" />
   </Target>
   <Target Name="CopyHowler" BeforeTargets="AfterBuild">
     <ItemGroup>
-      <SignalRJSClientFiles Include="$(SolutionDir)node_modules\howler\dist\howler.min.js" />
+      <HowlerClientFiles Include="$(SolutionDir)node_modules\howler\dist\howler.min.js" />
     </ItemGroup>
-    <Copy SourceFiles="@(SignalRJSClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\howler" />
+    <Copy SourceFiles="@(HowlerClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\howler" />
   </Target>
   <Target Name="CopyJQuery" BeforeTargets="AfterBuild">
     <ItemGroup>
-      <SignalRJSClientFiles Include="$(SolutionDir)node_modules\jquery\dist\jquery.min.js" />
+      <JQueryClientFiles Include="$(SolutionDir)node_modules\jquery\dist\jquery.min.js" />
     </ItemGroup>
-    <Copy SourceFiles="@(SignalRJSClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\jquery" />
+    <Copy SourceFiles="@(JQueryClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\jquery" />
   </Target>
 </Project>

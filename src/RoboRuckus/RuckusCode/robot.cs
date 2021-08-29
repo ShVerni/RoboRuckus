@@ -13,7 +13,21 @@ namespace RoboRuckus.RuckusCode
         public byte robotNum;
 
         /// <summary>
-        /// The axis/direction along wich the bot is currently facing
+        /// Encodes possible bot communication methods 
+        /// </summary>
+        public enum communicationModes
+        {
+            IP = 0,
+            Bluetooth = 1
+        }
+
+        /// <summary>
+        /// The bot's current mode of communication
+        /// </summary>
+        public communicationModes mode;
+
+        /// <summary>
+        /// The axis/direction along which the bot is currently facing
         /// </summary>
         public orientation currentDirection = orientation.Y;
         public IPAddress robotAddress;

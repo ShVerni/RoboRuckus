@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/ShVerni/RoboRuckus#readme",
   "dependencies": {
-    "@aspnet/signalr": "^1.0.4",
-    "howler": "^2.0.15",
-    "jquery": "^3.3.1"
+    "@microsoft/signalr": "^3.1.18",
+    "howler": "^2.2.3",
+    "jquery": "^3.6.0"
   },
   "devDependencies": {}
 }

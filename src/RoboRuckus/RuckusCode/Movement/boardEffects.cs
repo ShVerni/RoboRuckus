@@ -450,7 +450,7 @@ namespace RoboRuckus.RuckusCode.Movement
             }
 
             // Check to see if a robot was found and, if so, if there's an obstacle blocking LoS.
-            if (bot == null || boardEffects.findWall(fromCord, new int[] { bot.x_pos, bot.y_pos }, facing) != null)
+            if (bot == null || findWall(fromCord, new int[] { bot.x_pos, bot.y_pos }, facing) != null)
             {
                 // Obstacle is blocking, no bot in LoS
                 return -1;

@@ -60,7 +60,7 @@ namespace RoboRuckus.Hubs
         }
 
         /// <summary>
-        /// Let's a player reques their health
+        /// Let's a player request their health
         /// </summary>
         /// <param name="playerNum"></param>
         /// <returns>The damage the robot has</returns>

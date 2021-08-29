@@ -145,7 +145,7 @@ namespace RoboRuckus.RuckusCode
         }
 
         /// <summary>
-        /// Adds a robot to the list of available robots
+        /// Adds a robot to the list of available robots using IP interface
         /// </summary>
         /// <param name="botIP">The IP address of the robot</param>
         /// <returns>The bot number</returns>
@@ -162,11 +162,14 @@ namespace RoboRuckus.RuckusCode
                    bot.robotAddress = botAddress;
                    return bot.robotNum | 0x10000 | (bot.controllingPlayer.playerNumber << 8);
                 }
+                 // Check if bot exists but is unassigned
                 bot = robotPen.FirstOrDefault(r => r.robotName == name);
                 if (bot == null)
                 {
                     // Add new robot to game
                     robotPen.Add(new Robot { robotAddress = botAddress, robotName = name });
+                    bot = robotPen.FirstOrDefault(r => r.robotName == name);
+                    bot.mode = Robot.communicationModes.IP;
                     return -1;
                 }
                 else

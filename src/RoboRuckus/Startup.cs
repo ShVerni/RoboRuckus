@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using RoboRuckus.RuckusCode;
 using System;
 using RoboRuckus.Hubs;
@@ -11,17 +10,20 @@ namespace RoboRuckus
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
+        // private readonly IConfiguration _configuration;
 
         // Construction for DI of configuration.
-        public Startup(IConfiguration configuration)
+        public Startup()//IConfiguration configuration)
         {
-            _configuration = configuration;
+           // _configuration = configuration;
         }
 
         // This method gets called by the runtime.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Enable MVC routing by disabling Endpoint routing.
+            services.AddControllers(options => options.EnableEndpointRouting = false);
+
             // Add MVC services to the services container.
             services.AddMvc();
 
@@ -30,12 +32,12 @@ namespace RoboRuckus
         }
 
         // Configure is called after ConfigureServices is called.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IConfiguration configuration)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration)
         {
-            // Add console to log
-            loggerFactory.AddConsole();
-
             serviceHelpers.rootPath = env.ContentRootPath;
+
+            // Enable routing.
+            app.UseRouting();
 
             // Add Error handling middleware which catches all application specific errors and
             // sends the request to the following path or controller action.
@@ -61,9 +63,9 @@ namespace RoboRuckus
             app.UseFileServer();
 
             // Add SignalR to app.
-            app.UseSignalR(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapHub<playerHub>("/playerHub");
+                endpoints.MapHub<playerHub>("/playerHub");
             });
 
             // Parse command line arguments.

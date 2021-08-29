@@ -69,7 +69,7 @@ IntervalTimer timeout;
 void setup()
 {  
   Serial.begin(115200);
-  // Get remaining value from EEPROM
+  // Get remaining values from EEPROM
   EEPROM.get(104, Z_threshold);
   EEPROM.get(108, turn_drift_threshold);
   EEPROM.get(112, turnFactor);
@@ -91,7 +91,7 @@ void setup()
     delay(100);
     saveParameters();
   }
-  Serial.println("Loaded EEEPROM");
+  Serial.println("Loaded EEPROM");
 
   // Attach and initialize servos
   delay(1000);

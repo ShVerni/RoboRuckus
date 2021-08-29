@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.IO;
 
 namespace RoboRuckus
@@ -20,13 +21,18 @@ namespace RoboRuckus
                 .UseIISIntegration()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    var env = hostingContext.HostingEnvironment;
+                    IWebHostEnvironment env = hostingContext.HostingEnvironment;
                     config.AddJsonFile("appsettings.json", optional: true);
                     config.SetBasePath(env.ContentRootPath);
                     config.AddEnvironmentVariables();
                     config.AddCommandLine(args);
                 })
                 .UseStartup<Startup>()
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole();
+                })
                 .Build();
             return host;
         }
