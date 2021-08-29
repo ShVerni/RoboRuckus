@@ -29,6 +29,7 @@ namespace RoboRuckus
 
             // Add all SignalR related services.
             services.AddSignalR();
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
         }
 
         // Configure is called after ConfigureServices is called.
