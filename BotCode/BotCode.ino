@@ -417,6 +417,9 @@ bool startup()
   {
     wifi.read(); // Read the next character
   }
+
+  // Enable multiplexing (necessary for server operations)
+  Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));
   
   // Stop server just in case
   Serial.println(sendCommand(F("AT+CIPSERVER=0"), F("\nOK")));
@@ -430,15 +433,15 @@ bool startup()
   // Restart the module to enable changes
   Serial.println(sendCommand(F("AT+RST"), F("\nOK")));
   delay(2000);
+
+  // Enable multiplexing (necessary for server operations)
+  Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));
   
   // Join WiFi network
   Serial.println(sendCommand(F("AT+CWJAP=\"RoboRuckus\","), F("\nOK")));
 
   // Swap this with the above line for a protected network
   // Serial.println(sendCommand(F("AT+CWJAP=\"RoboRuckus\",\"passphrase\""), F("\nOK")));
-
-  // Enable multiplexing (necessary for server operations)
-  Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));
 
   // Get assigned IP address
   wifi.println(F("AT+CIPSTA?"));
@@ -820,5 +823,3 @@ String loadName()
    String result(char_array);
    return result;
 }
-
-

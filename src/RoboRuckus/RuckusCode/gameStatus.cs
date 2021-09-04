@@ -19,12 +19,12 @@ namespace RoboRuckus.RuckusCode
                 _botless = value;
                 if (value)
                 {
-                    addBot("0.0.0.0", "Botimus Prime");
-                    addBot("0.0.0.1", "Protobot");
-                    addBot("0.0.0.2", "Twirly Bot");
-                    addBot("0.0.0.3", "Bot Waaay");
-                    addBot("0.0.0.4", "Thunderbot");
-                    addBot("0.0.0.5", "Fredbot");
+                    addBot(IPAddress.Parse("0.0.0.0"), "Botimus Prime");
+                    addBot(IPAddress.Parse("0.0.0.1"), "Protobot");
+                    addBot(IPAddress.Parse("0.0.0.2"), "Twirly Bot");
+                    addBot(IPAddress.Parse("0.0.0.3"), "Bot Waaay");
+                    addBot(IPAddress.Parse("0.0.0.4"), "Thunderbot");
+                    addBot(IPAddress.Parse("0.0.0.5"), "Fredbot");
                 }
             }
         }

@@ -16,9 +16,11 @@ namespace RoboRuckus.RuckusCode
     public class playerSignals
     {
         // RNG provider  
-        private readonly RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+        private readonly RandomNumberGenerator rng = RandomNumberGenerator.Create();
+
         // There can be no more than 256 cards in the deck
         private byte numberOfCards;
+
         // Prevents the player timer from being started multiple times
         private bool timerStarted = false;
 

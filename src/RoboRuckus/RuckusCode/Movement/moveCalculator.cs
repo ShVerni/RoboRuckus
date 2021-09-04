@@ -19,8 +19,8 @@ namespace RoboRuckus.RuckusCode.Movement
             Backward = 3,
 
             // Not implemented yet.
-            slideLeft = 4,
-            slideRight = 5
+            slideLeft = 5,
+            slideRight = 6
         }
 
         /// <summary>

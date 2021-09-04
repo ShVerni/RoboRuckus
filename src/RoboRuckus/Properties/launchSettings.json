@@ -2,7 +2,6 @@
   "profiles": {
     "Kestrel": {
       "commandName": "Project",
-      "commandLineArgs": "options=botless",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
