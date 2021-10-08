@@ -47,6 +47,45 @@
         }
     });
 
+    // Shows a preview of the upcoming register
+    connection.on("showRegister", (cards, robots) => {
+        $("#cardsContainer").empty();
+        var _cards = $.parseJSON(cards);
+        var _robots = $.parseJSON(robots);
+        var i = 1;
+        $.each(_cards, function () {
+            var face;
+            var details;
+            if (this.direction === "forward") {
+                face = this.magnitude;
+                details = detail[this.direction] + " " + this.magnitude;
+            }
+            else {
+                face = faces[this.direction];
+                details = detail[this.direction];
+            }
+            // Append card to card container
+            $("#cardsContainer").append("<li id='card" + i + "' class='ui-widget-content dealtCard'>\
+                    <div class='cardBody'>\
+                        <p class='order'>" + this.priority + "</p>\
+                        <p class='face'>" + face + "</p>\
+                        <p class='details'>" + details + "</p>\
+                        <img src='/images/cards/bg.png'alt='card'>\
+                        <p class='robot-names'>" + _robots[i - 1] + "</p>\
+                    </div>\
+                </li>"
+            );
+            $("#card" + i).data("cardinfo", this);
+            i++;
+        });
+
+        // Minimum width of window is 7 slots worth
+        boxes = $(".dealtCard").length;
+
+        // Set the width of the cards to fill the screen in one row
+        resize();
+    });
+
     // Shows the current move being executed
     connection.on("showMove", (card, robot, register) => { 
         $("#cardsContainer").empty();
@@ -321,6 +360,36 @@
     else {
         $("#timerText").html("Timer Disabled");
     }
+
+    function resize() {
+        var imageWidth = (($(window).width() - 80) / boxes) / 3;
+        if (imageWidth < 350) {
+            var percent = imageWidth / 350;
+            var imageHeight = percent * 520;
+            $(".order").css("font-size", percent * 4 + "em");
+            $(".face").css("font-size", percent * 11.8 + "em");
+            $(".details").css("font-size", percent * 2.5 + "em");
+            $(".robot-names").css("font-size", percent * 2.5 + "em");
+            $("#cardsContainer img, .slot img").width(imageWidth);
+            $("#cardsContainer img, .slot img").height(imageHeight);
+            $("#cardsContainer li, .slot li").css({
+                "height": "",
+                "width": ""
+            });
+            $("#cardsContainer").css("min-height", imageHeight + 5);
+        }
+        else {
+            $(".order").css("font-size", "2.15em");
+            $("#cardsContainer img, .slot img").width(350);
+            $("#cardsContainer img, .slot img").height(520);
+            $("#cardsContainer li, .slot li").css({
+                "height": "",
+                "width": ""
+            });
+            $("#cardsContainer").css("min-height", 525);
+        }
+        $("#labelText").css("font-size", 1.35 + (0.3 * (9 - boxes)) + "vw");
+    }
 });
 
 // Creates an interval with an associated running status
@@ -338,3 +407,4 @@ function Interval(fn, time) {
         return timer !== false;
     };
 }
+

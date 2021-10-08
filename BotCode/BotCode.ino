@@ -434,7 +434,7 @@ bool startup()
   Serial.println(sendCommand(F("AT+RST"), F("\nOK")));
   delay(2000);
 
-  // Enable multiplexing (necessary for server operations)
+// Enable multiplexing (necessary for server operations)
   Serial.println(sendCommand(F("AT+CIPMUX=1"), F("\nOK")));
   
   // Join WiFi network

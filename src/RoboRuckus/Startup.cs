@@ -86,6 +86,10 @@ namespace RoboRuckus
                             gameStatus.edgeControl = true;
                             Console.WriteLine("Edge control enabled.");
                             break;
+                        case "showreg":
+                            gameStatus.showRegister = true;
+                            Console.WriteLine("Register display enabled.");
+                            break;
                     }
                 }
             }

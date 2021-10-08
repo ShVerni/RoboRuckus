@@ -33,6 +33,10 @@ namespace RoboRuckus.RuckusCode
         // Used to disable the option of letting robots drive over the edge of the board when required.
         public static bool edgeControl = false;
 
+
+        // Used to disable the entire register during each round.
+        public static bool showRegister = false;
+
         // Game state varaibles
         public static int numPlayers = 0;
         public static int numPlayersInGame = 0;

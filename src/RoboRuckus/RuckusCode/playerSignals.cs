@@ -123,6 +123,37 @@ namespace RoboRuckus.RuckusCode
         }
 
         /// <summary>
+        /// Sends the current register  being executed to the players
+        /// </summary>
+        /// <param name="register">The register being executed</param>
+        public void displayRegister(moveModel[] register)
+        {
+            lock (gameStatus.locker)
+            {
+                // Build the cards string
+                bool first = true;
+                string cards = "[";
+                string robots = "[";
+                
+                foreach (moveModel move in register)
+                {
+                    string currentCard = gameStatus.movementCards[move.card.cardNumber];
+                    if (!first)
+                    {
+                        cards += ",";
+                        robots += ", ";
+                    }
+                    first = false;
+                    cards += currentCard.Insert(currentCard.LastIndexOf("}") - 1, ",\"cardNumber\": " + move.card.cardNumber.ToString());
+                    robots += "\"" + move.bot.robotName + "\"";
+                }
+                cards += "]";
+                robots += "]";
+                _playerHub.Clients.All.SendAsync("showRegister", cards, robots);
+            }
+        }
+
+        /// <summary>
         /// Deals cards to a player
         /// </summary>
         /// <param name="caller">The player client requesting a deal</param>

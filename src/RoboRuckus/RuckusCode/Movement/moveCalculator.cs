@@ -568,6 +568,14 @@ namespace RoboRuckus.RuckusCode.Movement
             }
             // Sort the register by card priority
             register = register.OrderByDescending(order => order.card.priority).ToArray();
+
+            // Display register to players
+            if (gameStatus.showRegister)
+            {
+                serviceHelpers.signals.displayRegister(register);
+                Thread.Sleep(7000);
+            }
+
             // Resolve a move for each card
             foreach (moveModel move in register)
             {
