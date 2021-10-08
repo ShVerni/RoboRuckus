@@ -38,7 +38,7 @@
           "Microsoft.AspNetCore.Mvc.TagHelpers": "2.2.0",
           "Microsoft.AspNetCore.Server.IISIntegration": "2.2.1",
           "Microsoft.AspNetCore.Server.Kestrel": "2.2.0",
-          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "5.0.9",
+          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "5.0.10",
           "Microsoft.AspNetCore.StaticFiles": "2.2.0",
           "Microsoft.AspNetCore.WebSockets.Server": "0.1.0",
           "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
@@ -1757,9 +1757,9 @@
           "Microsoft.AspNetCore.Authorization": "2.2.0"
         }
       },
-      "Microsoft.AspNetCore.Connections.Abstractions/5.0.9": {
+      "Microsoft.AspNetCore.Connections.Abstractions/5.0.10": {
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "5.0.9"
+          "Microsoft.AspNetCore.Http.Features": "5.0.10"
         },
         "compile": {
           "lib/net5.0/Microsoft.AspNetCore.Connections.Abstractions.dll": {}
@@ -1829,7 +1829,7 @@
       },
       "Microsoft.AspNetCore.Hosting.Server.Abstractions/2.2.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "5.0.9",
+          "Microsoft.AspNetCore.Http.Features": "5.0.10",
           "Microsoft.Extensions.Configuration.Abstractions": "5.0.0"
         }
       },
@@ -1849,7 +1849,7 @@
       },
       "Microsoft.AspNetCore.Http.Abstractions/2.2.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "5.0.9",
+          "Microsoft.AspNetCore.Http.Features": "5.0.10",
           "System.Text.Encodings.Web": "4.5.0"
         }
       },
@@ -1861,7 +1861,7 @@
           "System.Buffers": "4.5.0"
         }
       },
-      "Microsoft.AspNetCore.Http.Features/5.0.9": {
+      "Microsoft.AspNetCore.Http.Features/5.0.10": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "5.0.1",
           "System.IO.Pipelines": "5.0.1"
@@ -2105,7 +2105,7 @@
       },
       "Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions/2.2.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.9"
+          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.10"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll": {}
@@ -2118,18 +2118,18 @@
           "Microsoft.Extensions.Options": "5.0.0"
         }
       },
-      "Microsoft.AspNetCore.SignalR.Common/5.0.9": {
+      "Microsoft.AspNetCore.SignalR.Common/5.0.10": {
         "dependencies": {
-          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.9",
+          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.10",
           "Microsoft.Extensions.Options": "5.0.0"
         },
         "compile": {
           "lib/net5.0/Microsoft.AspNetCore.SignalR.Common.dll": {}
         }
       },
-      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/5.0.9": {
+      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/5.0.10": {
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Common": "5.0.9",
+          "Microsoft.AspNetCore.SignalR.Common": "5.0.10",
           "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
@@ -3556,7 +3556,7 @@
           "Microsoft.AspNetCore.Mvc.TagHelpers": "2.2.0",
           "Microsoft.AspNetCore.Server.IISIntegration": "2.2.1",
           "Microsoft.AspNetCore.Server.Kestrel": "2.2.0",
-          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "5.0.9",
+          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "5.0.10",
           "Microsoft.AspNetCore.StaticFiles": "2.2.0",
           "Microsoft.AspNetCore.WebSockets.Server": "0.1.0",
           "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
@@ -5135,9 +5135,9 @@
           "Microsoft.AspNetCore.Authorization": "2.2.0"
         }
       },
-      "Microsoft.AspNetCore.Connections.Abstractions/5.0.9": {
+      "Microsoft.AspNetCore.Connections.Abstractions/5.0.10": {
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "5.0.9"
+          "Microsoft.AspNetCore.Http.Features": "5.0.10"
         }
       },
       "Microsoft.AspNetCore.Cors/2.2.0": {
@@ -5204,7 +5204,7 @@
       },
       "Microsoft.AspNetCore.Hosting.Server.Abstractions/2.2.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "5.0.9",
+          "Microsoft.AspNetCore.Http.Features": "5.0.10",
           "Microsoft.Extensions.Configuration.Abstractions": "5.0.0"
         }
       },
@@ -5224,7 +5224,7 @@
       },
       "Microsoft.AspNetCore.Http.Abstractions/2.2.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Features": "5.0.9",
+          "Microsoft.AspNetCore.Http.Features": "5.0.10",
           "System.Text.Encodings.Web": "4.5.0"
         }
       },
@@ -5236,7 +5236,7 @@
           "System.Buffers": "4.5.0"
         }
       },
-      "Microsoft.AspNetCore.Http.Features/5.0.9": {
+      "Microsoft.AspNetCore.Http.Features/5.0.10": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "5.0.1",
           "System.IO.Pipelines": "5.0.1"
@@ -5489,7 +5489,7 @@
       },
       "Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions/2.2.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.9"
+          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.10"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll": {
@@ -5505,21 +5505,21 @@
           "Microsoft.Extensions.Options": "5.0.0"
         }
       },
-      "Microsoft.AspNetCore.SignalR.Common/5.0.9": {
+      "Microsoft.AspNetCore.SignalR.Common/5.0.10": {
         "dependencies": {
-          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.9",
+          "Microsoft.AspNetCore.Connections.Abstractions": "5.0.10",
           "Microsoft.Extensions.Options": "5.0.0"
         }
       },
-      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/5.0.9": {
+      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/5.0.10": {
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Common": "5.0.9",
+          "Microsoft.AspNetCore.SignalR.Common": "5.0.10",
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll": {
-            "assemblyVersion": "5.0.9.0",
-            "fileVersion": "5.0.921.36503"
+            "assemblyVersion": "5.0.10.0",
+            "fileVersion": "5.0.1021.41022"
           }
         }
       },
@@ -7225,12 +7225,12 @@
       "path": "microsoft.aspnetcore.authorization.policy/2.2.0",
       "hashPath": "microsoft.aspnetcore.authorization.policy.2.2.0.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Connections.Abstractions/5.0.9": {
+    "Microsoft.AspNetCore.Connections.Abstractions/5.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-M3/k0KUfxCKUOSXa4kudunYL3XqybXSCtuOZpEKStjqTOG1G76u5CfASBZANWL2YVnqgyFPXLkKp+0oAS3j8aA==",
-      "path": "microsoft.aspnetcore.connections.abstractions/5.0.9",
-      "hashPath": "microsoft.aspnetcore.connections.abstractions.5.0.9.nupkg.sha512"
+      "sha512": "sha512-M+CLowHTCFHaQhM4F7OEwpg45JCSaAI2P4AlhRbcJMs6ydq6Vhn/5+bcBzWa91EErkijlCpLIQ2iw4u/00C0cw==",
+      "path": "microsoft.aspnetcore.connections.abstractions/5.0.10",
+      "hashPath": "microsoft.aspnetcore.connections.abstractions.5.0.10.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Cors/2.2.0": {
       "type": "package",
@@ -7323,12 +7323,12 @@
       "path": "microsoft.aspnetcore.http.extensions/2.2.0",
       "hashPath": "microsoft.aspnetcore.http.extensions.2.2.0.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Http.Features/5.0.9": {
+    "Microsoft.AspNetCore.Http.Features/5.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6CiMPjR7yjnQ2dzSNOY88FMWeNRDmmiPKn9hM23bBO0mCUDdPUCEpFhaGfog/mpa/t+y6sMBFL5Mcqd4AKdMfw==",
-      "path": "microsoft.aspnetcore.http.features/5.0.9",
-      "hashPath": "microsoft.aspnetcore.http.features.5.0.9.nupkg.sha512"
+      "sha512": "sha512-IWs6dC9OqkREOs8SLs59MZ0I5CHnWrwuZ5yuIMLL8Qr3I3hJNNUzbxU5fgI1BwPddyobgajVlpc3VmgscrHecA==",
+      "path": "microsoft.aspnetcore.http.features/5.0.10",
+      "hashPath": "microsoft.aspnetcore.http.features.5.0.10.nupkg.sha512"
     },
     "Microsoft.AspNetCore.HttpOverrides/2.2.0": {
       "type": "package",
@@ -7540,19 +7540,19 @@
       "path": "microsoft.aspnetcore.server.kestrel.transport.sockets/2.2.0",
       "hashPath": "microsoft.aspnetcore.server.kestrel.transport.sockets.2.2.0.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.SignalR.Common/5.0.9": {
+    "Microsoft.AspNetCore.SignalR.Common/5.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dwfTysYjiA3asc5PFnAicdVrF0Mg4m/Cm4iRnA67TA6wHRUt2Jd20zFCxLfpzp1JRd7hEeil/1/xguOcNCERKg==",
-      "path": "microsoft.aspnetcore.signalr.common/5.0.9",
-      "hashPath": "microsoft.aspnetcore.signalr.common.5.0.9.nupkg.sha512"
+      "sha512": "sha512-Xw1hjLZVt+em4js+4s0/ykNyfvgm5ouy9tKocPXL/Y5mldNo2zGipe/7LWx3xh6/F5ASlbWXsCToCFpqFJczqw==",
+      "path": "microsoft.aspnetcore.signalr.common/5.0.10",
+      "hashPath": "microsoft.aspnetcore.signalr.common.5.0.10.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/5.0.9": {
+    "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/5.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-iYwwFyNpusSSLldd8WClF2bKmRQkIE8HkA/KQKiKHCeVAFus+L956kpx+4u8vrYka/JTI7SqJiG6HT0/Lx7BNg==",
-      "path": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson/5.0.9",
-      "hashPath": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson.5.0.9.nupkg.sha512"
+      "sha512": "sha512-yxjiccoIcrzufzne3q/6ZPyd1YXy8ybAwnAh/fcAtBqYRbeOxDweUImAuyGRVb3NIaTm3y8qW7Pwcz60yKsePg==",
+      "path": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson/5.0.10",
+      "hashPath": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson.5.0.10.nupkg.sha512"
     },
     "Microsoft.AspNetCore.StaticFiles/2.2.0": {
       "type": "package",

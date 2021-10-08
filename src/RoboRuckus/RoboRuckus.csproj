@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://www.roboruckus.com/</PackageProjectUrl>
     <RepositoryType>GitHub</RepositoryType>
     <RepositoryUrl>https://github.com/ShVerni/RoboRuckus</RepositoryUrl>
-    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/ShVerni/RoboRuckus/blob/master/LICENSE.md</PackageLicenseUrl>
     <NeutralLanguage />
     <UserSecretsId>762533f3-d4d7-48b2-b245-2a0af316841e</UserSecretsId>
     <PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
@@ -131,5 +131,17 @@
       <JQueryClientFiles Include="$(SolutionDir)node_modules\jquery\dist\jquery.min.js" />
     </ItemGroup>
     <Copy SourceFiles="@(JQueryClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\jquery" />
+  </Target>
+  <Target Name="CopyStartRoboRuckus" AfterTargets="AfterPublish">
+    <ItemGroup>
+      <StartRoboRuckusFiles Include="$(SolutionDir)PiReady\start_roboruckus.sh" />
+    </ItemGroup>
+    <Copy SourceFiles="@(StartRoboRuckusFiles)" DestinationFolder="$(SolutionDir)PiReady\RoboRuckus\" />
+  </Target> 
+  <Target Name="CopyRoboRuckusService" AfterTargets="AfterPublish">
+    <ItemGroup>
+      <RoboRuckusServiceFiles Include="$(SolutionDir)PiReady\roboruckus.service" />
+    </ItemGroup>
+    <Copy SourceFiles="@(RoboRuckusServiceFiles)" DestinationFolder="$(SolutionDir)PiReady\RoboRuckus\" />
   </Target>
 </Project>

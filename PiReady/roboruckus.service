@@ -1,0 +1,18 @@
+[Unit]
+Description=RoboRuckus Game Service
+
+Wants=network.target
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/start_roboruckus
+Restart=on-failure
+RestartSec=10
+KillMode=process
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+
+[Install]
+WantedBy=multi-user.target

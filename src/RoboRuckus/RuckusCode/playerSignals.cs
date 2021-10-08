@@ -130,7 +130,7 @@ namespace RoboRuckus.RuckusCode
         {
             lock (gameStatus.locker)
             {
-                // Build the cards string
+                // Build the card and robots strings
                 bool first = true;
                 string cards = "[";
                 string robots = "[";
