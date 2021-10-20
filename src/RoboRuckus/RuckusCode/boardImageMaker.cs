@@ -18,6 +18,7 @@ namespace RoboRuckus.RuckusCode
         /// Creates a print-ready board image
         /// </summary>
         /// <param name="board">The board object to make the image from</param>
+        /// <param name="corners">The locations of the corner walls</param>
         /// <returns>True on success</returns>
         public static bool createImage(Board board, int[][] corners)
         {
@@ -51,6 +52,7 @@ namespace RoboRuckus.RuckusCode
 
             // Save the canvas
             _canvas.Save();
+            // Dispose of the canvas since the image is saved
             _canvas.Dispose();
 
             // Set the file names

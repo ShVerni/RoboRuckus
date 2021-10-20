@@ -118,7 +118,7 @@ namespace RoboRuckus.RuckusCode
                 sender.playerRobot = bot;
                 if (!_botless)
                 {
-                    SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, sender.playerNumber + 1));
+                    SpinWait.SpinUntil(() => botSignals.sendPlayerAssignment(bot.robotNum, sender.playerNumber + 1), 10000);
                 }         
                 return true;
             }

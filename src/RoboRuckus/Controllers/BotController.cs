@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using RoboRuckus.RuckusCode;
+using System.Threading;
 
 namespace RoboRuckus.Controllers
 {
@@ -16,6 +17,8 @@ namespace RoboRuckus.Controllers
         {
             IPAddress botIP = IPAddress.Parse(ip);
             botSignals.addBot(botIP, name);
+            // Server can sometimes respond faster than a robot is ready
+            Thread.Sleep(150);
             // Send acknowledgement to bot
             return Content("AK\n", "text/plain");
         }
@@ -29,6 +32,8 @@ namespace RoboRuckus.Controllers
         public IActionResult Done(int bot)
         {
             botSignals.Done(bot);
+            // Server can sometimes respond faster than a robot is ready
+            Thread.Sleep(150);
             // Send acknowledgement to bot
             return Content("AK\n", "text/plain");
         } 

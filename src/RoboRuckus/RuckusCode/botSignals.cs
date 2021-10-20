@@ -9,26 +9,6 @@ namespace RoboRuckus.RuckusCode
 {
     public static class botSignals
     {
-        /// <summary>
-        /// Contains all the configuration options for a robot in setup mode.
-        /// </summary>
-        public enum configParameters
-        {
-            leftForwardSpeed,
-            leftBackwardSpeed,
-            rightForwardSpeed,
-            rightBackwardSpeed,
-            Z_threshold,
-            turnBoost,
-            drift_threshold,
-            turn_drift_threshold,
-            turnFactor,
-            robotName,
-            speedTest = 11,
-            navTest = 12,
-            quit = 13
-        }
-
         // Used for thread control
         private static object _locker = new object();
         private static int _port = 8080;
@@ -76,73 +56,28 @@ namespace RoboRuckus.RuckusCode
         }
 
         /// <summary>
-        /// Puts an unassigned robot into setup mode
-        /// </summary>
-        /// <param name="botNumber">The bot to enter setup mode</param>
-        /// <returns>True on a successful response (OK) from the bot</returns>
-        public static bool enterSetupMode(int botNumber, int port = 8080)
-        {
-            return sendDataToRobot(botNumber, "1:" + "\n") == "OK";
-        }
-
-        /// <summary>
-        /// Updates an integer value configuration parameter to a robot in setup mode
-        /// also sends movement test and the quit commands.
+        /// Updates configuration parameters to a robot in setup mode
+        /// also sends movement testb the quit, and other commands.
         /// </summary>
         /// <param name="botNumber">The robot to send the parameter to</param>
+        /// <param name="option">The tuning mode option to use</param>
         /// <param name="parameter">The parameter to update</param>
-        /// <param name="value">The new value</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
-        public static bool sendConfigParameter(int botNumber, configParameters parameter, int value)
+        public static bool sendTuningInstruction(int botNumber, int option, string parameters)
         {
-            if (parameter == configParameters.robotName || parameter == configParameters.Z_threshold || parameter == configParameters.turn_drift_threshold || parameter == configParameters.turnFactor)
-            {
-                throw new ArgumentException("Must be a parameter that takes an integer value", "parameter");
-            }
-            return sendDataToRobot(botNumber, ((int)parameter).ToString() + ":" + value.ToString()) == "OK";
+            return sendDataToRobot(botNumber, option.ToString() + ":" + parameters) == "OK";
         }
 
         // <summary>
-        /// Updates a float value configuration parameter to a robot in setup mode
-        /// </summary>
-        /// <param name="botNumber">The robot to send the parameter to</param>
-        /// <param name="parameter">The parameter to update</param>
-        /// <param name="value">The new value</param>
-        /// <returns>True on a successful response (OK) from the bot</returns>
-        public static bool sendConfigParameter(int botNumber, configParameters parameter, float value)
-        {
-            if (parameter == configParameters.robotName || (parameter != configParameters.Z_threshold && parameter != configParameters.turn_drift_threshold && parameter != configParameters.turnFactor))
-            {
-                throw new ArgumentException("Must be a parameter that takes a float value", "parameter");
-            }
-            return sendDataToRobot(botNumber, ((int)parameter).ToString() + ":" + value.ToString()) == "OK";
-        }
-
-        // <summary>
-        /// Updates a string value configuration parameter to a robot in setup mode (only robotName)
-        /// </summary>
-        /// <param name="botNumber">The robot to send the parameter to</param>
-        /// <param name="parameter">The parameter to update</param>
-        /// <param name="value">The new value</param>
-        /// <returns>True on a successful response (OK) from the bot</returns>
-        public static bool sendConfigParameter(int botNumber, configParameters parameter, string value)
-        {
-            if (parameter != configParameters.robotName)
-            {
-                throw new ArgumentException("Must be the robot name for a string value", "parameter");
-            }
-            return sendDataToRobot(botNumber, ((int)parameter).ToString() + ":" + value.ToString()) == "OK";
-        }
-
-        /// <summary>
         /// Gets the current configuration settings from a robot in setup mode
         /// </summary>
         /// <param name="botNumber">The robot to get the settings from</param>
         /// <returns>A comma separated list of values</returns>
         public static string getRobotSettings(int botNumber)
         {
-            return sendDataToRobot(botNumber, "10" + ":");
+            return sendDataToRobot(botNumber, "0" + ":");
         }
+
 
         /// <summary>
         /// Adds a bot using IP
@@ -283,13 +218,13 @@ namespace RoboRuckus.RuckusCode
                         int responseTimeout = 250;
                         if (gameStatus.tuneRobots)
                         {
-                            responseTimeout = 500;
+                            responseTimeout = 1000;
                         }
                         if (SpinWait.SpinUntil(() => socketConnection.Available > 1, responseTimeout))
                         {
                             while (socketConnection.Available > 1)
                             {
-                                Int32 bytesRead = socketConnection.Receive(responseBuffer);
+                                int bytesRead = socketConnection.Receive(responseBuffer);
                                 response += Encoding.ASCII.GetString(responseBuffer).TrimEnd().Replace("\0", "");
                             }
                         }

@@ -15,38 +15,7 @@
         configureRobot($(this).data("number"));
     });
 
-    // Create the tuning sliders
-    $(".tuneFactor").slider({
-        slide: function (event, ui) {
-            $("#" + $(this).attr("id") + "-handle").text(ui.value);
-        }
-    });
-
-    // Set the ranges and step sizes on the sliders
-    $(".driveFactor").slider("option", "max", 110);
-    $(".driveFactor").slider("option", "min", 88);
-    $(".driveFactor").slider("option", "step", 1);
-
-    $("#Z_threshold").slider("option", "max", 0);
-    $("#Z_threshold").slider("option", "min", -200);
-    $("#Z_threshold").slider("option", "step", 1);
-
-    $("#turnBoost").slider("option", "max", 10);
-    $("#turnBoost").slider("option", "min", 0);
-    $("#turnBoost").slider("option", "step", 1);
-
-    $("#drift_threshold").slider("option", "max", 10);
-    $("#drift_threshold").slider("option", "min", 0);
-    $("#drift_threshold").slider("option", "step", 1);
-
-    $("#turnFactor").slider("option", "max", 130);
-    $("#turnFactor").slider("option", "min", 50);
-    $("#turnFactor").slider("option", "step", 1);
-
-    $("#turn_drift_threshold").slider("option", "max", 50);
-    $("#turn_drift_threshold").slider("option", "min", 0);
-    $("#turn_drift_threshold").slider("option", "step", 1);
-
+    // Create the control buttons
     $("#finish").button().click(finish);
     $("#speedtest").button().click(speedTest);
     $("#navtest").button().click(navTest);
@@ -54,90 +23,39 @@
 
 // Puts a selected robot in setup mode
 function configureRobot(robotNumber) {
-    $.get("/Setup/botConfig", { bot: robotNumber, choice: -1, value: "" }, function (data) { inSetupMode(data, robotNumber); }, "text");
-    $("#robots").hide(500);
-    $("#controls").show(500).data("robot", robotNumber);
+    $.get("/Setup/botConfig", { bot: robotNumber, option: 1, value: "" }, function (data) { inSetupMode(data, robotNumber); }, "text");
+    $("#controls").data("robot", robotNumber);
 }
 
-// Saves all the settings to the robot and has the robot exit setup mode
+// Saves the settings to the robot and has the robot exit setup mode
 function finish() {
-    var data = "";
-    var first = true;
-    // Collect each setting and build comma-separated string
-    $(".tuneFactor").each(function () {
-        var param = $(this).slider("option", "value");
-        var id = $(this).attr("id");
-        // Correct for orientation of wheels
-        if (id === "leftBackwardSpeed" || id === "rightForwardSpeed") {
-            param = 180 - param;
-        }
-        if (first) {
-            data += param.toString();
-            first = false;
-        }
-        else {
-            data += "," + param.toString();
-        }
-    });
-    data += "," + encodeURIComponent($("#robotName").val());
+    var data = collectParameters();
 
     // Send settings to the robot
-    $.get("/Setup/botConfig", { bot: $("#controls").data("robot"), choice: 13, value: data });
-
+    $.get("/Setup/botConfig", { bot: $("#controls").data("robot"), option: 3, value: data });
     // Update robot name in button
-    $("#bot-" + $("#controls").data("robot")).text = $("#robotName").val();
+    $("#bot-" + $("#controls").data("robot")).text($("#robotName").val());
 
     // Hide controls
     $("#robots").show(500);
     $("#controls").hide(500).data("robot", 0);
 
-    // Reset initial slider values
-    $(".tuneFactor").each(function () {
-        $(this).slider("option", "value", 0);
-        $("#" + $(this).attr("id") + "-handle").text(0);
-    });
+    // Remove sliders
+    $("#sliders").empty();
 }
 
-// Saves speed values to robot and runs speed test
+// Saves values to robot and runs speed test
 function speedTest() {
-    var data = "";
-    var first = true;
-    // Collect each setting and build comma-separated string
-    $(".driveFactor").each(function () {
-        var param = $(this).slider("option", "value");
-        var id = $(this).attr("id");
-        // Correct for orientation of wheels
-        if (id === "leftBackwardSpeed" || id === "rightForwardSpeed") {
-            param = 180 - param;
-        }
-        if (first) {
-            data += param.toString();
-            first = false;
-        }
-        else {
-            data += "," + param.toString();
-        }
-    });
+    var data = collectParameters();
     // Send the settings to the robot
-    $.get("/Setup/botConfig", { bot: $("#controls").data("robot"), choice: 11, value: data });
+    $.get("/Setup/botConfig", { bot: $("#controls").data("robot"), option: 1, value: data });
 }
 
-// Saves navigation values to robot and runs navigation test
+// Saves values to robot and runs navigation test
 function navTest() {
-    var data = "";
-    var first = true;
-    // Collect each setting and build comma-separated string
-    $(".navFactor").each(function () {
-        if (first) {
-            data += $(this).slider("option", "value").toString();
-            first = false;
-        }
-        else {
-            data += "," + $(this).slider("option", "value").toString();
-        }
-    });
+    var data = collectParameters();
     // Send settings to the robot
-    $.get("/Setup/botConfig", { bot: $("#controls").data("robot"), choice: 12, value: data });
+    $.get("/Setup/botConfig", { bot: $("#controls").data("robot"), option: 2, value: data });
 }
 
 // When a robot successfully enters setup mode, get its current status
@@ -145,63 +63,68 @@ function inSetupMode(data, robotNumber) {
     // Checks if robot entered setup mode successfully
     if (data === "OK") {
         // Get robot's current settings
-        $.get("/Setup/botConfig", { bot: robotNumber, choice: 10, value: "" }, function (data) { processInitialValues(data); }, "text");
+        $.get("/Setup/botConfig", { bot: robotNumber, option: 0, value: "" }, function (data) { processInitialValues(data); }, "text");
     }
     else {
-        // Robot didn't entered setup mode, reset sliders and return to bot selection
+        // Robot didn't enter setup mode, return to bot selection
         $("#robots").show(500);
         $("#controls").hide(500).data("robot", 0);
-
-        $(".tuneFactor").each(function () {
-            $(this).slider("option", "value", 0);
-            $("#" + $(this).attr("id") + "-handle").text(0);
-        });
+        // Remove sliders 
+        $("#sliders").empty();
     }
 }
 
 // Processes a robots status and updates the tuning sliders with the current settings
 function processInitialValues(data) {
-    // Data is a comma-separated string
-    var parameters = data.split(",");
+    // Data is a JSON string
+    var parameters = JSON.parse(data);
 
-    var value = Number(parameters[0]);
-    $("#leftForwardSpeed").slider("option", "value", value);
-    $("#leftForwardSpeed-handle").text(value);
+    // Display robot name
+    $("#robotName").val(decodeURIComponent(parameters.name));
 
-    // Correct for wheel orientation
-    value = 180 - Number(parameters[1]);
-    $("#rightForwardSpeed").slider("option", "value", value);
-    $("#rightForwardSpeed-handle").text(value);
+    // Set up tuning sliders
+    parameters.controls.forEach((control, index) => {
+        // Add slider to DOM
+        var id = control.name;
+        $("#sliders").append('\
+        <p>' + control.displayname + '</p>\
+        <div id="' + id + '" class="tuneFactor">\
+            <div id="' + id + '-handle" class="ui-slider-handle"></div>\
+        </div>');
 
-    value = Number(parameters[2]);
-    $("#rightBackwardSpeed").slider("option", "value", value);
-    $("#rightBackwardSpeed-handle").text(value);
+        // Create jQuery UI slider
+        $("#" + id).slider({
+            slide: function (event, ui) {
+                $("#" + id + "-handle").text(ui.value);
+            }
+        });
 
-    // Correct for wheel orientation
-    value = 180 - Number(parameters[3]);
-    $("#leftBackwardSpeed").slider("option", "value", value);
-    $("#leftBackwardSpeed-handle").text(value);
+        // Set the ranges and step sizes on the slider
+        $("#" + id).slider("option", "max", control.max);
+        $("#" + id).slider("option", "min", control.min);
+        $("#" + id).slider("option", "step", control.increment);
 
-    value = Number(parameters[4]);
-    $("#Z_threshold").slider("option", "value", value);
-    $("#Z_threshold-handle").text(value);
+        // Set current value of slider
+        $("#" + id).slider("option", "value", control.current);
+        $("#" + id + "-handle").text(control.current.toString());
+    });
 
-    value = Number(parameters[5]);
-    $("#turnBoost").slider("option", "value", value);
-    $("#turnBoost-handle").text(value);
+    // Show slider controls
+    $("#robots").hide(500);
+    $("#controls").show(500);
+}
 
-    value = Number(parameters[6]);
-    $("#drift_threshold").slider("option", "value", value);
-    $("#drift_threshold-handle").text(value);
-
-    value = Number(parameters[7]);
-    $("#turn_drift_threshold").slider("option", "value", value);
-    $("#turn_drift_threshold-handle").text(value);
-
-    value = Number(parameters[8]);
-    $("#turnFactor").slider("option", "value", value);
-    $("#turnFactor-handle").text(value);
-
-    value = decodeURIComponent(parameters[9]);
-    $("#robotName").val(value);
+/* 
+*  Collects all the tuning paramters into a comma separated list
+*  starting with the name, and then the other parameters in the order
+*  they were listed in the JSON object. Terminates with ":"
+*  Ex: test%20bot,65,22,55:
+*/  
+function collectParameters() {
+    var data = encodeURIComponent($("#robotName").val());
+    $(".tuneFactor").each(function () {
+        data += "," + $(this).slider("option", "value").toString();
+    });
+    data += ":";
+    return data;
 }

@@ -409,7 +409,7 @@ namespace RoboRuckus.Controllers
                             foreach (Robot bot in gameStatus.robotPen)
                             {
                                 bot.robotNum = i;
-                                // Add dummy player to bot
+                                // Add dummy player to bot, prevents any real player from being assigned to one accidentally while tuning
                                 bot.controllingPlayer = new Player(i);
                                 i++;
                                 gameStatus.robots.Add(bot);
@@ -448,156 +448,59 @@ namespace RoboRuckus.Controllers
         /// <summary>
         /// Sends a configuration instruction to a robot in setup mode
         /// </summary>
-        /// <param name="choice">The action/parameter to set</param>
+        /// <param name="bot">The robot to send the config to</param>
+        /// <param name="option">The action/parameter to set</param>
         /// <param name="value">The value to set</param>
         /// <returns>Thre response from the robot</returns>
         [HttpGet]
-        public IActionResult botConfig(int bot, int choice, string value)
+        public IActionResult botConfig(int bot, int option, string value)
         {
             string result = "ER";
+            Console.WriteLine("Sending config info. bot: " + bot + " option: " + option + " value: " + value);
 
-            // Put robot in setup mode
-            if (choice == -1)
+            // Check if need to retreive current settings from bot
+            if (option == 0)
             {
-                int i = -1;
-                bool success = false;
-                Console.WriteLine("Entering setup mode");
-                do
+                // Get robot settings
+                result = botSignals.getRobotSettings(bot);
+                // Cursory check for a JSON looking string
+                if (result != "ER" && result != "" && result.Contains("}]}") && result.Contains("{"))
                 {
-                    success = botSignals.enterSetupMode(bot);
-                    Thread.Sleep(50);
-                    i++;
-                } while (!success && i < 5);
-                if (success)
+                    // Extract the JSON portion of the string only in case there's other stuff in there
+                    result = result.Substring(result.IndexOf("{"), result.IndexOf("}]}") + 3);
+                } 
+                else
                 {
-                    result = "OK";
+                    result = "ER";
                 }
-            }
-            // Get robot's status
-            else if (choice == 10)
-            {
-                Console.WriteLine("Getting status");
-                int i = -1;
-                do
-                {
-                    result = botSignals.getRobotSettings(bot);
-                    Thread.Sleep(50);
-                    i++;
-                } while (result == "ER" && i < 5);
+                Thread.Sleep(100);
                 Console.WriteLine(result);
             }
-            // Run a speed test
-            else if (choice == 11)
+            // Send a regular instruction to the bot, possilby with the new settings
+            else
             {
-                string[] values = value.Split(',');
-                int j = 0;
+                bool success;
                 int i = -1;
-                bool success = false;
-                foreach (string param in values)
-                {
-                    i = -1;
-                    success = false;
-                    do
-                    {
-                        success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, int.Parse(param));
-                        Thread.Sleep(50);
-                        i++;
-                    } while (!success && i < 5);                    
-                    j++;
-                }
-                i = -1;
-                success = false;
+                // Try several times to send instruction to bot
                 do
                 {
-                    success = botSignals.sendConfigParameter(bot, botSignals.configParameters.speedTest, 0);
+                    success = botSignals.sendTuningInstruction(bot, option, value);
                     Thread.Sleep(50);
                     i++;
                 } while (!success && i < 5);
                 if (success)
                 {
-                    result = "OK";
-                }
-            }
-            // Run a navigation test
-            else if (choice == 12)
-            {
-                string[] values = value.Split(',');
-                int j = 4;
-                int i = -1;
-                bool success = false;
-                foreach (string param in values)
-                {
-                    i = -1;
-                    success = false;
-                    do
+                    // Update robot's name if finished with tuning
+                    if (option == 3)
                     {
-                        if (j == 4 || j == 7 || j == 8)
-                        {
-                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, float.Parse(param));
-                        }
-                        else
-                        {
-                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, int.Parse(param));
-                        }
-                        Thread.Sleep(50);
-                        i++;
-                    } while (!success && i < 5);
-                    j++;
-                }
-                i = -1;
-                success = false;
-                do
-                {
-                    success = botSignals.sendConfigParameter(bot, botSignals.configParameters.navTest, 0);
-                    Thread.Sleep(50);
-                    i++;
-                } while (!success && i < 5);
-                if (success)
-                {
+                        gameStatus.robots[bot].robotName = System.Web.HttpUtility.UrlDecode(value.Substring(0, value.IndexOf(',')));
+                    }
                     result = "OK";
-                }
-            }
-            // Quit
-            else if (choice == 13)
-            {
-                string[] values = value.Split(',');
-                int j = 0;
-                int i = -1;
-                bool success = false;
-                foreach (string param in values)
-                {
-                    i = -1;
-                    success = false;
-                    do
+                    // If robot is entering tuning/setup mode, pause to allow it get ready
+                    if (option == 1)
                     {
-                        if (j == 4 || j == 7 || j == 8)
-                        {
-                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, float.Parse(param));
-                        }
-                        else if (j == 9)
-                        {
-                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, param);
-                        }
-                        else
-                        {
-                            success = botSignals.sendConfigParameter(bot, (botSignals.configParameters)j, int.Parse(param));
-                        }
-                        Thread.Sleep(50);
-                        i++;
-                    } while (!success && i < 5);
-                    j++;
-                }
-                i = -1;
-                success = false;
-                do
-                {
-                    success = botSignals.sendConfigParameter(bot, botSignals.configParameters.quit, 0);
-                    Thread.Sleep(50);
-                    i++;
-                } while (!success && i < 5);
-                if (success)
-                {
-                    result = "OK";
+                        Thread.Sleep(100);
+                    }
                 }
             }
             return Content(result, "text/plain");
@@ -616,6 +519,7 @@ namespace RoboRuckus.Controllers
                 {
                     if (gameStatus.tuneRobots)
                     {
+                        // Reset bots so they're ready to use
                         foreach (Robot r in gameStatus.robots)
                         {
                             r.y_pos = -1;
@@ -646,6 +550,7 @@ namespace RoboRuckus.Controllers
                 bool first = true;
                 string entering = gameStatus.playersNeedEntering ? "1" : "0";
                 Robot[] sorted = gameStatus.robots.OrderBy(r => r.controllingPlayer.playerNumber).ToArray();
+                // Build the JSON string
                 foreach (Robot active in sorted)
                 {
                     if (active.controllingPlayer != null)
