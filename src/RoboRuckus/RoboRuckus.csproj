@@ -15,7 +15,7 @@
     <PackageLicenseUrl>https://github.com/ShVerni/RoboRuckus/blob/master/LICENSE.md</PackageLicenseUrl>
     <NeutralLanguage />
     <UserSecretsId>762533f3-d4d7-48b2-b245-2a0af316841e</UserSecretsId>
-    <PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
+    <PackageLicenseExpression>GNU Affero General Public License v3.0</PackageLicenseExpression>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETCOREAPP</DefineConstants>
