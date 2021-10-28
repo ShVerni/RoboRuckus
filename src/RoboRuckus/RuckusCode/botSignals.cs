@@ -42,7 +42,7 @@ namespace RoboRuckus.RuckusCode
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendPlayerAssignment(int botNumber, int playerNumber)
         {
-            return sendDataToRobot(botNumber, "0:" + playerNumber.ToString() + botNumber.ToString() + "\n") == "OK";
+            return sendDataToRobot(botNumber, "0:" + playerNumber.ToString() + botNumber.ToString()) == "OK";
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace RoboRuckus.RuckusCode
         /// <returns>A comma separated list of values</returns>
         public static string getRobotSettings(int botNumber)
         {
-            return sendDataToRobot(botNumber, "0" + ":");
+            return sendDataToRobot(botNumber, "0" + ":\n");
         }
 
 
@@ -203,7 +203,7 @@ namespace RoboRuckus.RuckusCode
             string response = "";
             using (Socket socketConnection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                Byte[] bytesToSend = Encoding.ASCII.GetBytes(data);
+                Byte[] bytesToSend = Encoding.ASCII.GetBytes(data + "\n");
                 socketConnection.SendTimeout = 1010;
                 socketConnection.ReceiveTimeout = 1010;
                 try
@@ -218,7 +218,7 @@ namespace RoboRuckus.RuckusCode
                         int responseTimeout = 250;
                         if (gameStatus.tuneRobots)
                         {
-                            responseTimeout = 1000;
+                            responseTimeout = 2000;
                         }
                         if (SpinWait.SpinUntil(() => socketConnection.Available > 1, responseTimeout))
                         {
