@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.IO;
+using RoboRuckus.Hubs;
+using RoboRuckus.RuckusCode;
+using System;
 
 namespace RoboRuckus
 {
@@ -9,32 +14,87 @@ namespace RoboRuckus
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-        }
+            // Create application builder.
+            WebApplicationBuilder builder = builder = WebApplication.CreateBuilder(args);
 
-        public static IWebHost BuildWebHost(string[] args)
-        {
-            IWebHost host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://*:8082")
-                .UseIISIntegration()
-                .ConfigureAppConfiguration((hostingContext, config) =>
+            // Store application path for reference.
+            serviceHelpers.rootPath = builder.Environment.ContentRootPath;
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews(options => options.EnableEndpointRouting = false); // Endpoint routing is disabled to enable MVC routing
+            builder.Services.AddSignalR();
+            builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
+           
+
+            // Enable logging
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+
+            // Get any command line arguments.
+            string options = builder.Configuration.GetValue<string>("options");
+
+            // Build application.
+            WebApplication app = builder.Build();
+
+            // Add error handling.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.Urls.Add("http://*:8082");
+            // Add MVC to app.
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action}/{player?}",
+                    defaults: new { controller = "Player", action = "Index" }
+                );
+
+                routes.MapRoute(
+                    name: "Robot",
+                    template: "Bot/{action}/{bot?}"
+                );
+            });
+
+            // Enable Static files and routing.
+            app.UseStaticFiles();
+            app.UseRouting();
+
+            // Add fileserver to app.
+            app.UseFileServer();
+
+            // Add SignalR to app.
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<playerHub>("/playerHub");
+            });
+
+            // Parse command line arguments.
+            if (options != null)
+            {
+                string[] option = options.Split(",");
+                foreach (string arg in option)
                 {
-                    IWebHostEnvironment env = hostingContext.HostingEnvironment;
-                    config.AddJsonFile("appsettings.json", optional: true);
-                    config.SetBasePath(env.ContentRootPath);
-                    config.AddEnvironmentVariables();
-                    config.AddCommandLine(args);
-                })
-                .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.AddConsole();
-                })
-                .Build();
-            return host;
+                    switch (arg)
+                    {
+                        case "botless":
+                            gameStatus.botless = true;
+                            Console.WriteLine("Botless mode enabled");
+                            break;
+                        case "edgecontrol":
+                            gameStatus.edgeControl = true;
+                            Console.WriteLine("Edge control enabled.");
+                            break;
+                        case "showreg":
+                            gameStatus.showRegister = true;
+                            Console.WriteLine("Register display enabled.");
+                            break;
+                    }
+                }
+            }
+            // Run application.
+            app.Run();
         }
     }
 }

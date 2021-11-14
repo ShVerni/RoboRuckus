@@ -81,7 +81,7 @@ namespace RoboRuckus.RuckusCode
                 using (StreamReader file = File.OpenText(boardFile))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    boards.Add((Board)serializer.Deserialize(file, typeof(Board)));
+                    boards.Add(serializer.Deserialize(file, typeof(Board)) as Board);
                 }
             }
             // Load the movement cards

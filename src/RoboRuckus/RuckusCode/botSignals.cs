@@ -215,10 +215,10 @@ namespace RoboRuckus.RuckusCode
                         socketConnection.Send(bytesToSend, bytesToSend.Length, 0);
 
                         // Wait for all data to be available
-                        int responseTimeout = 250;
+                        int responseTimeout = 500;
                         if (gameStatus.tuneRobots)
                         {
-                            responseTimeout = 2000;
+                            responseTimeout = 2500;
                         }
                         if (SpinWait.SpinUntil(() => socketConnection.Available > 1, responseTimeout))
                         {
