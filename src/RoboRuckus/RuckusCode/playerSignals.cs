@@ -10,7 +10,7 @@ namespace RoboRuckus.RuckusCode
 {
     /// <summary>
     /// Controls inputs from users.
-    /// All public methods in this class sould be wrapped in a lock on the same object
+    /// All public methods in this class should be wrapped in a lock on the same object
     /// since there is only one game state multiple players could try to modify.
     /// </summary>
     public class playerSignals
@@ -25,7 +25,7 @@ namespace RoboRuckus.RuckusCode
         private bool timerStarted = false;
 
         /// <summary>
-        /// Plaeyr hub context.
+        /// Player hub context.
         /// </summary>
         private static IHubContext<playerHub> _playerHub;
 
@@ -370,7 +370,7 @@ namespace RoboRuckus.RuckusCode
         /// <returns>Whether a timer was started</returns>
         private bool checkTimer()
         {
-            // Makes sure there is more than one living player in the game, and checks if there is only one player who hasn't submitted thier program.
+            // Makes sure there is more than one living player in the game, and checks if there is only one player who hasn't submitted their program.
             if (gameStatus.playerTimer && gameStatus.players.Count(p => !p.dead) > 1 && gameStatus.players.Count(p => (p.move != null || p.dead || p.shutdown)) == (gameStatus.numPlayersInGame - 1))
             {
                 timerStarted = true;

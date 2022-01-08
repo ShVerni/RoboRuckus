@@ -11,8 +11,8 @@
         public byte cardNumber;
 
         /// <summary>
-        /// A string representaion of a card that matches
-        /// the one generated and sent to the player cleints.
+        /// A string representation of a card that matches
+        /// the one generated and sent to the player clients.
         /// </summary>
         /// <returns>The string representation of a card</returns>
         public override string ToString()

@@ -6,7 +6,7 @@ $(function () {
     $("#submitButton").button();
     $("#printImg").button();
     $("#delete").button().click(function () {
-        // Create confimration modal dialog
+        // Create confirmation modal dialog
         $("#dialog-confirm").dialog({
             resizable: false,
             height: "auto",
@@ -108,7 +108,7 @@ function drawBoard(x, y) {
     if (x > 0 && y > 0) {
         $("#boardMaker").empty();
         board = "";
-        // Draw baord squares
+        // Draw board squares
         for (var i = y - 1; i >= 0; i--) {
             board += '<div class="boardRow" id="y_' + i + '">';
             for (var j = 0; j <= x - 1; j++) {
@@ -123,7 +123,7 @@ function drawBoard(x, y) {
             accept: "#flagContainer div, .boardSquare div",
             hoverClass: "boardSquare-hover",
             drop: function (event, ui) {
-                // Only accept one element per board sqaure with the exception of stackable elements
+                // Only accept one element per board square with the exception of stackable elements
                 $(this).droppable("option", "accept", ".stackable");
                 if ($(ui.draggable).parent().hasClass("boardSquare") && $(ui.draggable).parent().children().length === 1) {
                     $(ui.draggable).parent().droppable("option", "accept", "#flagContainer div, .boardSquare div");
@@ -151,7 +151,7 @@ function drawBoard(x, y) {
                     .appendTo(this)
                     .css({ top: "", left: "", position: "" }); // Fix the CSS
                 } else {
-                    // Add the element to the sqaure and fix the CSS
+                    // Add the element to the square and fix the CSS
                     $(ui.draggable).detach().appendTo(this).css({ top: "", left: "", position: "" });
                 }
             }
@@ -159,7 +159,7 @@ function drawBoard(x, y) {
     }
 }
 
-// Retruns a JSON string containing the board info
+// Returns a JSON string containing the board info
 function buildBoard() {
     var boardString = "{\n  \"name\": \"" + $("#name").val() + "\",\n  \"size\": [ " + (Number($("#x_size").val()) - 1) + ", " + (Number($("#y_size").val()) - 1) + " ]";
     boardString += ",\n" + getWrenches();
@@ -173,7 +173,7 @@ function buildBoard() {
     return boardString;
 }
 
-// Returns a string contaning the wrench data
+// Returns a string cantoning the wrench data
 function getWrenches() {
     var wrenches = "  \"wrenches\": [";
     var first = true;
@@ -191,7 +191,7 @@ function getWrenches() {
     return wrenches;
 }
 
-// Returns a string contaning the pit data
+// Returns a string cantoning the pit data
 function getPits() {
     var pits = "  \"pits\": [";
     var first = true;
@@ -453,7 +453,7 @@ function createBoard(boardName) {
         }, "json");
 }
 
-// Places wrences on a board based on their data
+// Places wrenches on a board based on their data
 function placeWrenches(wrenches) {
     for (var i = 0; i < wrenches.length; i++) {
         var square = "#" + wrenches[i][0] + "_" + wrenches[i][1];
@@ -604,7 +604,7 @@ function placeConveyors(conveyors, express) {
 }
 
 // Helper function that checks if there is line of
-// sight from startxing x, y coordinates in a direction.
+// sight from starting x, y coordinates in a direction.
 // Returns the furthest coordinate to which LOS extends.
 // This is a very ugly function.
 function checkLOS(x, y, dir) {
@@ -624,7 +624,7 @@ function checkLOS(x, y, dir) {
                 // Check for corners in the way
                 corners.each(function () {
                     var orientation = Number($(this).data("orientation"));
-                    // Check which side of squre corner is on
+                    // Check which side of square corner is on
                     if (orientation === 0 || orientation === 1) {
                         done = true;
                     } else {
@@ -635,7 +635,7 @@ function checkLOS(x, y, dir) {
                 // Check for walls in the way
                 walls.each(function () {
                     var orientation = Number($(this).data("orientation"));
-                     // Check which side of squre wall is on
+                     // Check which side of square wall is on
                     if (orientation === 0) {
                         done = true;
                     } else if (orientation === 2) {
@@ -646,7 +646,7 @@ function checkLOS(x, y, dir) {
                 // Check for lasers in the way
                 lasers.each(function () {
                     var orientation = Number($(this).data("orientation"));
-                    // Check which side of squre laser is on
+                    // Check which side of square laser is on
                     if (orientation === 2) {
                         done = true;
                     } else if (orientation === 0) {

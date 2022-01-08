@@ -37,7 +37,7 @@ namespace RoboRuckus.RuckusCode
         // Used to disable the entire register during each round.
         public static bool showRegister = false;
 
-        // Game state varaibles
+        // Game state variables
         public static int numPlayers = 0;
         public static int numPlayersInGame = 0;
         public static bool gameReady = false;
@@ -70,7 +70,7 @@ namespace RoboRuckus.RuckusCode
         private static readonly string _boardPath = System.IO.Path.DirectorySeparatorChar + "GameConfig" + System.IO.Path.DirectorySeparatorChar + "Boards";
 
         /// <summary>
-        /// Sets up some global settings and the game enviroment
+        /// Sets up some global settings and the game environment
         /// </summary>
         static gameStatus()
         {

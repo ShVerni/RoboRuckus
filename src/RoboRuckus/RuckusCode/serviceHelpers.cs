@@ -1,7 +1,7 @@
 ﻿namespace RoboRuckus.RuckusCode
 {
     /// <summary>
-    /// A group of static enviromental interfaces for reference from other parts of code
+    /// A group of static environmental interfaces for reference from other parts of code
     /// </summary>
     public static class serviceHelpers
     {

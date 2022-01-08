@@ -1,7 +1,7 @@
 ﻿namespace RoboRuckus.RuckusCode
 {
     /// <summary>
-    /// Represents a game board and all the elemtns it contains
+    /// Represents a game board and all the elements it contains
     /// </summary>
     public class Board
     {
@@ -40,7 +40,7 @@
     }
 
     /// <summary>
-    /// Represents a spae on a conveyor belt
+    /// Represents a space on a conveyor belt
     /// </summary>
     public class Conveyor
     {
@@ -81,7 +81,7 @@
         public sbyte strength;
 
         /// <summary>
-        /// The orientation in which the laser is facig
+        /// The orientation in which the laser is facing
         /// </summary>
         public Robot.orientation facing;
     }

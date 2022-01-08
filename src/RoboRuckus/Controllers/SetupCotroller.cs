@@ -189,7 +189,7 @@ namespace RoboRuckus.Controllers
         /// <summary>
         /// Updates the status of a player
         /// </summary>
-        /// <param name="lives">Ther number of lives the player has</param>
+        /// <param name="lives">The number of lives the player has</param>
         /// <param name="damage">The damage the robot has</param>
         /// <param name="botX">The robot's x position</param>
         /// <param name="botY">The robot's y position</param>
@@ -251,7 +251,7 @@ namespace RoboRuckus.Controllers
         }
 
         /// <summary>
-        /// Delas a player a new hand of cards
+        /// Deals a player a new hand of cards
         /// </summary>
         /// <param name="player">The player to deal</param>
         /// <returns>The string OK</returns>
@@ -306,7 +306,7 @@ namespace RoboRuckus.Controllers
         {
             Board board = JsonConvert.DeserializeObject<Board>(newBoard.boardData);
             int[][] corners = JsonConvert.DeserializeObject<int[][]>(newBoard.cornerData);
-            // Create the images for the baord
+            // Create the images for the board
             boardImageMaker.createImage(board, corners);
             Board oldBoard = gameStatus.boards.FirstOrDefault(x => x.name == newBoard.name);
             if (oldBoard != null)
@@ -451,14 +451,14 @@ namespace RoboRuckus.Controllers
         /// <param name="bot">The robot to send the config to</param>
         /// <param name="option">The action/parameter to set</param>
         /// <param name="value">The value to set</param>
-        /// <returns>Thre response from the robot</returns>
+        /// <returns>The response from the robot</returns>
         [HttpGet]
         public IActionResult botConfig(int bot, int option, string value)
         {
             string result = "ER";
             Console.WriteLine("Sending config info. bot: " + bot + " option: " + option + " value: " + value);
 
-            // Check if need to retreive current settings from bot
+            // Check if need to retrieve current settings from bot
             if (option == 0)
             {
                 // Get robot settings
@@ -476,7 +476,7 @@ namespace RoboRuckus.Controllers
                 Thread.Sleep(100);
                 Console.WriteLine(result);
             }
-            // Send a regular instruction to the bot, possilby with the new settings
+            // Send a regular instruction to the bot, possibly with the new settings
             else
             {
                 bool success;

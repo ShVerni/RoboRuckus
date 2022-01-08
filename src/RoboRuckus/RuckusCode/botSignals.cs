@@ -57,7 +57,7 @@ namespace RoboRuckus.RuckusCode
 
         /// <summary>
         /// Updates configuration parameters to a robot in setup mode
-        /// also sends movement testb the quit, and other commands.
+        /// also sends movement test, quit, and other commands.
         /// </summary>
         /// <param name="botNumber">The robot to send the parameter to</param>
         /// <param name="option">The tuning mode option to use</param>
@@ -83,7 +83,7 @@ namespace RoboRuckus.RuckusCode
         /// Adds a bot using IP
         /// </summary>
         /// <param name="ip">The IP address of the robot</param>
-        /// <returns>True acknowledging the accpeted robot</returns>
+        /// <returns>True acknowledging the accepted robot</returns>
         public static bool addBot(IPAddress ip, string name)
         {
             // Lock used so player assignment is sent after this method exits
@@ -113,7 +113,7 @@ namespace RoboRuckus.RuckusCode
         /// Adds a bot using Bluetooth
         /// </summary>
         /// <param name="BTAddress">The IP address of the robot</param>
-        /// <returns>True acknowledging the accpeted robot</returns>
+        /// <returns>True acknowledging the accepted robot</returns>
         public static bool addBot(string BTAddress, string name)
         {
             // Lock used so player assignment is sent after this method exits
@@ -145,8 +145,12 @@ namespace RoboRuckus.RuckusCode
         /// <param name="bot">The bot number</param>
         public static void Done(int bot)
         {
-            // Signal bot has finished moving.
-            gameStatus.robots[bot].moving.Set();
+            // Make sure the bot is in the game
+            if (gameStatus.robots.Count > bot)
+            {
+                // Signal bot has finished moving.
+                gameStatus.robots[bot].moving.Set();
+            }
         }
 
         /// <summary>
@@ -241,6 +245,7 @@ namespace RoboRuckus.RuckusCode
                         socketConnection.Close();
                         throw new TimeoutException("Connection to robot " + bot.robotNum.ToString() + " timed out.");
                     }
+                    socketConnection.Close();
                 }
                 catch (Exception e)
                 {

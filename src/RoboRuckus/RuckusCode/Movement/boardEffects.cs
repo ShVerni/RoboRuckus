@@ -252,7 +252,7 @@ namespace RoboRuckus.RuckusCode.Movement
                                 break;
                         }
                     }
-                    // Ensure the robot is facing in the correct directon after moving
+                    // Ensure the robot is facing in the correct direction after moving
                     switch (desiredFacing - findMove.bot.currentDirection)
                     {
                         case 3:

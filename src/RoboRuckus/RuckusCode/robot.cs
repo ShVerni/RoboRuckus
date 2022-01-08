@@ -51,7 +51,7 @@ namespace RoboRuckus.RuckusCode
             NEG_Y = 3
         }
 
-        // There shouldn't be more thant 127 points of damage a bot can take, it's signed to allow damage subtraction
+        // There shouldn't be more than 127 points of damage a bot can take, it's signed to allow damage subtraction
         private  sbyte _damage = 0;
 
         /// <summary>

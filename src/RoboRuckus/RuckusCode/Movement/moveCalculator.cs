@@ -6,7 +6,7 @@ using System.Linq;
 namespace RoboRuckus.RuckusCode.Movement
 {
     /// <summary>
-    /// Controls all bot movment
+    /// Controls all bot movement
     /// Wrapping public methods in lock statements is probably overkill, but doesn't hurt.
     /// </summary>
     public static class moveCalculator
@@ -235,7 +235,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         break;
 
                     case ("left"):
-                        // Change the robot's oreientation to what it will be after the move
+                        // Change the robot's orientation to what it will be after the move
                         if (move.bot.currentDirection == Robot.orientation.NEG_Y)
                         {
                             move.bot.currentDirection = Robot.orientation.X;
@@ -307,7 +307,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// impact on any other bots on the board. Executes recursively.
         /// </summary>
         /// <param name="bot">The bot being moved</param>
-        /// <param name="direction">The directon the bot is moving.</param>
+        /// <param name="direction">The direction the bot is moving.</param>
         /// <param name="magnitude">The number of spaces being moved</param>
         /// <param name="orders">A reference to the list of move orders to modify</param>
         /// <param name="outOfTurn">True if it's not the turn of the bot whose move is being resolved</param>
@@ -425,7 +425,7 @@ namespace RoboRuckus.RuckusCode.Movement
                     total = magnitude - remaining;
                     if (magnitude - remaining > 0)
                     {
-                        // Rotate bot to appropraaite direction if necessary, then move
+                        // Rotate bot to appropriate direction if necessary, then move
                         switch (direction - bot.currentDirection)
                         {
                             case 0:
@@ -598,7 +598,7 @@ namespace RoboRuckus.RuckusCode.Movement
         }
 
         /// <summary>
-        /// Checks for obstacles on the baord that block bot movement
+        /// Checks for obstacles on the board that block bot movement
         /// </summary>
         /// <param name="fromCord">[x,y] The coordinate the bot will be moving from</param>
         /// <param name="toCord">[x,y] The coordinate the bot will be moving to</param>
@@ -632,7 +632,7 @@ namespace RoboRuckus.RuckusCode.Movement
         public bool offBoard = false;
 
         /// <summary>
-        /// Creates a string represnetation of an orderModel which can be sent to the robots
+        /// Creates a string representation of an orderModel which can be sent to the robots
         /// </summary>
         /// <returns>The string representation of an order</returns>
         public override string ToString()
