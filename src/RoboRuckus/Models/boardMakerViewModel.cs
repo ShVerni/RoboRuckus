@@ -12,7 +12,7 @@ namespace RoboRuckus.Models
         public string name { get; set; }
 
         [Required]
-        [Range(1, 48, ErrorMessage = "Please enter valid integer number between 1 and 48")]
+        [Range(1, 100, ErrorMessage = "Please enter valid integer number between 1 and 100")]
         [Display(Name = "X Size")]
         public int x_size { get; set; }
 
@@ -22,7 +22,7 @@ namespace RoboRuckus.Models
         public IEnumerable<SelectListItem> boards { get; set; }
 
         [Required]
-        [Range(1, 48, ErrorMessage = "Please enter valid integer number between 1 and 48")]
+        [Range(1, 100, ErrorMessage = "Please enter valid integer number between 1 and 100")]
         [Display(Name = "Y Size")]
         public int y_size { get; set; }
 

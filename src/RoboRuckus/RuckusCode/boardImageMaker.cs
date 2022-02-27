@@ -1,18 +1,38 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
-using System.Drawing;
+using SkiaSharp;
 
 namespace RoboRuckus.RuckusCode
 {
-    public static class boardImageMaker
+    public class boardImageMaker : IDisposable
     {
-        private static Bitmap _boardImage;
-        private static Graphics _canvas;
-        private static char _separator = System.IO.Path.DirectorySeparatorChar;
-        private static string _root = serviceHelpers.rootPath + _separator;
-        private static string _imageRoot = _root + "Resources" + _separator + "BoardMakerFiles" + _separator;
-        private static Board _board;
-        private static int[][] _corners;
+        private  SKBitmap _boardImage;
+        private  SKCanvas _canvas;
+        private  char _separator = Path.DirectorySeparatorChar;
+        private  string _root;
+        private  string _imageRoot;
+        private  Board _board;
+        private  int[][] _corners;
+      
+        /// <summary>
+        /// Constructs a board image maker.
+        /// </summary>
+        /// <param name="board">The board file to base the image off of</param>
+        /// <param name="corners">Additional info for corner walls</param>
+        public boardImageMaker(Board board, int[][] corners)
+        {
+            // Initialize values
+            _root = serviceHelpers.rootPath + _separator;
+            _imageRoot = _root + "Resources" + _separator + "BoardMakerFiles" + _separator;
+            _board = board;
+            _corners = corners;
+            // Create a new image of the correct size
+            _boardImage = new SKBitmap(1575 * (board.size[0] + 1), 1575 * (board.size[1] + 1));
+            // Create a graphics canvas to draw on
+            _canvas = new SKCanvas(_boardImage);
+
+        }
 
         /// <summary>
         /// Creates a print-ready board image
@@ -20,17 +40,8 @@ namespace RoboRuckus.RuckusCode
         /// <param name="board">The board object to make the image from</param>
         /// <param name="corners">The locations of the corner walls</param>
         /// <returns>True on success</returns>
-        public static bool createImage(Board board, int[][] corners)
-        {
-            _board = board;
-            _corners = corners;
-            // Create a new image of the correct size
-            _boardImage = new Bitmap(1575 * (board.size[0] + 1), 1575 * (board.size[1] + 1));
-            // Set the image resolution
-            _boardImage.SetResolution(300, 300);
-            // Create a graphics canvas to draw on
-            _canvas = Graphics.FromImage(_boardImage);
-
+        public bool createImage()
+        {            
             // Add the board elements to the image
             addBackground();
             addPits();
@@ -45,50 +56,70 @@ namespace RoboRuckus.RuckusCode
             addWalls();
 
             // Add the dot to the lower left corner
-            using (Image dot = Image.FromFile(_imageRoot + "Dot.png"))
+            using (SKImage dot = SKImage.FromEncodedData(_imageRoot + "Dot.png"))
             {
-                _canvas.DrawImage(dot, 0, board.size[1] * 1575);
+                _canvas.DrawImage(dot, 0, _board.size[1] * 1575);
             }
 
             // Save the canvas
-            _canvas.Save();
+            _canvas.Flush();
             // Dispose of the canvas since the image is saved
             _canvas.Dispose();
 
             // Set the file names
-            string filename = _root + "wwwroot" + _separator + "images" + _separator + "printable_boards" + _separator + board.name.Replace(" ", "") + ".png";
-            string smallFileName = _root + "wwwroot" + _separator + "images" + _separator + "boards" + _separator + board.name.Replace(" ", "") + ".png";
+            string filename = _board.name.Replace(" ", "") + ".png";
+            string printableDirectory = _root + "wwwroot" + _separator + "images" + _separator + "printable_boards";
+            string smallFileDirectory = _root + "wwwroot" + _separator + "images" + _separator + "boards";
 
             //Save the full size image 
-            _boardImage.Save(filename, System.Drawing.Imaging.ImageFormat.Png);
+            saveFile(_boardImage, printableDirectory, filename);
 
-            // Reduce the image resolution
-            _boardImage.SetResolution(150, 150);
-
-            // Create a new, smaller image for the server to use
-            Bitmap smaller = new Bitmap(_boardImage, 100 * (board.size[0] + 1), 100 * (board.size[1] + 1));
+            // Create a new, smaller image for the web server to use
+            SKImageInfo newsize = new SKImageInfo(100 * (_board.size[0] + 1), 100 * (_board.size[1] + 1));
+            _boardImage = _boardImage.Resize(newsize, SKFilterQuality.Medium);
             // Save smaller image
-            smaller.Save(smallFileName, System.Drawing.Imaging.ImageFormat.Png);
-
-            _boardImage.Dispose();
-            smaller.Dispose();
-            _board = null;
-            _corners = null;
+            saveFile(_boardImage, smallFileDirectory, filename);
             return true;
+        }
+
+        /// <summary>
+        /// Saves a bitmap to a file
+        /// </summary>
+        /// <param name="bitmap">The bitmap to save</param>
+        /// <param name="folder">The folder to save in</param>
+        /// <param name="filename">The filename to save</param>
+        private  void saveFile(SKBitmap bitmap, string folder, string filename)
+        {
+            if (!string.IsNullOrEmpty(folder))
+            {
+                if (!Directory.Exists(folder))
+                {
+                    Directory.CreateDirectory(folder);
+                }
+
+                using (FileStream fs = new FileStream(folder + _separator + filename, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    // Discard current file content if any
+                    fs.SetLength(0);
+                    SKData data = SKImage.FromBitmap(bitmap).Encode(SKEncodedImageFormat.Png, 25);
+                    data.SaveTo(fs);
+                    data.Dispose();
+                }
+            }
         }
 
         /// <summary>
         /// Adds the background tiles to the image
         /// </summary>
-        private static void addBackground()
+        private  void addBackground()
         {
-            using (Image background = Image.FromFile(_imageRoot + "Background.png"))
-            {
+            using (SKImage image = SKImage.FromEncodedData(_imageRoot + "Background.png"))
+            {         
                 for (int y = 0; y <= _board.size[1]; y++)
                 {
                     for (int x = 0; x <= _board.size[0]; x++)
                     {
-                        _canvas.DrawImage(background, x * 1575, y * 1575);
+                        _canvas.DrawImage(image,x * 1575, y * 1575);
                     }
                 }
             }
@@ -97,15 +128,15 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// Adds the grid tiles to the image
         /// </summary>
-        private static void addGrid()
+        private  void addGrid()
         {
-            using (Image grid = Image.FromFile(_imageRoot + "Border.png"))
+            using (SKImage image = SKImage.FromEncodedData(_imageRoot + "Border.png"))
             {
                 for (int y = 0; y <= _board.size[1]; y++)
                 {
                     for (int x = 0; x <= _board.size[0]; x++)
                     {
-                        _canvas.DrawImage(grid, x * 1575, y * 1575);
+                        _canvas.DrawImage(image, x * 1575, y * 1575);
                     }
                 }
             }
@@ -114,13 +145,13 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// Adds the pit tiles to the image
         /// </summary>
-        private static void addPits()
+        private  void addPits()
         {
-            using (Image pitImg = Image.FromFile(_imageRoot + "Pit.png"))
+            using (SKImage image = SKImage.FromEncodedData(_imageRoot + "Pit.png"))
             {
                 foreach (int[] pit in _board.pits)
                 {
-                    _canvas.DrawImage(pitImg, pit[0] * 1575, (_board.size[1] - pit[1]) * 1575);
+                    _canvas.DrawImage(image, pit[0] * 1575, (_board.size[1] - pit[1]) * 1575);
                 }
             }
         }
@@ -128,13 +159,13 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// Adds the wrench tiles to the image
         /// </summary>
-        private static void addWrenches()
+        private  void addWrenches()
         {
-            using (Image wrenchImg = Image.FromFile(_imageRoot + "Wrench.png"))
+            using (SKImage image = SKImage.FromEncodedData(_imageRoot + "Wrench.png"))
             {
                 foreach (int[] wrench in _board.wrenches)
                 {
-                    _canvas.DrawImage(wrenchImg, wrench[0] * 1575, (_board.size[1] - wrench[1]) * 1575);
+                    _canvas.DrawImage(image, wrench[0] * 1575, (_board.size[1] - wrench[1]) * 1575);
                 }
             }
         }
@@ -142,10 +173,10 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// Adds the turntable tiles to the image
         /// </summary>
-        private static void addTurntables()
+        private  void addTurntables()
         {
-            Image CCW = Image.FromFile(_imageRoot + "CCWRotator.png");
-            Image CW = Image.FromFile(_imageRoot + "CWRotator.png");
+            SKImage CCW = SKImage.FromEncodedData(_imageRoot + "CCWRotator.png");
+            SKImage CW = SKImage.FromEncodedData(_imageRoot + "CWRotator.png");
             foreach (Turntable rotator in _board.turntables)
             {
                 if (rotator.dir == "right")
@@ -164,140 +195,138 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// Adds corner tiles to the image
         /// </summary>
-        private static void addCorners()
+        private  void addCorners()
         {
             foreach (int[] corner in _corners)
             {
-                using (Image cornerImg = Image.FromFile(_imageRoot + "Corner.png"))
+                SKBitmap image = SKBitmap.Decode(_imageRoot + "Corner.png");
+                // Rotate the corner if needed
+                switch ((Robot.orientation)corner[2])
                 {
-                    // Rotate the corner if needed
-                    switch ((Robot.orientation)corner[2])
-                    {
-                        case Robot.orientation.Y:
-                            cornerImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                            break;
-                        case Robot.orientation.NEG_X:
-                            cornerImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                            break;
-                        case Robot.orientation.NEG_Y:
-                            cornerImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                            break;
-                    }
-                    _canvas.DrawImage(cornerImg, corner[0] * 1575, (_board.size[1] - corner[1]) * 1575);
+                    case Robot.orientation.Y:
+                        image = rotate(270, image);
+                        break;
+                    case Robot.orientation.NEG_X:
+                        image = rotate(180, image);
+                        break;
+                    case Robot.orientation.NEG_Y:
+                        image = rotate(90, image);
+                        break;
                 }
+                _canvas.DrawBitmap(image, corner[0] * 1575, (_board.size[1] - corner[1]) * 1575);
+                image.Dispose();
             }
         }
-
 
         /// <summary>
         /// Adds the wall tiles to the image
         /// </summary>
-        private static void addWalls()
+        private  void addWalls()
         {
             foreach (int[][] wall in _board.walls)
             {
-                using (Image wallImg = Image.FromFile(_imageRoot + "Wall.png"))
+                SKBitmap image = SKBitmap.Decode(_imageRoot + "Wall.png");
+
+                // Check if the walls are facing along the Y axis or not
+                if (wall[0][0] == wall[1][0])
                 {
-                    // Check if the walls are facing along the Y axis or not
-                    if (wall[0][0] == wall[1][0])
+                    // Check if wall is facing in the positive Y direction or not
+                    if (wall[0][1] < wall[1][1])
                     {
-                        // Check if wall is facing in the positive Y direction or not
-                        if (wall[0][1] < wall[1][1])
+                        // Check if this wall should be a laser or corner instead
+                        if (_board.lasers.Any(l => l.facing == Robot.orientation.NEG_Y && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
                         {
-                            // Check if this wall should be a laser or corner instead
-                            if (_board.lasers.Any(l => l.facing == Robot.orientation.NEG_Y && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
-                            {
-                                continue;
-                            }
-                            else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 1 || c[2] == 2)))
-                            {
-                                continue;
-                            }
-                            wallImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            continue;
                         }
-                        else
+                        else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 1 || c[2] == 2)))
                         {
-                            // Check if this wall should be a laser or corner instead
-                            if (_board.lasers.Any(l => l.facing == Robot.orientation.Y && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
-                            {
-                                continue;
-                            }
-                            else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 0 || c[2] == 3)))
-                            {
-                                continue;
-                            }
-                            wallImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            continue;
                         }
+                        image = rotate(90, image);
                     }
                     else
                     {
-                        // Check if wall is facing in the positive X direction or not
-                        if (wall[0][0] < wall[1][0])
+                        // Check if this wall should be a laser or corner instead
+                        if (_board.lasers.Any(l => l.facing == Robot.orientation.Y && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
                         {
-                            // Check if this wall should be a laser or corner instead
-                            if (_board.lasers.Any(l => l.facing == Robot.orientation.NEG_X && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
-                            {
-                                continue;
-                            }
-                            else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 0 || c[2] == 1)))
-                            {
-                                continue;
-                            }
-                            wallImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            continue;
                         }
-                        else
+                        else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 0 || c[2] == 3)))
                         {
-                            // Check if this wall should be a laser or corner instead
-                            if (_board.lasers.Any(l => l.facing == Robot.orientation.X && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
-                            {
-                                continue;
-                            }
-                            else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 2 || c[2] == 3)))
-                            {
-                                continue;
-                            }
+                            continue;
+                        }
+                        image = rotate(270, image);
+                    }
+                }
+                else
+                {
+                    // Check if wall is facing in the positive X direction or not
+                    if (wall[0][0] < wall[1][0])
+                    {
+                        // Check if this wall should be a laser or corner instead
+                        if (_board.lasers.Any(l => l.facing == Robot.orientation.NEG_X && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
+                        {
+                            continue;
+                        }
+                        else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 0 || c[2] == 1)))
+                        {
+                            continue;
+                        }
+                        image = rotate(180, image); ;
+                    }
+                    else
+                    {
+                        // Check if this wall should be a laser or corner instead
+                        if (_board.lasers.Any(l => l.facing == Robot.orientation.X && l.start[0] == wall[0][0] && l.start[1] == wall[0][1]))
+                        {
+                            continue;
+                        }
+                        else if (_corners.Any(c => c[0] == wall[0][0] && c[1] == wall[0][1] && (c[2] == 2 || c[2] == 3)))
+                        {
+                            continue;
                         }
                     }
-                    _canvas.DrawImage(wallImg, wall[0][0] * 1575, (_board.size[1] - wall[0][1]) * 1575);
                 }
+                _canvas.DrawBitmap(image, wall[0][0] * 1575, (_board.size[1] - wall[0][1]) * 1575);
+                image.Dispose();
             }
         }
 
         /// <summary>
         /// Adds the laser tiles to the image
         /// </summary>
-        private static void addLasers()
+        private  void addLasers()
         {
             foreach (Laser laser in _board.lasers)
             {
-                Image laserImg = null;
+                SKBitmap laserImg = null;
                 // Get appropriate laser image
                 switch (laser.strength)
                 {
                     case 1:
-                        laserImg = Image.FromFile(_imageRoot + "Laser-1.png");
+                        laserImg = SKBitmap.Decode(_imageRoot + "Laser-1.png");
                         break;
                     case 2:
-                        laserImg = Image.FromFile(_imageRoot + "Laser-2.png");
+                        laserImg = SKBitmap.Decode(_imageRoot + "Laser-2.png");
                         break;
                     case 3:
-                        laserImg = Image.FromFile(_imageRoot + "Laser-3.png");
+                        laserImg = SKBitmap.Decode(_imageRoot + "Laser-3.png");
                         break;
                 }
                 // Rotate laser as needed
                 switch (laser.facing)
                 {
-                    case Robot.orientation.NEG_X:
-                        laserImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                        break;
                     case Robot.orientation.Y:
-                        laserImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        laserImg = rotate(270, laserImg);
+                        break;
+                    case Robot.orientation.NEG_X:
+                        laserImg = rotate(180, laserImg);
                         break;
                     case Robot.orientation.NEG_Y:
-                        laserImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                        laserImg = rotate(90, laserImg);
                         break;
                 }
-                _canvas.DrawImage(laserImg, laser.start[0] * 1575, (_board.size[1] - laser.start[1]) * 1575);
+                _canvas.DrawBitmap(laserImg, laser.start[0] * 1575, (_board.size[1] - laser.start[1]) * 1575);
                 laserImg.Dispose();
             }
         }
@@ -305,79 +334,79 @@ namespace RoboRuckus.RuckusCode
         /// <summary>
         /// Adds the laser beam tiles to the image
         /// </summary>
-        private static void addBeams()
+        private  void addBeams()
         {
             foreach (Laser laser in _board.lasers)
             {
-                using (Image border = Image.FromFile(_imageRoot + "Border-End.png"))
+                SKBitmap border = SKBitmap.Decode(_imageRoot + "Border-End.png");
+                SKBitmap beam = null;
+                // Get appropriate beam image
+                switch (laser.strength)
                 {
-                    Image beam = null;
-                    // Get appropriate beam image
-                    switch (laser.strength)
-                    {
-                        case 1:
-                            beam = Image.FromFile(_imageRoot + "Beam-1.png");
-                            break;
-                        case 2:
-                            beam = Image.FromFile(_imageRoot + "Beam-2.png");
-                            break;
-                        case 3:
-                            beam = Image.FromFile(_imageRoot + "Beam-3.png");
-                            break;
-                    }
-
-                    // Set the starting and ending coordinates of the beams and rotate the beams if necessary
-                    int start = laser.start[0];
-                    int end = laser.end[0];
-                    switch (laser.facing)
-                    {
-                        case Robot.orientation.NEG_X:
-                            start = laser.end[0];
-                            end = laser.start[0];
-                            break;
-                        case Robot.orientation.Y:
-                            start = laser.start[1];
-                            end = laser.end[1];
-                            beam.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                            border.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                            break;
-                        case Robot.orientation.NEG_Y:
-                            start = laser.end[1];
-                            end = laser.start[1];
-                            beam.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                            border.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                            break;
-                    }
-                    bool first = true;
-                    int x, y;
-                    for (; start <= end; start++)
-                    {
-                        // Check if the beams are moving along the X axis or not
-                        if (laser.facing == Robot.orientation.X || laser.facing == Robot.orientation.NEG_X)
-                        {
-                            x = start * 1575;
-                            y = (_board.size[1] - laser.start[1]) * 1575;
-                        }
-                        else
-                        {
-                            x = laser.start[0] * 1575;
-                            y = (_board.size[1] - start) * 1575;
-                        }
-                        _canvas.DrawImage(beam, x, y);
-                        // Add borders to cover ends of laser beams
-                        if (first)
-                        {
-                            first = false;
-                            _canvas.DrawImage(border, x, y);
-                        }
-                        if (start == end)
-                        {
-                            border.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                            _canvas.DrawImage(border, x, y);
-                        }
-                    }
-                    beam.Dispose();
+                    case 1:
+                        beam = SKBitmap.Decode(_imageRoot + "Beam-1.png");
+                        break;
+                    case 2:
+                        beam = SKBitmap.Decode(_imageRoot + "Beam-2.png");
+                        break;
+                    case 3:
+                        beam = SKBitmap.Decode(_imageRoot + "Beam-3.png");
+                        break;
                 }
+
+                // Set the starting and ending coordinates of the beams and rotate the beams if necessary                
+                int start = laser.start[0];
+                int end = laser.end[0];
+
+                switch (laser.facing)
+                {
+                    case Robot.orientation.NEG_X:
+                        start = laser.end[0];
+                        end = laser.start[0];
+                        break;
+                    case Robot.orientation.Y:
+                        start = laser.start[1];
+                        end = laser.end[1];
+                        beam = rotate(90, beam);
+                        border = rotate(270, border);
+                        break;
+                    case Robot.orientation.NEG_Y:
+                        start = laser.end[1];
+                        end = laser.start[1];
+                        beam = rotate(90, beam);
+                        border = rotate(270, border);
+                        break;
+                }
+                bool first = true;
+                int x, y;
+                for (; start <= end; start++)
+                {
+                    // Check if the beams are moving along the X axis or not
+                    if (laser.facing == Robot.orientation.X || laser.facing == Robot.orientation.NEG_X)
+                    {
+                        x = start * 1575;
+                        y = (_board.size[1] - laser.start[1]) * 1575;
+                    }
+                    else
+                    {
+                        x = laser.start[0] * 1575;
+                        y = (_board.size[1] - start) * 1575;
+                    }
+                    _canvas.DrawBitmap(beam, x, y);
+                    // Add borders to cover ends of laser beams
+                    if (first)
+                    {
+                        first = false;
+                        _canvas.DrawBitmap(border, x, y);
+                    }
+                    if (start == end)
+                    {
+                        border = rotate(180, border);
+                        _canvas.DrawBitmap(border, x, y);
+                    }
+                }
+                border.Dispose();
+                beam.Dispose();
             }
         }
 
@@ -385,7 +414,7 @@ namespace RoboRuckus.RuckusCode
         /// Adds the conveyor tiles to the image
         /// </summary>
         /// <param name="express">Add express conveyors</param>
-        private static void addConveyors(bool express)
+        private  void addConveyors(bool express)
         {
             Conveyor[] conveyors;
             if (express)
@@ -398,55 +427,97 @@ namespace RoboRuckus.RuckusCode
             }
             foreach (Conveyor conveyor in conveyors)
             {
-                Image conveyorImg;
+                SKBitmap conveyorImg;
                 int difference = conveyor.entrance - conveyor.exit;
                 // Get the appropriate conveyor image (linear, curve, or curve S)
                 if (express)
                 {
                     if (Math.Abs(difference) == 2)
                     {
-                        conveyorImg = Image.FromFile(_imageRoot + "ExpressConveyor.png");
+                        conveyorImg = SKBitmap.Decode(_imageRoot + "ExpressConveyor.png");
                     }
                     else if (difference == -1 || difference == 3)
                     {
-                        conveyorImg = Image.FromFile(_imageRoot + "ExpressConveyorCurve.png");
+                        conveyorImg = SKBitmap.Decode(_imageRoot + "ExpressConveyorCurve.png");
                     }
                     else
                     {
-                        conveyorImg = Image.FromFile(_imageRoot + "ExpressConveyorCurveS.png");
+                        conveyorImg = SKBitmap.Decode(_imageRoot + "ExpressConveyorCurveS.png");
                     }
                 }
                 else
                 {
                     if (Math.Abs(difference) == 2)
                     {
-                        conveyorImg = Image.FromFile(_imageRoot + "Conveyor.png");
+                        conveyorImg = SKBitmap.Decode(_imageRoot + "Conveyor.png");
                     }
                     else if (difference == -1 || difference == 3)
                     {
-                        conveyorImg = Image.FromFile(_imageRoot + "ConveyorCurve.png");
+                        conveyorImg = SKBitmap.Decode(_imageRoot + "ConveyorCurve.png");
                     }
                     else
                     {
-                        conveyorImg = Image.FromFile(_imageRoot + "ConveyorCurveS.png");
+                        conveyorImg = SKBitmap.Decode(_imageRoot + "ConveyorCurveS.png");
                     }
                 }
+
                 // Rotate the image as necessary
                 switch (conveyor.entrance)
                 {
                     case Robot.orientation.X:
-                        conveyorImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        conveyorImg = rotate(270, conveyorImg);
                         break;
                     case Robot.orientation.Y:
-                        conveyorImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                        conveyorImg = rotate(180, conveyorImg);
                         break;
                     case Robot.orientation.NEG_X:
-                        conveyorImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                        conveyorImg = rotate(90, conveyorImg);
                         break;
                 }
-                _canvas.DrawImage(conveyorImg, conveyor.location[0] * 1575, (_board.size[1] - conveyor.location[1]) * 1575);
+                _canvas.DrawBitmap(conveyorImg, conveyor.location[0] * 1575, (_board.size[1] - conveyor.location[1]) * 1575);
                 conveyorImg.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Rotates a square bitmap
+        /// </summary>
+        /// <param name="degrees">The degree to rotate</param>
+        /// <param name="orignal">The original image to rotate</param>
+        /// <returns>The rotated bitmap</returns>
+        private  SKBitmap rotate(float degrees, SKBitmap orignal)
+        {
+            SKBitmap rotated = new SKBitmap(orignal.Width, orignal.Height);
+            using (var surface = new SKCanvas(rotated))
+            {
+                // Rotate canvas around image center
+                surface.RotateDegrees(degrees, orignal.Width / 2, orignal.Height / 2);
+                surface.DrawBitmap(orignal, 0, 0);
+                surface.Flush();
+            }
+            return rotated;
+        }
+
+        /// <summary>
+        /// Dispose of board image maker and all resources
+        /// </summary>
+        public void Dispose()
+        {
+            _boardImage?.Dispose();
+            _canvas?.Dispose(); 
+            _board = null;
+
+            /*
+             * Triggering the GC here is probably
+             * unnecessary but so much memory is 
+             * used that freeing it up quickly seems
+             * like it could be helpful.
+             */
+            GC.Collect();
+        }
+        ~boardImageMaker()
+        {
+            Dispose();
         }
 
     }

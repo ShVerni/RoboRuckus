@@ -24,14 +24,14 @@
     <div class="left">
         @Html.LabelFor(m => m.x_size, new { @class = "" })
         <div>
-            @Html.TextBoxFor(m => m.x_size, new { @class = "boardSize", @id = "x_size", type = "number", max = "48", min = "1" })
+            @Html.TextBoxFor(m => m.x_size, new { @class = "boardSize", @id = "x_size", type = "number", max = "100", min = "1" })
             @Html.ValidationMessageFor(m => m.x_size, "", new { @class = "" })
         </div>
     </div>
     <div class="left">
         @Html.LabelFor(m => m.y_size, new { @class = "" })
         <div>
-            @Html.TextBoxFor(m => m.y_size, new { @class = "boardSize", @id = "y_size", type = "number", max = "48", min = "1" })
+            @Html.TextBoxFor(m => m.y_size, new { @class = "boardSize", @id = "y_size", type = "number", max = "100", min = "1" })
             @Html.ValidationMessageFor(m => m.y_size, "", new { @class = "" })
         </div>
     </div>

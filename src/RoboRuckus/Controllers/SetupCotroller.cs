@@ -168,8 +168,7 @@ namespace RoboRuckus.Controllers
         {
             lock (gameStatus.locker)
             {
-
-                lock (gameStatus.setupLocker)
+                lock (gameStatus.locker)
                 {
                     if (player != 0 && player <= gameStatus.players.Count())
                     {
@@ -306,8 +305,15 @@ namespace RoboRuckus.Controllers
         {
             Board board = JsonConvert.DeserializeObject<Board>(newBoard.boardData);
             int[][] corners = JsonConvert.DeserializeObject<int[][]>(newBoard.cornerData);
-            // Create the images for the board
-            boardImageMaker.createImage(board, corners);
+            // Ensure only one instance of the board image maker is running at a time since it uses a lot of RAM
+            lock (gameStatus.locker) 
+            {
+                // Create the images for the board
+                using (boardImageMaker maker = new boardImageMaker(board, corners))
+                {
+                    maker.createImage();
+                }
+            }
             Board oldBoard = gameStatus.boards.FirstOrDefault(x => x.name == newBoard.name);
             if (oldBoard != null)
             {
@@ -378,11 +384,12 @@ namespace RoboRuckus.Controllers
         /// <returns>The view</returns>
         public IActionResult Tuning()
         {
+            // These locks are likely overkill, but it's important that only one setup instance is interacting with the bots
             lock (gameStatus.locker)
             {
                 lock (gameStatus.setupLocker)
                 {
-                    // Check if physical bots are being used.
+                    // Check if physical bots are being used
                     if (gameStatus.botless)
                     {
                         return RedirectToAction("Index");                        

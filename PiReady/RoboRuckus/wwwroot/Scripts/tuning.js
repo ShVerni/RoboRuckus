@@ -115,7 +115,7 @@ function processInitialValues(data) {
 }
 
 /* 
-*  Collects all the tuning paramters into a comma separated list
+*  Collects all the tuning parameters into a comma separated list
 *  starting with the name, and then the other parameters in the order
 *  they were listed in the JSON object. Terminates with ":"
 *  Ex: test%20bot,65,22,55:
