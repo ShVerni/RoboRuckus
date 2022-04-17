@@ -22,7 +22,6 @@
 }
 
 .ui-selectmenu-button.ui-button {
-
 }
 
 /* Player page stuff */
@@ -31,9 +30,9 @@
 }
 
 
-.topRow:not(:first-child) {
-    margin-left: 0.7em;
-}
+    .topRow:not(:first-child) {
+        margin-left: 0.7em;
+    }
 
 #botStatuses .topRow:not(:first-child) {
     margin-left: 0 !important;
@@ -50,13 +49,13 @@
 
 /* Card stuff */
 #cardsContainer {
-    min-height: 525px; 
+    min-height: 525px;
 }
 
-#cardsContainer li { 
-    display: inline-block;
-    margin-left: 0 auto;
-}
+    #cardsContainer li {
+        display: inline-block;
+        margin-left: 0 auto;
+    }
 
 .cardBody {
     position: relative;
@@ -64,20 +63,20 @@
 }
 
 .cards.custom-state-active {
-       background: #e9edbc;
-  }
+    background: #e9edbc;
+}
 
-.cards li {  
-      cursor: move;
-  }
- 
-.slot, #sendcards { 
-      height: 548px;
-      width: 352px;
-      padding: 0.25%;
-      margin: 0.25%;
-      float: left;
-  }
+.cards li {
+    cursor: move;
+}
+
+.slot, #sendcards {
+    height: 548px;
+    width: 352px;
+    padding: 0.25%;
+    margin: 0.25%;
+    float: left;
+}
 
 #sendcards {
     border: 1px solid black;
@@ -85,10 +84,10 @@
     font-size: 0.9vw;
 }
 
-#sendcards img {
-    width: 100%;
-    cursor: pointer;
-}
+    #sendcards img {
+        width: 100%;
+        cursor: pointer;
+    }
 
 #shutdownLabel {
     font-size: 1.35vw;
@@ -109,40 +108,40 @@
     cursor: move;
 }
 
- .slot h4 { 
-      margin: 0 0 0.4em; 
-  }
- 
- .executing {
-     background: #0E1AFF !important;
- }
+.slot h4 {
+    margin: 0 0 0.4em;
+}
 
- .order {
+.executing {
+    background: #0E1AFF !important;
+}
+
+.order {
     position: absolute;
     top: -11%;
     right: 32%;
     font-size: 4em;
     color: #8bbe7c;
-    font-weight: bold; 
- }
+    font-weight: bold;
+}
 
- .face {
-     position: absolute;
-     right: 30%;
-     top: -25%;
-     font-size: 11.8em;
-     color: #8bbe7c;
-     font-weight: bold;
- }
+.face {
+    position: absolute;
+    right: 30%;
+    top: -25%;
+    font-size: 11.8em;
+    color: #8bbe7c;
+    font-weight: bold;
+}
 
- .details {
-     position: absolute;
-     right: 28%;
-     top: 45%;
-     font-size: 2.5em;
-     color: #8bbe7c;
-     font-weight: bold;
- }
+.details {
+    position: absolute;
+    right: 28%;
+    top: 45%;
+    font-size: 2.5em;
+    color: #8bbe7c;
+    font-weight: bold;
+}
 
 .robot-names {
     position: absolute;
@@ -153,11 +152,11 @@
     font-weight: bold;
 }
 
- .locked {
-     color: red;
- }
+.locked {
+    color: red;
+}
 
- /* Damage stuff */
+/* Damage stuff */
 .damageBox {
     display: inline-block;
     border: 1px solid orange;
@@ -196,7 +195,7 @@
     background: none;
 }
 
- /* Setup stuff */
+/* Setup stuff */
 .flags {
     height: 2.5em;
     width: 2.5em;
@@ -208,25 +207,25 @@
     font-size: 1em;
 }
 
- .boardSquare .flags {
-     position: absolute;
- }
+.boardSquare .flags {
+    position: absolute;
+}
 
- #numberOfPlayers {
-     font-size: 1em;
- }
+#numberOfPlayers {
+    font-size: 1em;
+}
 
- #flagContainer {
-     min-height: 22em;
-     min-width: 5em;
-     max-width: 7em;
-     margin-top: 3em;
-     margin-left: 5em;
- }
+#flagContainer {
+    min-height: 22em;
+    min-width: 5em;
+    max-width: 7em;
+    margin-top: 3em;
+    margin-left: 5em;
+}
 
- #flagContainer .flags {
-     margin-bottom: 1em;
- }
+    #flagContainer .flags {
+        margin-bottom: 1em;
+    }
 
 #board {
     margin-top: 1.5em;
@@ -270,7 +269,7 @@ select {
     text-align: center;
     font-size: 1.3em;
     line-height: 0.2vh;
-     z-index: 5;
+    z-index: 5;
 }
 
 .boardSquare > p {
@@ -278,18 +277,36 @@ select {
 }
 
 
- .left {
-     float: left;
-     margin-right: 1em;
- }
+.left {
+    float: left;
+    margin-right: 1em;
+}
 
- /* Bot tuning stuff */
+/* Bot tuning stuff */
+
+.slider-wrapper {
+    display: flex;
+    flex-direction: row;
+}
 
 .tuneFactor {
     margin-bottom: 30px;
+    margin: auto;
+    width: 100%;
+    margin-top: 0.6em;
 }
 
-.ui-slider-handle {
+.slide-button-decrease {
+    margin-right: 1.6em;
+}
+
+.slide-button-increase {
+    margin-left: 1.5em;
+}
+
+
+.tuning-handle {
+    margin-left: -1.6em !important;
     width: 3em !important;
     height: 1.6em !important;
     top: 50% !important;
@@ -298,25 +315,25 @@ select {
     line-height: 1.6em !important;
 }
 
- /* Bot re-entry */
-  .bots {
-     height: 2.5em;
-     width: 2.5em;
-     background: yellow;
-     border: 0.05em dotted black;
-     margin-bottom: 1.5em;     
-     text-align: center;
-     cursor: move;
- }
+/* Bot re-entry */
+.bots {
+    height: 2.5em;
+    width: 2.5em;
+    background: yellow;
+    border: 0.05em dotted black;
+    margin-bottom: 1.5em;
+    text-align: center;
+    cursor: move;
+}
 
 .boardSquare .bots {
-      position: absolute;
-  }
+    position: absolute;
+}
 
-  #botContainer {
-     min-height: 15em;
-     min-width: 5em;
- }
+#botContainer {
+    min-height: 15em;
+    min-width: 5em;
+}
 
 /* Board maker */
 #boardMaker {
@@ -330,12 +347,12 @@ select {
     padding: 1em;
 }
 
-#boardMaker .boardSquare {
-    background: url("/images/maker/Background.png");
-    line-height: 2.6em;
-    vertical-align: middle;
-    opacity: 1;
-}
+    #boardMaker .boardSquare {
+        background: url("/images/maker/Background.png");
+        line-height: 2.6em;
+        vertical-align: middle;
+        opacity: 1;
+    }
 
 .element {
     height: 2.5em;
@@ -345,10 +362,10 @@ select {
     cursor: move;
 }
 
-.element img {
-    height: 2.5em;
-    width: 2.5em;
-}
+    .element img {
+        height: 2.5em;
+        width: 2.5em;
+    }
 
 #flagContainer .element {
     display: inline-block;
@@ -380,10 +397,10 @@ select {
     border: 1px solid black;
 }
 
-#trashCan img {
-    width: 100%;
-    height: 100%;
-}
+    #trashCan img {
+        width: 100%;
+        height: 100%;
+    }
 
 .stackable {
     z-index: 10 !important;

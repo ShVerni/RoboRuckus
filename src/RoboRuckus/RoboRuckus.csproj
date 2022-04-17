@@ -28,7 +28,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.2.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
@@ -133,6 +133,16 @@
       <JQueryClientFiles Include="$(SolutionDir)node_modules\jquery\dist\jquery.min.js" />
     </ItemGroup>
     <Copy SourceFiles="@(JQueryClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\jquery" />
+  </Target>
+  <Target Name="CopyJQueryUI" BeforeTargets="AfterBuild">
+	<ItemGroup>
+	  <JQueryUIClientFiles Include="$(SolutionDir)node_modules\jquery-ui-dist\jquery-ui.min.js" />
+	  <JQueryUIClientFiles Include="$(SolutionDir)node_modules\jquery-ui-themes\themes\ui-lightness\jquery-ui.css" />
+	  <JQueryUIClientFiles Include="$(SolutionDir)node_modules\jquery-ui-dist\jquery-ui.structure.css" />
+	  <JQueryUIImagesClientFiles Include="$(SolutionDir)node_modules\jquery-ui-themes\themes\ui-lightness\images\*" />
+	</ItemGroup>
+	<Copy SourceFiles="@(JQueryUIClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\jqueryUI" />
+	<Copy SourceFiles="@(JQueryUIImagesClientFiles)" DestinationFolder="$(MSBuildThisFileDirectory)wwwroot\lib\jqueryUI\images" />
   </Target>
   <Target Name="CopyStartRoboRuckus" AfterTargets="AfterPublish">
     <ItemGroup>

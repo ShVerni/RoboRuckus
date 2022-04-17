@@ -34,7 +34,7 @@
     ".NETCoreApp,Version=v6.0": {
       "RoboRuckus/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "6.0.2",
+          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "6.0.4",
           "Microsoft.AspNetCore.WebSockets": "2.2.1",
           "Newtonsoft.Json": "13.0.1",
           "SkiaSharp": "2.80.3",
@@ -51,6 +51,7 @@
           "Microsoft.AspNetCore.Components.Forms": "6.0.0.0",
           "Microsoft.AspNetCore.Components.Server": "6.0.0.0",
           "Microsoft.AspNetCore.Components.Web": "6.0.0.0",
+          "Microsoft.AspNetCore.Connections.Abstractions.Reference": "6.0.0.0",
           "Microsoft.AspNetCore.CookiePolicy": "6.0.0.0",
           "Microsoft.AspNetCore.Cors": "6.0.0.0",
           "Microsoft.AspNetCore.Cryptography.Internal": "6.0.0.0",
@@ -110,6 +111,7 @@
           "Microsoft.AspNetCore.Server.Kestrel.Transport.Quic": "6.0.0.0",
           "Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets": "6.0.0.0",
           "Microsoft.AspNetCore.Session": "6.0.0.0",
+          "Microsoft.AspNetCore.SignalR.Common.Reference": "6.0.0.0",
           "Microsoft.AspNetCore.SignalR.Core": "6.0.0.0",
           "Microsoft.AspNetCore.SignalR": "6.0.0.0",
           "Microsoft.AspNetCore.SignalR.Protocols.Json": "6.0.0.0",
@@ -134,6 +136,7 @@
           "Microsoft.Extensions.DependencyInjection": "6.0.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.0.0",
+          "Microsoft.Extensions.Features.Reference": "6.0.0.0",
           "Microsoft.Extensions.FileProviders.Abstractions.Reference": "6.0.0.0",
           "Microsoft.Extensions.FileProviders.Composite": "6.0.0.0",
           "Microsoft.Extensions.FileProviders.Embedded": "6.0.0.0",
@@ -218,6 +221,7 @@
           "System.IO.FileSystem.Watcher": "6.0.0.0",
           "System.IO.IsolatedStorage": "6.0.0.0",
           "System.IO.MemoryMappedFiles": "6.0.0.0",
+          "System.IO.Pipelines.Reference": "6.0.0.0",
           "System.IO.Pipes.AccessControl": "6.0.0.0",
           "System.IO.Pipes": "6.0.0.0",
           "System.IO.UnmanagedMemoryStream": "6.0.0.0",
@@ -390,6 +394,11 @@
       "Microsoft.AspNetCore.Components.Web/6.0.0.0": {
         "compile": {
           "Microsoft.AspNetCore.Components.Web.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Connections.Abstractions.Reference/6.0.0.0": {
+        "compile": {
+          "Microsoft.AspNetCore.Connections.Abstractions.dll": {}
         }
       },
       "Microsoft.AspNetCore.CookiePolicy/6.0.0.0": {
@@ -687,6 +696,11 @@
           "Microsoft.AspNetCore.Session.dll": {}
         }
       },
+      "Microsoft.AspNetCore.SignalR.Common.Reference/6.0.0.0": {
+        "compile": {
+          "Microsoft.AspNetCore.SignalR.Common.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.SignalR.Core/6.0.0.0": {
         "compile": {
           "Microsoft.AspNetCore.SignalR.Core.dll": {}
@@ -805,6 +819,11 @@
       "Microsoft.Extensions.Diagnostics.HealthChecks/6.0.0.0": {
         "compile": {
           "Microsoft.Extensions.Diagnostics.HealthChecks.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Features.Reference/6.0.0.0": {
+        "compile": {
+          "Microsoft.Extensions.Features.dll": {}
         }
       },
       "Microsoft.Extensions.FileProviders.Abstractions.Reference/6.0.0.0": {
@@ -1225,6 +1244,11 @@
       "System.IO.MemoryMappedFiles/6.0.0.0": {
         "compile": {
           "System.IO.MemoryMappedFiles.dll": {}
+        }
+      },
+      "System.IO.Pipelines.Reference/6.0.0.0": {
+        "compile": {
+          "System.IO.Pipelines.dll": {}
         }
       },
       "System.IO.Pipes.AccessControl/6.0.0.0": {
@@ -1747,13 +1771,10 @@
           "WindowsBase.dll": {}
         }
       },
-      "Microsoft.AspNetCore.Connections.Abstractions/6.0.2": {
+      "Microsoft.AspNetCore.Connections.Abstractions/6.0.4": {
         "dependencies": {
-          "Microsoft.Extensions.Features": "6.0.2",
+          "Microsoft.Extensions.Features": "6.0.4",
           "System.IO.Pipelines": "6.0.2"
-        },
-        "compile": {
-          "lib/net6.0/Microsoft.AspNetCore.Connections.Abstractions.dll": {}
         }
       },
       "Microsoft.AspNetCore.Http.Abstractions/2.2.0": {
@@ -1775,18 +1796,15 @@
           "Microsoft.Extensions.Primitives": "6.0.0"
         }
       },
-      "Microsoft.AspNetCore.SignalR.Common/6.0.2": {
+      "Microsoft.AspNetCore.SignalR.Common/6.0.4": {
         "dependencies": {
-          "Microsoft.AspNetCore.Connections.Abstractions": "6.0.2",
+          "Microsoft.AspNetCore.Connections.Abstractions": "6.0.4",
           "Microsoft.Extensions.Options": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/Microsoft.AspNetCore.SignalR.Common.dll": {}
         }
       },
-      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/6.0.2": {
+      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/6.0.4": {
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Common": "6.0.2",
+          "Microsoft.AspNetCore.SignalR.Common": "6.0.4",
           "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
@@ -1802,11 +1820,7 @@
         }
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {},
-      "Microsoft.Extensions.Features/6.0.2": {
-        "compile": {
-          "lib/net6.0/Microsoft.Extensions.Features.dll": {}
-        }
-      },
+      "Microsoft.Extensions.Features/6.0.4": {},
       "Microsoft.Extensions.FileProviders.Abstractions/2.2.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "6.0.0"
@@ -1844,11 +1858,7 @@
         }
       },
       "System.Buffers/4.5.0": {},
-      "System.IO.Pipelines/6.0.2": {
-        "compile": {
-          "lib/net6.0/System.IO.Pipelines.dll": {}
-        }
-      },
+      "System.IO.Pipelines/6.0.2": {},
       "System.Memory/4.5.3": {},
       "System.Net.WebSockets.WebSocketProtocol/4.5.3": {
         "compile": {
@@ -1861,7 +1871,7 @@
     ".NETCoreApp,Version=v6.0/linux-arm": {
       "RoboRuckus/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "6.0.2",
+          "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": "6.0.4",
           "Microsoft.AspNetCore.WebSockets": "2.2.1",
           "Newtonsoft.Json": "13.0.1",
           "SkiaSharp": "2.80.3",
@@ -1878,6 +1888,7 @@
           "Microsoft.AspNetCore.Components.Forms": "6.0.0.0",
           "Microsoft.AspNetCore.Components.Server": "6.0.0.0",
           "Microsoft.AspNetCore.Components.Web": "6.0.0.0",
+          "Microsoft.AspNetCore.Connections.Abstractions.Reference": "6.0.0.0",
           "Microsoft.AspNetCore.CookiePolicy": "6.0.0.0",
           "Microsoft.AspNetCore.Cors": "6.0.0.0",
           "Microsoft.AspNetCore.Cryptography.Internal": "6.0.0.0",
@@ -1937,6 +1948,7 @@
           "Microsoft.AspNetCore.Server.Kestrel.Transport.Quic": "6.0.0.0",
           "Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets": "6.0.0.0",
           "Microsoft.AspNetCore.Session": "6.0.0.0",
+          "Microsoft.AspNetCore.SignalR.Common.Reference": "6.0.0.0",
           "Microsoft.AspNetCore.SignalR.Core": "6.0.0.0",
           "Microsoft.AspNetCore.SignalR": "6.0.0.0",
           "Microsoft.AspNetCore.SignalR.Protocols.Json": "6.0.0.0",
@@ -1961,6 +1973,7 @@
           "Microsoft.Extensions.DependencyInjection": "6.0.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.0.0",
+          "Microsoft.Extensions.Features.Reference": "6.0.0.0",
           "Microsoft.Extensions.FileProviders.Abstractions.Reference": "6.0.0.0",
           "Microsoft.Extensions.FileProviders.Composite": "6.0.0.0",
           "Microsoft.Extensions.FileProviders.Embedded": "6.0.0.0",
@@ -2045,6 +2058,7 @@
           "System.IO.FileSystem.Watcher": "6.0.0.0",
           "System.IO.IsolatedStorage": "6.0.0.0",
           "System.IO.MemoryMappedFiles": "6.0.0.0",
+          "System.IO.Pipelines.Reference": "6.0.0.0",
           "System.IO.Pipes.AccessControl": "6.0.0.0",
           "System.IO.Pipes": "6.0.0.0",
           "System.IO.UnmanagedMemoryStream": "6.0.0.0",
@@ -2149,414 +2163,414 @@
           "System.Xml.XPath": "6.0.0.0",
           "System.Xml.XPath.XDocument": "6.0.0.0",
           "WindowsBase": "4.0.0.0",
-          "runtimepack.Microsoft.NETCore.App.Runtime.linux-arm": "6.0.1",
-          "runtimepack.Microsoft.AspNetCore.App.Runtime.linux-arm": "6.0.1"
+          "runtimepack.Microsoft.NETCore.App.Runtime.linux-arm": "6.0.4",
+          "runtimepack.Microsoft.AspNetCore.App.Runtime.linux-arm": "6.0.4"
         },
         "runtime": {
           "RoboRuckus.dll": {}
         }
       },
-      "runtimepack.Microsoft.NETCore.App.Runtime.linux-arm/6.0.1": {
+      "runtimepack.Microsoft.NETCore.App.Runtime.linux-arm/6.0.4": {
         "runtime": {
           "Microsoft.CSharp.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "Microsoft.VisualBasic.Core.dll": {
             "assemblyVersion": "11.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "11.100.422.16404"
           },
           "Microsoft.VisualBasic.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "Microsoft.Win32.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "Microsoft.Win32.Registry.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.AppContext.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Buffers.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Collections.Concurrent.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Collections.Immutable.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Collections.NonGeneric.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Collections.Specialized.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Collections.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ComponentModel.Annotations.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ComponentModel.DataAnnotations.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ComponentModel.EventBasedAsync.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ComponentModel.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ComponentModel.TypeConverter.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ComponentModel.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Configuration.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Console.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Core.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Data.Common.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Data.DataSetExtensions.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Data.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.Contracts.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.Debug.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.DiagnosticSource.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.FileVersionInfo.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.Process.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.StackTrace.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.TextWriterTraceListener.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.Tools.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.TraceSource.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Diagnostics.Tracing.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Drawing.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Drawing.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Dynamic.Runtime.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Formats.Asn1.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Globalization.Calendars.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Globalization.Extensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Globalization.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.Compression.Brotli.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.Compression.FileSystem.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.Compression.ZipFile.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.Compression.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.FileSystem.AccessControl.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.FileSystem.DriveInfo.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.FileSystem.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.FileSystem.Watcher.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.FileSystem.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.IsolatedStorage.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.MemoryMappedFiles.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.Pipes.AccessControl.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.Pipes.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.UnmanagedMemoryStream.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.IO.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Linq.Expressions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Linq.Parallel.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Linq.Queryable.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Linq.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Memory.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Http.Json.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Http.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.HttpListener.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Mail.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.NameResolution.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.NetworkInformation.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Ping.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Quic.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Requests.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Security.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.ServicePoint.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.Sockets.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.WebClient.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.WebHeaderCollection.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.WebProxy.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.WebSockets.Client.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.WebSockets.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Net.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Numerics.Vectors.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Numerics.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ObjectModel.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Private.CoreLib.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Private.DataContractSerialization.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Private.Uri.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Private.Xml.Linq.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Private.Xml.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.DispatchProxy.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.Emit.ILGeneration.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.Emit.Lightweight.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.Emit.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.Extensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.Metadata.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.TypeExtensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Reflection.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Resources.Reader.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Resources.ResourceManager.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Resources.Writer.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.CompilerServices.Unsafe.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -2564,259 +2578,259 @@
           },
           "System.Runtime.CompilerServices.VisualC.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Extensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Handles.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.InteropServices.RuntimeInformation.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.InteropServices.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Intrinsics.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Loader.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Numerics.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Serialization.Formatters.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Serialization.Json.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Serialization.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Serialization.Xml.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.Serialization.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Runtime.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.AccessControl.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Claims.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Cryptography.Algorithms.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Cryptography.Cng.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Cryptography.Csp.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Cryptography.Encoding.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Cryptography.OpenSsl.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Cryptography.Primitives.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Cryptography.X509Certificates.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Principal.Windows.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.Principal.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.SecureString.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Security.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ServiceModel.Web.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ServiceProcess.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Text.Encoding.CodePages.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Text.Encoding.Extensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Text.Encoding.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Text.Encodings.Web.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Text.Json.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Text.RegularExpressions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Channels.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Overlapped.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Tasks.Dataflow.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Tasks.Extensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Tasks.Parallel.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Tasks.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Thread.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.ThreadPool.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.Timer.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Threading.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Transactions.Local.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Transactions.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.ValueTuple.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Web.HttpUtility.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Web.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Windows.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.Linq.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.ReaderWriter.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.Serialization.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.XDocument.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.XPath.XDocument.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.XPath.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.XmlDocument.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.XmlSerializer.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.Xml.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "System.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "WindowsBase.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "mscorlib.dll": {
             "assemblyVersion": "4.0.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           },
           "netstandard.dll": {
             "assemblyVersion": "2.1.0.0",
-            "fileVersion": "6.0.121.56705"
+            "fileVersion": "6.0.422.16404"
           }
         },
         "native": {
@@ -2864,319 +2878,327 @@
           }
         }
       },
-      "runtimepack.Microsoft.AspNetCore.App.Runtime.linux-arm/6.0.1": {
+      "runtimepack.Microsoft.AspNetCore.App.Runtime.linux-arm/6.0.4": {
         "runtime": {
           "Microsoft.AspNetCore.Antiforgery.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Authentication.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Authentication.Cookies.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Authentication.Core.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Authentication.OAuth.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Authentication.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Authorization.Policy.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Authorization.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Components.Authorization.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Components.Forms.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Components.Server.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Components.Web.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Components.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
+          },
+          "Microsoft.AspNetCore.Connections.Abstractions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.CookiePolicy.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Cors.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Cryptography.Internal.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Cryptography.KeyDerivation.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.DataProtection.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.DataProtection.Extensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.DataProtection.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Diagnostics.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Diagnostics.HealthChecks.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Diagnostics.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.HostFiltering.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Hosting.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Hosting.Server.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Hosting.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Html.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Http.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Http.Connections.Common.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Http.Connections.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Http.Extensions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Http.Features.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Http.Results.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Http.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.HttpLogging.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.HttpOverrides.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.HttpsPolicy.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Identity.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Localization.Routing.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Localization.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Metadata.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.ApiExplorer.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.Core.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.Cors.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.DataAnnotations.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.Formatters.Json.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.Formatters.Xml.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.Localization.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.Razor.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.RazorPages.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.TagHelpers.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.ViewFeatures.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Mvc.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Razor.Runtime.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Razor.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.ResponseCaching.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.ResponseCaching.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.ResponseCompression.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Rewrite.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Routing.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Routing.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Server.HttpSys.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Server.IIS.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Server.IISIntegration.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Server.Kestrel.Core.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Server.Kestrel.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.Session.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
+          },
+          "Microsoft.AspNetCore.SignalR.Common.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.SignalR.Core.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.SignalR.Protocols.Json.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.SignalR.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.StaticFiles.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.WebSockets.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.WebUtilities.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.AspNetCore.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Caching.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3184,7 +3206,7 @@
           },
           "Microsoft.Extensions.Caching.Memory.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
+            "fileVersion": "6.0.222.6406"
           },
           "Microsoft.Extensions.Configuration.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3200,7 +3222,7 @@
           },
           "Microsoft.Extensions.Configuration.EnvironmentVariables.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
+            "fileVersion": "6.0.222.6406"
           },
           "Microsoft.Extensions.Configuration.FileExtensions.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3216,11 +3238,11 @@
           },
           "Microsoft.Extensions.Configuration.KeyPerFile.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Configuration.UserSecrets.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
+            "fileVersion": "6.0.222.6406"
           },
           "Microsoft.Extensions.Configuration.Xml.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3228,7 +3250,7 @@
           },
           "Microsoft.Extensions.Configuration.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
+            "fileVersion": "6.0.322.12309"
           },
           "Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3240,11 +3262,15 @@
           },
           "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Diagnostics.HealthChecks.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
+          },
+          "Microsoft.Extensions.Features.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.FileProviders.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3256,7 +3282,7 @@
           },
           "Microsoft.Extensions.FileProviders.Embedded.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.FileProviders.Physical.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3272,7 +3298,7 @@
           },
           "Microsoft.Extensions.Hosting.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
+            "fileVersion": "6.0.222.6406"
           },
           "Microsoft.Extensions.Http.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3280,23 +3306,23 @@
           },
           "Microsoft.Extensions.Identity.Core.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Identity.Stores.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Localization.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Localization.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Logging.Abstractions.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.21.52210"
+            "fileVersion": "6.0.322.12309"
           },
           "Microsoft.Extensions.Logging.Configuration.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3328,7 +3354,7 @@
           },
           "Microsoft.Extensions.ObjectPool.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Extensions.Options.ConfigurationExtensions.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3348,19 +3374,23 @@
           },
           "Microsoft.Extensions.WebEncoders.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.JSInterop.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "Microsoft.Net.Http.Headers.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.121.56714"
+            "fileVersion": "6.0.422.17204"
           },
           "System.Diagnostics.EventLog.dll": {
             "assemblyVersion": "6.0.0.0",
             "fileVersion": "6.0.21.52210"
+          },
+          "System.IO.Pipelines.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.222.6406"
           },
           "System.Security.Cryptography.Pkcs.dll": {
             "assemblyVersion": "6.0.0.0",
@@ -3372,16 +3402,10 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Connections.Abstractions/6.0.2": {
+      "Microsoft.AspNetCore.Connections.Abstractions/6.0.4": {
         "dependencies": {
-          "Microsoft.Extensions.Features": "6.0.2",
+          "Microsoft.Extensions.Features": "6.0.4",
           "System.IO.Pipelines": "6.0.2"
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.AspNetCore.Connections.Abstractions.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.222.6412"
-          }
         }
       },
       "Microsoft.AspNetCore.Http.Abstractions/2.2.0": {
@@ -3403,27 +3427,21 @@
           "Microsoft.Extensions.Primitives": "6.0.0"
         }
       },
-      "Microsoft.AspNetCore.SignalR.Common/6.0.2": {
+      "Microsoft.AspNetCore.SignalR.Common/6.0.4": {
         "dependencies": {
-          "Microsoft.AspNetCore.Connections.Abstractions": "6.0.2",
+          "Microsoft.AspNetCore.Connections.Abstractions": "6.0.4",
           "Microsoft.Extensions.Options": "6.0.0"
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.AspNetCore.SignalR.Common.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.222.6412"
-          }
         }
       },
-      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/6.0.2": {
+      "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/6.0.4": {
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Common": "6.0.2",
+          "Microsoft.AspNetCore.SignalR.Common": "6.0.4",
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
           "lib/net6.0/Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll": {
-            "assemblyVersion": "6.0.2.0",
-            "fileVersion": "6.0.222.6412"
+            "assemblyVersion": "6.0.4.0",
+            "fileVersion": "6.0.422.17204"
           }
         }
       },
@@ -3436,14 +3454,7 @@
         }
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {},
-      "Microsoft.Extensions.Features/6.0.2": {
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.Features.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.222.6412"
-          }
-        }
-      },
+      "Microsoft.Extensions.Features/6.0.4": {},
       "Microsoft.Extensions.FileProviders.Abstractions/2.2.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "6.0.0"
@@ -3487,14 +3498,7 @@
         }
       },
       "System.Buffers/4.5.0": {},
-      "System.IO.Pipelines/6.0.2": {
-        "runtime": {
-          "lib/net6.0/System.IO.Pipelines.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.222.6406"
-          }
-        }
-      },
+      "System.IO.Pipelines/6.0.2": {},
       "System.Memory/4.5.3": {},
       "System.Net.WebSockets.WebSocketProtocol/4.5.3": {
         "runtime": {
@@ -3514,22 +3518,22 @@
       "serviceable": false,
       "sha512": ""
     },
-    "runtimepack.Microsoft.NETCore.App.Runtime.linux-arm/6.0.1": {
+    "runtimepack.Microsoft.NETCore.App.Runtime.linux-arm/6.0.4": {
       "type": "runtimepack",
       "serviceable": false,
       "sha512": ""
     },
-    "runtimepack.Microsoft.AspNetCore.App.Runtime.linux-arm/6.0.1": {
+    "runtimepack.Microsoft.AspNetCore.App.Runtime.linux-arm/6.0.4": {
       "type": "runtimepack",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.AspNetCore.Connections.Abstractions/6.0.2": {
+    "Microsoft.AspNetCore.Connections.Abstractions/6.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5CuNGdmbzNqMidxekv41KNRTx5LzWaPZIoKbGgT2IdxSZyP1wd9VThDH4KRT9xklQxUpEdvF2nYptsS4Om8OEg==",
-      "path": "microsoft.aspnetcore.connections.abstractions/6.0.2",
-      "hashPath": "microsoft.aspnetcore.connections.abstractions.6.0.2.nupkg.sha512"
+      "sha512": "sha512-Vaps21IhEI6rP1vR1/3aPnIJZmS/xXIx0vgJzEnvzjBGz47x3ercO5HTSat6cyq7sR0n7N1fNoYhP9gzyrZ8tQ==",
+      "path": "microsoft.aspnetcore.connections.abstractions/6.0.4",
+      "hashPath": "microsoft.aspnetcore.connections.abstractions.6.0.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Http.Abstractions/2.2.0": {
       "type": "package",
@@ -3552,19 +3556,19 @@
       "path": "microsoft.aspnetcore.http.features/2.2.0",
       "hashPath": "microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.SignalR.Common/6.0.2": {
+    "Microsoft.AspNetCore.SignalR.Common/6.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-csrVJaBdrD6hDWNElmQUZGjQEy+w8gBSJ9Gijf/dcUB8pvlpF+ZgmGA5mHYE6/Ius7Nkk6cPBH3O32M7zNgdrQ==",
-      "path": "microsoft.aspnetcore.signalr.common/6.0.2",
-      "hashPath": "microsoft.aspnetcore.signalr.common.6.0.2.nupkg.sha512"
+      "sha512": "sha512-E08fDZnbZ3VUfS7l/sws6C8oGpkueB0IFmbZBJueMj1guS0JYfhQpMqAhuZiHG9lzY7HMqZigqpe49eF7DJaqA==",
+      "path": "microsoft.aspnetcore.signalr.common/6.0.4",
+      "hashPath": "microsoft.aspnetcore.signalr.common.6.0.4.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/6.0.2": {
+    "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson/6.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ccIqgYphLy+Rgnd5d/BA8xfsGwN6GDy4vMjLI+eO/W7hyabVD28UUB/lJM30mJtn8TYz73U/LuLAX20rWTqOsQ==",
-      "path": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson/6.0.2",
-      "hashPath": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson.6.0.2.nupkg.sha512"
+      "sha512": "sha512-3SJ3xfkNBO/y2z9ypwTDwANp+4+kYVJfneSYoX4NF2nfVa+vCQ5jTD8GmZ39B9btVe4C4BaIdtwSL8F/4oFuEQ==",
+      "path": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson/6.0.4",
+      "hashPath": "microsoft.aspnetcore.signalr.protocols.newtonsoftjson.6.0.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.WebSockets/2.2.1": {
       "type": "package",
@@ -3580,12 +3584,12 @@
       "path": "microsoft.extensions.dependencyinjection.abstractions/6.0.0",
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Features/6.0.2": {
+    "Microsoft.Extensions.Features/6.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-SWbTHwSu9EC06Fln1QbbfHkJm3RwUHFr/9LFZZbUiEtouXC6S+Mlr/PGiVXPRmic+Fkht6/DP6Ieb4HQ2W6d4w==",
-      "path": "microsoft.extensions.features/6.0.2",
-      "hashPath": "microsoft.extensions.features.6.0.2.nupkg.sha512"
+      "sha512": "sha512-XqUVkCosnG7wQm6/Pk8soCILi8/ENTsALWV8VaAb2pcWqGmv6YPZP4IwCzWRjDkcpBOZ7Wgs2xJeWssn2YP+0Q==",
+      "path": "microsoft.extensions.features/6.0.4",
+      "hashPath": "microsoft.extensions.features.6.0.4.nupkg.sha512"
     },
     "Microsoft.Extensions.FileProviders.Abstractions/2.2.0": {
       "type": "package",
@@ -3739,6 +3743,11 @@
       "sha512": ""
     },
     "Microsoft.AspNetCore.Components.Web/6.0.0.0": {
+      "type": "referenceassembly",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.AspNetCore.Connections.Abstractions.Reference/6.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -4038,6 +4047,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Microsoft.AspNetCore.SignalR.Common.Reference/6.0.0.0": {
+      "type": "referenceassembly",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Microsoft.AspNetCore.SignalR.Core/6.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
@@ -4154,6 +4168,11 @@
       "sha512": ""
     },
     "Microsoft.Extensions.Diagnostics.HealthChecks/6.0.0.0": {
+      "type": "referenceassembly",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Features.Reference/6.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -4574,6 +4593,11 @@
       "sha512": ""
     },
     "System.IO.MemoryMappedFiles/6.0.0.0": {
+      "type": "referenceassembly",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.IO.Pipelines.Reference/6.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -5236,6 +5260,37 @@
       "any",
       "base"
     ],
+    "alpine.3.15-arm": [
+      "alpine.3.15",
+      "alpine.3.14-arm",
+      "alpine.3.14",
+      "alpine.3.13-arm",
+      "alpine.3.13",
+      "alpine.3.12-arm",
+      "alpine.3.12",
+      "alpine.3.11-arm",
+      "alpine.3.11",
+      "alpine.3.10-arm",
+      "alpine.3.10",
+      "alpine.3.9-arm",
+      "alpine.3.9",
+      "alpine.3.8-arm",
+      "alpine.3.8",
+      "alpine.3.7-arm",
+      "alpine.3.7",
+      "alpine.3.6-arm",
+      "alpine.3.6",
+      "alpine-arm",
+      "alpine",
+      "linux-musl-arm",
+      "linux-musl",
+      "linux-arm",
+      "linux",
+      "unix-arm",
+      "unix",
+      "any",
+      "base"
+    ],
     "alpine.3.6-arm": [
       "alpine.3.6",
       "alpine-arm",
@@ -5817,6 +5872,19 @@
     ],
     "ubuntu.21.10-arm": [
       "ubuntu.21.10",
+      "ubuntu-arm",
+      "ubuntu",
+      "debian-arm",
+      "debian",
+      "linux-arm",
+      "linux",
+      "unix-arm",
+      "unix",
+      "any",
+      "base"
+    ],
+    "ubuntu.22.04-arm": [
+      "ubuntu.22.04",
       "ubuntu-arm",
       "ubuntu",
       "debian-arm",

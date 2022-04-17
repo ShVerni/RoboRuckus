@@ -88,8 +88,12 @@ function processInitialValues(data) {
         var id = control.name;
         $("#sliders").append('\
         <p>' + control.displayname + '</p>\
-        <div id="' + id + '" class="tuneFactor">\
-            <div id="' + id + '-handle" class="ui-slider-handle"></div>\
+        <div class="slider-wrapper">\
+            <a data-slider="' + id + '" class="slide-button slide-button-decrease">&#9664;</a>\
+            <div id="' + id + '" class="tuneFactor">\
+                <div id = "' + id + '-handle" class= "ui-slider-handle" ></div>\
+            </div>\
+            <a data-slider="' + id + '" class="slide-button slide-button-increase">&#9654;</a>\
         </div>');
 
         // Create jQuery UI slider
@@ -106,7 +110,18 @@ function processInitialValues(data) {
 
         // Set current value of slider
         $("#" + id).slider("option", "value", control.current);
-        $("#" + id + "-handle").text(control.current.toString());
+        $("#" + id + "-handle").text(control.current.toString()).addClass("tuning-handle");
+    });
+
+    // Create increment buttons
+    $(".slide-button").button().click(function () {
+        var id = $(this).data("slider");
+        if ($(this).hasClass("slide-button-decrease")) {
+            $("#" + id).slider("value", $("#" + id).slider("value") - $("#" + id).slider("option", "step"));
+        } else {
+            $("#" + id).slider("value", $("#" + id).slider("value") + $("#" + id).slider("option", "step"));
+        }
+        $("#" + id + "-handle").text($("#" + id).slider("value"));
     });
 
     // Show slider controls

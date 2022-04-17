@@ -12,7 +12,7 @@
             <div class="">
                 @Html.LabelFor(m => m.numberOfPlayers, new { @class = "" })
                 <div class="">
-                    @Html.TextBoxFor(m => m.numberOfPlayers, new { @class = "", type = "number", max = "6", min = "1" })
+                    @Html.TextBoxFor(m => m.numberOfPlayers, new { @class = "", type = "number", max = "12", min = "1" })
                     @Html.ValidationMessageFor(m => m.numberOfPlayers, "", new { @class = "" })
                 </div>
             </div>
