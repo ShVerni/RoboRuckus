@@ -1,0 +1,901 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RoboRuckus</name>
+    </assembly>
+    <members>
+        <member name="M:RoboRuckus.Controllers.BotController.Index(System.String,System.String,System.Boolean)">
+            <summary>
+            A bot calls this action to be added to the game as an available robot
+            </summary>
+            <param name="ip">The IP address of the robot</param>
+            <param name="name">The name of the robot</param>
+            <param name="lateralMovement">If the robot supports lateral (side-to-side) movement</param>
+            <returns>An AK acknowledging the accepted robot</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.BotController.Done(System.Int32)">
+            <summary>
+            A bot calls this action when it's completed a move
+            </summary>
+            <param name="bot">The bot number</param>
+            <returns>A plain text string with an acknowledgment</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.PlayerController.Index(System.Int32)">
+            <summary>
+            Handles when a player connects. If the player is already
+            in game, sends them their status, otherwise attempts to add
+            them to the game.
+            </summary>
+            <param name="player">The player number, if they have one</param>
+            <returns>The view or action context</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.PlayerController.addPlayer(System.Int32)">
+            <summary>
+            Attempts to add a player to the game
+            </summary>
+            <param name="player">The player number</param>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.PlayerController.playerSetup(System.Int32,System.Int32)">
+            <summary>
+            Set's up a player
+            </summary>
+            <param name="player">The player number</param>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.PlayerController.setupPlayer(RoboRuckus.Models.playerSetupViewModel)">
+            <summary>
+            Let's a player setup their parameters
+            </summary>
+            <param name="playerData">The player data needed for setup</param>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.PlayerController.Status">
+            <summary>
+            Gets the status of the player setup
+            </summary>
+            <returns>JSON object containing bot positions, orientations, and available robot names</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.PlayerController.Statuses">
+            <summary>
+            Shows statuses of all current players
+            </summary>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.Index">
+            <summary>
+            Allows a user to set up and initialize the game
+            </summary>
+            <returns>The setup index view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.setupGame(RoboRuckus.Models.setupViewModel)">
+            <summary>
+            Sets up a game
+            </summary>
+            <param name="gameData">The game data needed for setup</param>
+            <returns>Redirects to the appropriate action</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.startGame(System.Int32)">
+            <summary>
+            Starts the game and has the first hand of cards dealt to players.
+            </summary>
+            <param name="status">Status code for start command (not yet used)</param>
+            <returns>The string "Done"</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.Monitor">
+            <summary>
+            Monitors the game board status
+            </summary>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.enterPlayers(System.String)">
+            <summary>
+            Re-enters dead players in the game the game
+            </summary>
+            <param name="players">[[player number, bot X position, bot Y position, bot orientation],etc...]</param>
+            <returns>The string "OK"</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.Manage(System.Int32)">
+            <summary>
+            Allows the game master to manage players
+            </summary>
+            <param name="player">The player number to manage</param>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.updatePlayer(System.Int32,System.SByte,System.Int32,System.Int32,System.Int32,System.String,System.Int32,System.Int32)">
+            <summary>
+            Updates the status of a player
+            </summary>
+            <param name="lives">The number of lives the player has</param>
+            <param name="damage">The damage the robot has</param>
+            <param name="botX">The robot's x position</param>
+            <param name="botY">The robot's y position</param>
+            <param name="botDir">The robots orientation</param>
+            <param name="botName">The robot the player is using</param>
+            <param name="flags">The flags they've touched</param>
+            <param name="player">The player being updated</param>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.redealPlayer(System.Int32)">
+            <summary>
+            Deals a player a new hand of cards
+            </summary>
+            <param name="player">The player to deal</param>
+            <returns>The string OK</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.boardMaker">
+            <summary>
+            Used to create new game boards
+            </summary>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.makeBoard(RoboRuckus.Models.boardMakerViewModel)">
+            <summary>
+            Creates a new board or overwrites an existing one
+            </summary>
+            <param name="newBoard">The board maker view model containing the board data</param>
+            <returns>A redirect to the board maker</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.getBoard(System.String)">
+            <summary>
+            Gets the JSON encoding of a board in memory
+            </summary>
+            <param name="name">The name of the board to retrieve</param>
+            <returns>The JSON encoding of the board</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.deleteBoard(System.String)">
+            <summary>
+            Deletes a board from the server
+            </summary>
+            <param name="name">The name of the board to delete</param>
+            <returns>The string OK</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.Tuning">
+            <summary>
+            Used to tune the robot settings
+            </summary>
+            <returns>The view</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.botConfig(System.Int32,System.Int32,System.String)">
+            <summary>
+            Sends a configuration instruction to a robot in setup mode
+            </summary>
+            <param name="bot">The robot to send the config to</param>
+            <param name="option">The action/parameter to set</param>
+            <param name="value">The value to set</param>
+            <returns>The response from the robot</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.finishBotConfig">
+            <summary>
+            Exits the bot tuning mode
+            </summary>
+            <returns>A redirect to the setup index page</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.Status">
+            <summary>
+            Gets the status of the game
+            </summary>
+            <returns>JSON object containing bot positions, orientations, damage, and flags. Also indicates if bots are re-entering the game and their last checkpoint locations</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.Reset(System.Int32)">
+            <summary>
+            Resets the game to the initial state
+            </summary>
+            <param name="resetAll">
+            0 to reset current game with same players
+            1 to reset entire game to startup state (with same bots)
+            </param>
+            <returns>The string "Done"</returns>
+        </member>
+        <member name="M:RoboRuckus.Controllers.SetupController.Timer(System.Boolean)">
+            <summary>
+            Toggles the timer state
+            </summary>
+            <param name="timerEnable"></param>
+            <returns>The string "OK"</returns>
+        </member>
+        <member name="M:RoboRuckus.Hubs.playerHub.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{RoboRuckus.Hubs.playerHub})">
+            <summary>
+            Constructs the player hub
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.Hubs.playerHub.dealMe(System.Int32)">
+            <summary>
+            Lets a player client request a hand of cards to be dealt to them
+            </summary>
+            <param name="playerNum">The player number making the request</param>
+        </member>
+        <member name="M:RoboRuckus.Hubs.playerHub.getHealth(System.Int32)">
+            <summary>
+            Let's a player request their health
+            </summary>
+            <param name="playerNum"></param>
+            <returns>The damage the robot has</returns>
+        </member>
+        <member name="M:RoboRuckus.Hubs.playerHub.sendCards(System.Int32,RoboRuckus.RuckusCode.cardModel[],System.Boolean)">
+            <summary>
+            Allows a player client to send the selected cards to the server
+            </summary>
+            <param name="playerNum">The player number sending the cards</param>
+            <param name="cards">The cards being sent</param>
+        </member>
+        <member name="T:RoboRuckus.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:RoboRuckus.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:RoboRuckus.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Board">
+            <summary>
+            Represents a game board and all the elements it contains
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Board.walls">
+            <summary>
+            Walls consist of a pair of [x,y] coordinates representing the two squares the 
+            wall is between
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Turntable">
+            <summary>
+            Represents a turntable element
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Turntable.location">
+            <summary>
+            The [x,y] coordinates of the turntable
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Turntable.dir">
+            <summary>
+            The direction of rotation
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Conveyor">
+            <summary>
+            Represents a space on a conveyor belt
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Conveyor.location">
+            <summary>
+            The [x,y] coordinates of the conveyor space
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Conveyor.entrance">
+            <summary>
+            The orientation of the starting end of the belt within the space
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Conveyor.exit">
+            <summary>
+            The orientation of the ending end of the belt within the space
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Laser">
+            <summary>
+            Represents a board laser
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Laser.start">
+            <summary>
+            The coordinate from which the laser is firing
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Laser.end">
+            <summary>
+            The coordinate to which the laser fires
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Laser.strength">
+            <summary>
+            The power of the laser
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Laser.facing">
+            <summary>
+            The orientation in which the laser is facing
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.ConveyorModel">
+            <summary>
+            A convenient structure to group a robot and a conveyor to help facilitate movement
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.ConveyorModel.space">
+            <summary>
+            The conveyor space on which the bot sits
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.ConveyorModel.destination">
+            <summary>
+            The coordinate to where the conveyor will move the bot
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.ConveyorModel.bot">
+            <summary>
+            The robot on the conveyor space
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.#ctor(RoboRuckus.RuckusCode.Board,System.Int32[][])">
+            <summary>
+            Constructs a board image maker.
+            </summary>
+            <param name="board">The board file to base the image off of</param>
+            <param name="corners">Additional info for corner walls</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.createImage">
+            <summary>
+            Creates a print-ready board image
+            </summary>
+            <param name="board">The board object to make the image from</param>
+            <param name="corners">The locations of the corner walls</param>
+            <returns>True on success</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.saveFile(SkiaSharp.SKBitmap,System.String,System.String)">
+            <summary>
+            Saves a bitmap to a file
+            </summary>
+            <param name="bitmap">The bitmap to save</param>
+            <param name="folder">The folder to save in</param>
+            <param name="filename">The filename to save</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addBackground">
+            <summary>
+            Adds the background tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addGrid">
+            <summary>
+            Adds the grid tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addPits">
+            <summary>
+            Adds the pit tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addWrenches">
+            <summary>
+            Adds the wrench tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addTurntables">
+            <summary>
+            Adds the turntable tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addCorners">
+            <summary>
+            Adds corner tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addWalls">
+            <summary>
+            Adds the wall tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addLasers">
+            <summary>
+            Adds the laser tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addBeams">
+            <summary>
+            Adds the laser beam tiles to the image
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.addConveyors(System.Boolean)">
+            <summary>
+            Adds the conveyor tiles to the image
+            </summary>
+            <param name="express">Add express conveyors</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.rotate(System.Single,SkiaSharp.SKBitmap)">
+            <summary>
+            Rotates a square bitmap
+            </summary>
+            <param name="degrees">The degree to rotate</param>
+            <param name="orignal">The original image to rotate</param>
+            <returns>The rotated bitmap</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.boardImageMaker.Dispose">
+            <summary>
+            Dispose of board image maker and all resources
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendMoveCommand(RoboRuckus.RuckusCode.Movement.orderModel)">
+            <summary>
+            Sends a movement command to a robot
+            </summary>
+            <param name="order">The order to send</param>
+            <returns>The response from the bot</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendDamage(System.Int32,System.SByte)">
+            <summary>
+            Sends a damage value to a bot
+            </summary>
+            <param name="botNumber">The bot to send the value to</param>
+            <param name="damage">The damage value</param>
+            <returns>The response from the bot</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendPlayerAssignment(System.Int32,System.Int32)">
+            <summary>
+            Assigns a player number to a bot
+            </summary>
+            <param name="botNumber">The bot to assign the player to</param>
+            <param name="playerNumber">The player to assign</param>
+            <returns>True on a successful response (OK) from the bot</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendReset(System.Int32)">
+            <summary>
+            Sends a reset order to a bot
+            </summary>
+            <param name="botNumber">The bot to reset</param>
+            <returns>True on a successful response (OK) from the bot</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendTuningInstruction(System.Int32,System.Int32,System.String)">
+            <summary>
+            Updates configuration parameters to a robot in setup mode
+            also sends movement test, quit, and other commands.
+            </summary>
+            <param name="botNumber">The robot to send the parameter to</param>
+            <param name="option">The tuning mode option to use</param>
+            <param name="parameters">The parameter to update</param>
+            <returns>True on a successful response (OK) from the bot</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:RoboRuckus.RuckusCode.botSignals.getRobotSettings(System.Int32)" -->
+        <member name="M:RoboRuckus.RuckusCode.botSignals.addBot(System.Net.IPAddress,System.String,System.Boolean)">
+            <summary>
+            Adds a bot using IP
+            </summary>
+            <param name="ip">The IP address of the robot</param>
+            <param name="name">The robot's name</param>
+            <param name="lateralMovement">If the bot can move laterally</param>
+            <returns>True acknowledging the accepted robot</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.addBot(System.String,System.String)">
+            <summary>
+            Adds a bot using Bluetooth
+            </summary>
+            <param name="BTAddress">The IP address of the robot</param>
+            <returns>True acknowledging the accepted robot</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.Done(System.Int32)">
+            <summary>
+            Signals a bot has completed its move
+            </summary>
+            <param name="bot">The bot number</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.alreadyAssigned(System.Int32,System.Int32)">
+            <summary>
+            Sends a player assignment to a bot which
+            has already had a player assigned previously
+            </summary>
+            <param name="player">The player assigned</param>
+            <param name="bot">The bot the player is assigned to</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendDataToRobot(System.Int32,System.String)">
+            <summary>
+            Sends data to a robot
+            </summary>
+            <param name="botNumber">The robot to send the data to</param>
+            <param name="data">The data to send</param>
+            <returns>The response from the robot or an empty string on failure</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendDataToRobotIP(RoboRuckus.RuckusCode.Robot,System.String)">
+            <summary>
+            Sends data to a robot via IP
+            </summary>
+            <param name="bot">The robot to send the data to</param>
+            <param name="data">The data to send</param>
+            <returns>The response from the robot or an empty string on failure</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.botSignals.sendDataToRobotBT(RoboRuckus.RuckusCode.Robot,System.String)">
+            <summary>
+            Not implemented yet
+            Sends data to a robot via Bluetooth
+            </summary>
+            <param name="bot">The robot to send the data to</param>
+            <param name="data">The data to send</param>
+            <returns>The response from the robot or an empty string on failure</returns>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.cardModel">
+            <summary>
+            A convenient way to organize card data
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.cardModel.ToString">
+            <summary>
+            A string representation of a card that matches
+            the one generated and sent to the player clients.
+            </summary>
+            <returns>The string representation of a card</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.gameStatus.#cctor">
+            <summary>
+            Sets up some global settings and the game environment
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.gameStatus.assignBot(System.Int32,System.String)">
+            <summary>
+            Assigns a robot to a player
+            </summary>
+            <param name="player">The player being assigned to</param>
+            <param name="robotName">The robot name to assign</param>
+            <returns>True on success</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.gameStatus.addPlayer">
+            <summary>
+            Adds a player to the game if possible
+            </summary>
+            <returns>Returns the player number if successful, 0 otherwise</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.gameStatus.addBot(System.Net.IPAddress,System.String,System.Boolean)">
+            <summary>
+            Adds a robot to the list of available robots using IP interface
+            </summary>
+            <param name="botIP">The IP address of the robot</param>
+            <param name="name">The robot's name</param>
+            <param name="lateralMovement">If the robot can move laterally</param>
+            <returns>The bot number</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.gameStatus.addBot(System.String,System.String)">
+            <summary>
+            TBD
+            Adds a robot to the list of available robots using Bluetooth interface
+            </summary>
+            <param name="botIP">The IP address of the robot</param>
+            <returns>The bot number</returns>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Movement.boardEffects">
+            <summary>
+            Controls all board effects.
+            Wrapping public methods in lock statements is probably overkill, but doesn't hurt, and might help.
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.executeTurnTables">
+            <summary>
+            Execute turntable moves
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.fireLasers">
+            <summary>
+            Fires all lasers and adds the damage to robots
+            </summary>
+            <returns>True if a bot was hit with any laser</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.wrenches">
+            <summary>
+            Gets an array of all robots currently on a wrench or flag space
+            </summary>
+            <returns>An array of robots on a wrench or flag space</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.flags">
+            <summary>
+            Gets a list of all robots currently on a flag space
+            </summary>
+            <returns>A list of value pairs of robots on a flag space, and the flag number</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.onPit(System.Int32[])">
+            <summary>
+            Determines if a given coordinate contains a pit
+            </summary>
+            <param name="coordinate">The [x, y] coordinate to check</param>
+            <returns>True if the coordinate contains a pit</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.findWall(System.Int32[],System.Int32[],RoboRuckus.RuckusCode.Robot.orientation)">
+            <summary>
+            Finds a wall if it exists between two coordinates, inclusive.
+            </summary>
+            <param name="fromCord">The coordinate to start searching from</param>
+            <param name="toCord">The coordinate to stop searching at</param>
+            <param name="direction">The direction along which to search</param>
+            <returns>The furthest coordinate along the direction something can move before hitting the wall, or null if no wall was found</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.moveConveyors(System.Boolean)">
+            <summary>
+            Moves all robots on conveyors
+            </summary>
+            <param name="express">True indicates only express conveyors should move</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.canMoveOnConveyor(RoboRuckus.RuckusCode.Robot,RoboRuckus.RuckusCode.Robot[],System.Collections.Generic.List{RoboRuckus.RuckusCode.ConveyorModel}@)">
+            <summary>
+            Helper method for conveyor movement. Checks to see if a robot on a conveyor is able to move
+            </summary>
+            <param name="moving">The robot that is moving</param>
+            <param name="onCoveyors">An array of all robots that are on conveyors</param>
+            <param name="movable">A reference to a list of robots on conveyors that are able to move</param>
+            <returns>True if the robot can move</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.fireBotLasers(System.Collections.Generic.Dictionary{System.Int32,System.SByte}@)">
+            <summary>
+            Fires robot lasers and adds the damage to a dictionary
+            </summary>
+            <returns>True if a bot was hit</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.fireBoardLasers(System.Collections.Generic.Dictionary{System.Int32,System.SByte}@)">
+            <summary>
+            Fires the board lasers and adds the damage to a dictionary
+            </summary>
+            <returns>True if a bot was hit</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.boardEffects.LoS(System.Int32[],RoboRuckus.RuckusCode.Robot.orientation,System.Int32[],System.Int32)">
+            <summary>
+            Finds if a there is a bot in line of sight between two coordinates inclusive. The toCord should be in the direction of the facing.
+            </summary>
+            <param name="fromCord">{ X, Y } The coordinate to start looking for a LoS on a bot</param>
+            <param name="facing">The direction to search along</param>
+            <param name="toCord">{ X, Y } Optionally, a coordinate to stop looking (defaults to edge of board)</param>
+            <param name="botNumber">If a bot is looking for another bot, ensures it doesn't find itself</param>
+            <returns>The bot number, or -1 for no result</returns>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Movement.moveCalculator">
+            <summary>
+            Controls all bot movement
+            Wrapping public methods in lock statements is probably overkill, but doesn't hurt.
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Movement.moveCalculator.movement">
+            <summary>
+            Enumeration for movement commands for robot
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.moveCalculator.executeRegisters">
+            <summary>
+            Executes and resolves the round registers, including board effects
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.moveCalculator.processMoveOrder(RoboRuckus.RuckusCode.Movement.orderModel)">
+            <summary>
+            Processes a bot move order
+            </summary>
+            <param name="order">The order to process</param>
+            <returns>True if the bot successfully received and completed the move</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.moveCalculator.calculateMove(RoboRuckus.RuckusCode.Movement.moveModel)">
+            <summary>
+            Calculates and resolves all necessary moves for a robot and
+            any other robots affected by the move.
+            </summary>
+            <param name="move">The movmeModel to resolve</param>
+            <returns>A list of orders for robots</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.moveCalculator.resolveMove(RoboRuckus.RuckusCode.Robot,RoboRuckus.RuckusCode.Robot.orientation,System.Int32,System.Collections.Generic.List{RoboRuckus.RuckusCode.Movement.orderModel}@,System.Boolean,System.Boolean)">
+            <summary>
+            Creates a movement program that resolves one bot's movement and its
+            impact on any other bots on the board. Executes recursively.
+            </summary>
+            <param name="bot">The bot being moved</param>
+            <param name="direction">The direction the bot is moving.</param>
+            <param name="magnitude">The number of spaces being moved</param>
+            <param name="orders">A reference to the list of move orders to modify</param>
+            <param name="lateralMove">Indicates if the bot should move laterally if able</param>
+            <param name="onConveyor">True if the movement is caused by a conveyor belt</param>
+            <returns>The total number of spaces the bot will actually be moving (i.e. is able to move)</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.moveCalculator.executePlayerMoves(System.Int32)">
+            <summary>
+            Executes all the player moves in the current register
+            </summary>
+            <param name="regsiter">The current register being executed</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.moveCalculator.isObstacle(System.Int32[],System.Int32[],RoboRuckus.RuckusCode.Robot.orientation)">
+            <summary>
+            Checks for obstacles on the board that block bot movement
+            </summary>
+            <param name="fromCord">[x,y] The coordinate the bot will be moving from</param>
+            <param name="toCord">[x,y] The coordinate the bot will be moving to</param>
+            <returns>True if there's a non-bot obstacle between those two spaces</returns>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Movement.moveModel">
+            <summary>
+            A convenient way to pair a movement card with a robot
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Movement.orderModel">
+            <summary>
+            A convenient representation of a movement order for a robot
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Movement.orderModel.ToString">
+            <summary>
+            Creates a string representation of an orderModel which can be sent to the robots
+            </summary>
+            <returns>The string representation of an order</returns>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Player.playerNumber">
+            <summary>
+            Zero ordered player number
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Player.cards">
+            <summary>
+            The cards currently dealt to the player
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Player.move">
+            <summary>
+            The player's submitted move
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Player.lockedCards">
+            <summary>
+            The player's currently locked cards
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Player.shutdown">
+            <summary>
+            True if player is currently shut down
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Player.willShutdown">
+            <summary>
+            True if player is shutting down this turn
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Player.lives">
+            <summary>
+            How many lives a player has left.
+            When it reaches 0 they are out of the game.
+            </summary>
+        </member>
+        <member name="P:RoboRuckus.RuckusCode.Player.dead">
+            <summary>
+            Show's whether a player is dead, and if they are removes a life
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.Player.#ctor(System.Byte)">
+            <summary>
+            Player constructor. A player number is required.
+            </summary>
+            <param name="Number">The player number</param>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.playerSignals">
+            <summary>
+            Controls inputs from users.
+            All public methods in this class should be wrapped in a lock on the same object
+            since there is only one game state multiple players could try to modify.
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.playerSignals._playerHub">
+            <summary>
+            Player hub context.
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{RoboRuckus.Hubs.playerHub})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="hubcontext">DI for hub context</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.submitMove(RoboRuckus.RuckusCode.Player,RoboRuckus.RuckusCode.cardModel[])">
+            <summary>
+            Processes a player's move, if all players have submitted
+            their moves, executes those moves.
+            </summary>
+            <param name="caller">The player client submitting the move</param>
+            <param name="cards">The cards submitted for their move</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.showMessage(System.String,System.String)">
+            <summary>
+            Sends a message to the player screens
+            </summary>
+            <param name="message">The message to send</param>
+            <param name="sound">An optional sound effect to play</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.dealPlayers(System.Int32)">
+            <summary>
+            Used to have players request a deal
+            </summary>
+            <param name="player">the player to request a deal, -1 for all</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.displayMove(RoboRuckus.RuckusCode.Movement.moveModel,System.Int32)">
+            <summary>
+            Sends the current move being executed to the players
+            </summary>
+            <param name="move">The move model being executed</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.displayRegister(RoboRuckus.RuckusCode.Movement.moveModel[])">
+            <summary>
+            Sends the current register  being executed to the players
+            </summary>
+            <param name="register">The register being executed</param>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.dealPlayer(RoboRuckus.RuckusCode.Player)">
+            <summary>
+            Deals cards to a player
+            </summary>
+            <param name="caller">The player client requesting a deal</param>
+            <returns>The cards dealt to the player client</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.updateHealth">
+            <summary>
+            Updates the health of every player
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.resetGame(System.Int32)">
+            <summary>
+            Resets the game to the initial state
+            <param name="resetAll">If 0 reset game with current players, if 1 reset game to initial state</param>
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.drawCard">
+            <summary>
+            Draws a random available card
+            </summary>
+            <returns>The card drawn</returns>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.nextRound">
+            <summary>
+            Resets the bots and game for the next round
+            </summary>
+        </member>
+        <member name="M:RoboRuckus.RuckusCode.playerSignals.checkTimer">
+            <summary>
+            Checks to see if a player timer needs to be started, and starts one if needed.
+            </summary>
+            <returns>Whether a timer was started</returns>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Robot.communicationModes">
+            <summary>
+            Encodes possible bot communication methods 
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Robot.mode">
+            <summary>
+            The bot's current mode of communication
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Robot.currentDirection">
+            <summary>
+            The axis/direction along which the bot is currently facing
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Robot.lastLocation">
+            <summary>
+            Robot's last check-point location
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.Robot.lateralMovement">
+            <summary>
+            Indicates whether this bot supports lateral (side-to-side) movement
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.Robot.orientation">
+            <summary>
+            Encodes the cardinal directions a robot can be oriented towards
+            </summary>
+        </member>
+        <member name="P:RoboRuckus.RuckusCode.Robot.damage">
+            <summary>
+            Gets and sets the robot's damage, locking or unlocking
+            cards and destroying the robot as needed
+            </summary>
+        </member>
+        <member name="T:RoboRuckus.RuckusCode.serviceHelpers">
+            <summary>
+            A group of static environmental interfaces for reference from other parts of code
+            </summary>
+        </member>
+        <member name="P:RoboRuckus.RuckusCode.serviceHelpers.signals">
+            <summary>
+            A single instance of the player signals class .
+            </summary>
+        </member>
+        <member name="P:RoboRuckus.RuckusCode.serviceHelpers.rootPath">
+            <summary>
+            The application's root path
+            </summary>
+        </member>
+    </members>
+</doc>
