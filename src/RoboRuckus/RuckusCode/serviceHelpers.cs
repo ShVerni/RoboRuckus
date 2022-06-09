@@ -9,7 +9,7 @@
         private static volatile playerSignals _signals;
 
         /// <summary>
-        /// A single instance of the player signals class .
+        /// A single instance of the player signals class
         /// </summary>
         public static playerSignals signals
         {

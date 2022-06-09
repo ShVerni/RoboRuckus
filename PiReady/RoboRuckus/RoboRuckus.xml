@@ -804,6 +804,7 @@
             Sends the current move being executed to the players
             </summary>
             <param name="move">The move model being executed</param>
+            <param name="register">The current register being executed</param>
         </member>
         <member name="M:RoboRuckus.RuckusCode.playerSignals.displayRegister(RoboRuckus.RuckusCode.Movement.moveModel[])">
             <summary>
@@ -889,7 +890,7 @@
         </member>
         <member name="P:RoboRuckus.RuckusCode.serviceHelpers.signals">
             <summary>
-            A single instance of the player signals class .
+            A single instance of the player signals class
             </summary>
         </member>
         <member name="P:RoboRuckus.RuckusCode.serviceHelpers.rootPath">

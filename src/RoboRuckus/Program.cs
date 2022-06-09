@@ -82,14 +82,6 @@ namespace RoboRuckus
                             gameStatus.botless = true;
                             Console.WriteLine("Botless mode enabled");
                             break;
-                        case "edgecontrol":
-                            gameStatus.edgeControl = true;
-                            Console.WriteLine("Edge control enabled.");
-                            break;
-                        case "showreg":
-                            gameStatus.showRegister = true;
-                            Console.WriteLine("Register display enabled.");
-                            break;
                     }
                 }
             }
