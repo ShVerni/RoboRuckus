@@ -2,6 +2,7 @@
 using System.Net;
 using RoboRuckus.RuckusCode;
 using System.Threading;
+using System.Linq;
 
 namespace RoboRuckus.Controllers
 {
@@ -11,12 +12,14 @@ namespace RoboRuckus.Controllers
         /// A bot calls this action to be added to the game as an available robot
         /// </summary>
         /// <param name="ip">The IP address of the robot</param>
+        /// <param name="name">The name of the robot</param>
+        /// <param name="lateralMovement">If the robot supports lateral (side-to-side) movement</param>
         /// <returns>An AK acknowledging the accepted robot</returns>
         [HttpGet]
-        public IActionResult Index(string ip, string name)
+        public IActionResult Index(string ip, string name, bool lateralMovement = false)
         {
             IPAddress botIP = IPAddress.Parse(ip);
-            botSignals.addBot(botIP, name);
+            botSignals.addBot(botIP, name, lateralMovement);
             // Server can sometimes respond faster than a robot is ready
             Thread.Sleep(150);
             // Send acknowledgment to bot

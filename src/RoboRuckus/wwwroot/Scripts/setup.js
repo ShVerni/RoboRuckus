@@ -7,6 +7,10 @@
 
     $(".linkButtons").button();
 
+    $(".uiCheckbox").checkboxradio({
+        icon: false
+    });
+
     // Enable the board selection menu
     $("#boardSel").selectmenu({
         width: null,

@@ -61,7 +61,7 @@ namespace RoboRuckus.RuckusCode
         /// </summary>
         /// <param name="botNumber">The robot to send the parameter to</param>
         /// <param name="option">The tuning mode option to use</param>
-        /// <param name="parameter">The parameter to update</param>
+        /// <param name="parameters">The parameter to update</param>
         /// <returns>True on a successful response (OK) from the bot</returns>
         public static bool sendTuningInstruction(int botNumber, int option, string parameters)
         {
@@ -83,13 +83,15 @@ namespace RoboRuckus.RuckusCode
         /// Adds a bot using IP
         /// </summary>
         /// <param name="ip">The IP address of the robot</param>
+        /// <param name="name">The robot's name</param>
+        /// <param name="lateralMovement">If the bot can move laterally</param>
         /// <returns>True acknowledging the accepted robot</returns>
-        public static bool addBot(IPAddress ip, string name)
+        public static bool addBot(IPAddress ip, string name, bool lateralMovement)
         {
             // Lock used so player assignment is sent after this method exits
             lock (_locker)
             {
-                int result = gameStatus.addBot(ip, name);
+                int result = gameStatus.addBot(ip, name, lateralMovement);
                 // Check if bot is already in pen
                 if (result != -1 && !gameStatus.tuneRobots)
                 {

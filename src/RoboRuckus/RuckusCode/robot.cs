@@ -41,6 +41,11 @@ namespace RoboRuckus.RuckusCode
         public int[] lastLocation;
 
         /// <summary>
+        /// Indicates whether this bot supports lateral (side-to-side) movement
+        /// </summary>
+        public bool lateralMovement = false;
+
+        /// <summary>
         /// Encodes the cardinal directions a robot can be oriented towards
         /// </summary>
         public enum orientation

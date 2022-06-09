@@ -214,7 +214,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 foreach (ConveyorModel findMove in moved)
                 {
                     Robot.orientation oldFacing = findMove.bot.currentDirection;
-                    moveCalculator.resolveMove(findMove.bot, findMove.space.exit, 1, ref orders, false, true);
+                    moveCalculator.resolveMove(findMove.bot, findMove.space.exit, 1, ref orders, true, true);
                     Robot.orientation desiredFacing = oldFacing;
 
                     // Check if a robot is being moved onto a space that contains a conveyor
@@ -257,18 +257,18 @@ namespace RoboRuckus.RuckusCode.Movement
                     {
                         case 3:
                         case -1:
-                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Right, magnitude = 1, outOfTurn = false });
+                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Right, magnitude = 1, lateralMove = false });
                             findMove.bot.currentDirection = desiredFacing;
                             break;
                         case -3:
                         case 1:
-                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Left, magnitude = 1, outOfTurn = false });
+                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = moveCalculator.movement.Left, magnitude = 1, lateralMove = false });
                             findMove.bot.currentDirection = desiredFacing;
                             break;
                         case 2:
                         case -2:
                             Random rand = new Random();
-                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = (moveCalculator.movement)rand.Next(0, 2), magnitude = 2, outOfTurn = false });
+                            orders.Add(new orderModel { botNumber = findMove.bot.robotNum, move = (moveCalculator.movement)rand.Next(0, 2), magnitude = 2, lateralMove = false });
                             findMove.bot.currentDirection = desiredFacing;
                             break;
 
@@ -423,6 +423,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// Finds if a there is a bot in line of sight between two coordinates inclusive. The toCord should be in the direction of the facing.
         /// </summary>
         /// <param name="fromCord">{ X, Y } The coordinate to start looking for a LoS on a bot</param>
+        /// <param name="facing">The direction to search along</param>
         /// <param name="toCord">{ X, Y } Optionally, a coordinate to stop looking (defaults to edge of board)</param>
         /// <param name="botNumber">If a bot is looking for another bot, ensures it doesn't find itself</param>
         /// <returns>The bot number, or -1 for no result</returns>

@@ -11,6 +11,9 @@ namespace RoboRuckus.RuckusCode.Movement
     /// </summary>
     public static class moveCalculator
     {
+        /// <summary>
+        /// Enumeration for movement commands for robot
+        /// </summary>
         public enum movement
         {
             Left = 0,
@@ -136,7 +139,7 @@ namespace RoboRuckus.RuckusCode.Movement
                             gameStatus.winner = true;
                             Thread.Sleep(250);
                             // Do a victory dance
-                            processMoveOrder(new orderModel { botNumber = winner.robotNum, magnitude = 4, move = movement.Right, outOfTurn = false });
+                            processMoveOrder(new orderModel { botNumber = winner.robotNum, magnitude = 4, move = movement.Right, lateralMove = false });
                             return;
                         }
                     }
@@ -244,7 +247,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         {
                             move.bot.currentDirection++;
                         }
-                        orders.Add(new orderModel { botNumber = move.bot.robotNum, move = movement.Left, magnitude = 1, outOfTurn = false });
+                        orders.Add(new orderModel { botNumber = move.bot.robotNum, move = movement.Left, magnitude = 1, lateralMove = false });
                         break;
 
                     case ("right"):
@@ -256,7 +259,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         {
                             move.bot.currentDirection--;
                         }
-                        orders.Add(new orderModel { botNumber = move.bot.robotNum, move = movement.Right, magnitude = 1, outOfTurn = false });
+                        orders.Add(new orderModel { botNumber = move.bot.robotNum, move = movement.Right, magnitude = 1, lateralMove = false });
                         break;
 
                     case ("backup"):
@@ -295,7 +298,7 @@ namespace RoboRuckus.RuckusCode.Movement
                                 move.bot.currentDirection = Robot.orientation.Y;
                                 break;
                         }
-                        orders.Add(new orderModel { botNumber = move.bot.robotNum, move = (movement)rand.Next(0, 2), magnitude = 2, outOfTurn = false });
+                        orders.Add(new orderModel { botNumber = move.bot.robotNum, move = (movement)rand.Next(0, 2), magnitude = 2, lateralMove = false });
                         break;
                 }
                 return orders;
@@ -310,10 +313,10 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <param name="direction">The direction the bot is moving.</param>
         /// <param name="magnitude">The number of spaces being moved</param>
         /// <param name="orders">A reference to the list of move orders to modify</param>
-        /// <param name="outOfTurn">True if it's not the turn of the bot whose move is being resolved</param>
+        /// <param name="lateralMove">Indicates if the bot should move laterally if able</param>
         /// <param name="onConveyor">True if the movement is caused by a conveyor belt</param>
         /// <returns>The total number of spaces the bot will actually be moving (i.e. is able to move)</returns>
-        public static int resolveMove(Robot bot, Robot.orientation direction, int magnitude, ref List<orderModel> orders, bool OutOfTurn, bool onConveyor = false)
+        public static int resolveMove(Robot bot, Robot.orientation direction, int magnitude, ref List<orderModel> orders, bool lateralMove, bool onConveyor = false)
         {
             lock(gameStatus.locker)
             {
@@ -374,7 +377,7 @@ namespace RoboRuckus.RuckusCode.Movement
                 // Check if there's no movement
                 if (magnitude == 0)
                 {
-                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = 0, outOfTurn = OutOfTurn, offBoard = _offBoard });
+                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = 0, lateralMove = lateralMove, offBoard = _offBoard });
                     return 0;
                 }
                 else
@@ -423,64 +426,76 @@ namespace RoboRuckus.RuckusCode.Movement
 
                     bool rotated = false;
                     total = magnitude - remaining;
+                    
+                    // Move robot forward as far as possible before finishing the move or hitting an obstacle 
                     if (magnitude - remaining > 0)
                     {
                         // Rotate bot to appropriate direction if necessary, then move
                         switch (direction - bot.currentDirection)
                         {
                             case 0:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, lateralMove = lateralMove, offBoard = _offBoard });
                                 break;
                             case -2:
                             case 2:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = magnitude - remaining, lateralMove = lateralMove, offBoard = _offBoard });
                                 break;
                             case 3:
                             case -1:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, outOfTurn = OutOfTurn });
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
-                                // Robots on conveyors need to handle rotation correction separately in the conveyor method
-                                if (onConveyor)
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, lateralMove = lateralMove });
+                                // Move bot if it can't move laterally
+                                if (!bot.lateralMovement)
                                 {
-                                    bot.currentDirection = direction;
-                                }
-                                else
-                                {
-                                    rotated = true;
+                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, lateralMove = lateralMove, offBoard = _offBoard });
+                                    // Robots on conveyors need to handle rotation correction separately in the conveyor method
+                                    if (onConveyor)
+                                    {
+                                        bot.currentDirection = direction;
+                                    }
+                                    else if (!bot.lateralMovement)
+                                    {
+                                        rotated = true;
+                                    }
+
                                 }
                                 break;
                             case -3:
                             case 1:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, outOfTurn = OutOfTurn });
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, outOfTurn = OutOfTurn, offBoard = _offBoard });
-                                // Robots on conveyors need to handle rotation correction separately in the conveyor method
-                                if (onConveyor)
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, lateralMove = lateralMove });
+                                // Move bot if it can't move laterally
+                                if (!bot.lateralMovement)
                                 {
-                                    bot.currentDirection = direction;
-                                }
-                                else
-                                {
-                                    rotated = true;
+                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = magnitude - remaining, lateralMove = lateralMove, offBoard = _offBoard });
+                                    // Robots on conveyors need to handle rotation correction separately in the conveyor method
+                                    if (onConveyor)
+                                    {
+                                        bot.currentDirection = direction;
+                                    }
+                                    else
+                                    {
+                                        rotated = true;
+                                    }
                                 }
                                 break;
                         }
                     }
                     if (botFound != null)
                     {
+                        // If another bot was in the way, move it as far as possible and then check how far it moves
                         int otherMoved = resolveMove(botFound, direction, remaining, ref orders, true);
                         if (otherMoved > 0)
                         {
                             // Bot didn't move but now may need to rotate
-                            if (magnitude - remaining == 0)
+                            if (!bot.lateralMovement && magnitude - remaining == 0)
                             {
                                 switch (direction - bot.currentDirection)
                                 {
                                     case -1:
-                                        orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, outOfTurn = OutOfTurn });
+                                        orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, lateralMove = lateralMove });
                                         rotated = true;
                                         break;
                                     case 1:
-                                        orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, outOfTurn = OutOfTurn });
+                                        orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, lateralMove = lateralMove });
                                         rotated = true;
                                         break;
                                 }
@@ -490,10 +505,10 @@ namespace RoboRuckus.RuckusCode.Movement
                             {
                                 case -2:
                                 case 2:
-                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = otherMoved, outOfTurn = OutOfTurn, offBoard = _offBoard });
+                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Backward, magnitude = otherMoved, lateralMove = lateralMove, offBoard = _offBoard });
                                     break;
                                 default:
-                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = otherMoved, outOfTurn = OutOfTurn, offBoard = _offBoard });
+                                    orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Forward, magnitude = otherMoved, lateralMove = lateralMove, offBoard = _offBoard });
                                     break;
                             }
                             total += otherMoved;
@@ -507,16 +522,16 @@ namespace RoboRuckus.RuckusCode.Movement
                         {
                             case 3:
                             case -1:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, outOfTurn = OutOfTurn });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Left, magnitude = 1, lateralMove = lateralMove });
                                 break;
                             case -3:
                             case 1:
-                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, outOfTurn = OutOfTurn });
+                                orders.Add(new orderModel { botNumber = bot.robotNum, move = movement.Right, magnitude = 1, lateralMove = lateralMove });
                                 break;
                         }
                     }
 
-                    // Update robot's coordinates
+                    // Update robot's coordinates for total movement
                     if (total > 0)
                     {
                         switch (direction)
@@ -628,7 +643,7 @@ namespace RoboRuckus.RuckusCode.Movement
         public int botNumber;
         public moveCalculator.movement move;
         public int magnitude;
-        public bool outOfTurn;
+        public bool lateralMove;
         public bool offBoard = false;
 
         /// <summary>
@@ -637,7 +652,7 @@ namespace RoboRuckus.RuckusCode.Movement
         /// <returns>The string representation of an order</returns>
         public override string ToString()
         {
-            return ((int)move).ToString() + magnitude.ToString() + (outOfTurn ? "1" : "0");
+            return ((int)move).ToString() + magnitude.ToString() + (lateralMove ? "1" : "0");
         }
     }
 }

@@ -8,7 +8,7 @@
 
         <h4>Setup Game</h4>
         <div>
-            @Html.ValidationSummary(true, "Please enter an integer between 1 and 6", new { @class = "" })
+            @Html.ValidationSummary(true, "Please enter an integer between 1 and 12", new { @class = "" })
             <div class="">
                 @Html.LabelFor(m => m.numberOfPlayers, new { @class = "" })
                 <div class="">
@@ -42,7 +42,19 @@
             </div>
             @Html.TextBoxFor(m => m.flags, new { @class = "", type = "text", @id="flagString", @style="display: none"})
             <div class="clear">
-                <br />
+                <br>
+                <div id="">
+                    <div class="inline" id="edgeControlContainer">
+                        @Html.CheckBoxFor(m => m.edgeControlEnabled, new { @class = "uiCheckbox" }) 
+                        @Html.LabelFor(m => m.edgeControlEnabled, new { @class = "" })
+                    </div>
+                    <div class="inline" id="showRegisterContainer">
+                        @Html.CheckBoxFor(m => m.showRegistersEnabled, new { @class = "uiCheckbox" }) 
+                        @Html.LabelFor(m => m.showRegistersEnabled, new { @class = "" })
+                    </div>
+                </div>
+                 <div class="clear"></div>
+                 <br>
                 <input id="submitButton" type="submit" value="Setup" class="" />
             </div>
         </div>

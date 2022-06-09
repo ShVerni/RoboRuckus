@@ -61,6 +61,8 @@ namespace RoboRuckus.Controllers
         {
             if (gameData.numberOfPlayers > 0)
             {
+                gameStatus.edgeControl = gameData.edgeControlEnabled;
+                gameStatus.showRegister = gameData.showRegistersEnabled;
                 gameStatus.numPlayers = gameData.numberOfPlayers;
                 Board _board = gameStatus.boards.FirstOrDefault(b => b.name == gameData.selBoard);
                 if (_board != null)

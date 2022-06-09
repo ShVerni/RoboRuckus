@@ -19,12 +19,12 @@ namespace RoboRuckus.RuckusCode
                 _botless = value;
                 if (value)
                 {
-                    addBot(IPAddress.Parse("0.0.0.0"), "Botimus Prime");
-                    addBot(IPAddress.Parse("0.0.0.1"), "Protobot");
-                    addBot(IPAddress.Parse("0.0.0.2"), "Twirly Bot");
-                    addBot(IPAddress.Parse("0.0.0.3"), "Bot Waaay");
-                    addBot(IPAddress.Parse("0.0.0.4"), "Thunderbot");
-                    addBot(IPAddress.Parse("0.0.0.5"), "Fredbot");
+                    addBot(IPAddress.Parse("0.0.0.0"), "Botimus Prime", true);
+                    addBot(IPAddress.Parse("0.0.0.1"), "Protobot", true);
+                    addBot(IPAddress.Parse("0.0.0.2"), "Twirly Bot", true);
+                    addBot(IPAddress.Parse("0.0.0.3"), "Bot Waaay", true);
+                    addBot(IPAddress.Parse("0.0.0.4"), "Thunderbot", true);
+                    addBot(IPAddress.Parse("0.0.0.5"), "Fredbot", true);
                 }
             }
         }
@@ -152,8 +152,10 @@ namespace RoboRuckus.RuckusCode
         /// Adds a robot to the list of available robots using IP interface
         /// </summary>
         /// <param name="botIP">The IP address of the robot</param>
+        /// <param name="name">The robot's name</param>
+        /// <param name="lateralMovement">If the robot can move laterally</param>
         /// <returns>The bot number</returns>
-        public static int addBot(IPAddress botIP, string name)
+        public static int addBot(IPAddress botIP, string name, bool lateralMovement)
         {
             // Only one bot can be added at a time
             lock(robots)
@@ -173,6 +175,7 @@ namespace RoboRuckus.RuckusCode
                     robotPen.Add(new Robot { robotAddress = botIP, robotName = name });
                     bot = robotPen.FirstOrDefault(r => r.robotName == name);
                     bot.mode = Robot.communicationModes.IP;
+                    bot.lateralMovement = lateralMovement;
                     return -1;
                 }
                 else
