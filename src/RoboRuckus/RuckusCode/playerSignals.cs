@@ -102,10 +102,6 @@ namespace RoboRuckus.RuckusCode
                         Lines.Add("Damage: " + player.playerRobot.damage.ToString());
                         Lines.Add("Flags: " + player.playerRobot.flags.ToString());
                         Lines.Add("Moves: ");
-                        foreach (cardModel card in player.move)
-                        {
-                            Lines.Add(card.ToString());
-                        }
                         Lines.Add("");
                     }
                     Lines.Add("---- End Round ----");
