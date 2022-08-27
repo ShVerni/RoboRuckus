@@ -99,6 +99,16 @@ namespace RoboRuckus.Controllers
         {
             gameStatus.gameStarted = true;
             serviceHelpers.signals.dealPlayers();
+            List<string> Lines = new List<string>();
+            Lines.Add("---- Start Game ----");
+            Lines.Add("Board name: " + gameStatus.gameBoard.name);
+            Lines.Add("Flags:");
+            foreach(int[] flags in gameStatus.gameBoard.flags)
+            {
+                Lines.Add(flags[0].ToString() + "," + flags[1].ToString());
+            }
+
+            System.IO.File.AppendAllLines(serviceHelpers.rootPath + serviceHelpers.logfile, Lines.ToArray());
             return Content("Done", "text/plain");
         }
 
@@ -595,6 +605,7 @@ namespace RoboRuckus.Controllers
         public IActionResult Reset(int resetAll = 0)
         {
             serviceHelpers.signals.resetGame(resetAll);
+            System.IO.File.AppendAllLines(serviceHelpers.rootPath + serviceHelpers.logfile, new string[] {"---- Game Reset ----"});
             return Content("Done", "text/plain");
         }
 

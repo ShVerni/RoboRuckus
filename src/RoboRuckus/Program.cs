@@ -82,6 +82,10 @@ namespace RoboRuckus
                             gameStatus.botless = true;
                             Console.WriteLine("Botless mode enabled");
                             break;
+                        case "logging":
+                            serviceHelpers.logging = true;
+                            Console.WriteLine("Logging mode enabled");
+                            break;
                     }
                 }
             }

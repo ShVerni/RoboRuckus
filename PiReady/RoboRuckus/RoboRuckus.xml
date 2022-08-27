@@ -885,17 +885,27 @@
         </member>
         <member name="T:RoboRuckus.RuckusCode.serviceHelpers">
             <summary>
-            A group of static environmental interfaces for reference from other parts of code
+            A group of static environmental interfaces for reference from other parts of code.
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.serviceHelpers.logfile">
+            <summary>
+            Name of the game log file.
+            </summary>
+        </member>
+        <member name="F:RoboRuckus.RuckusCode.serviceHelpers.logging">
+            <summary>
+            Used to enable logging of game state and player moves.
             </summary>
         </member>
         <member name="P:RoboRuckus.RuckusCode.serviceHelpers.signals">
             <summary>
-            A single instance of the player signals class
+            A single instance of the player signals class.
             </summary>
         </member>
         <member name="P:RoboRuckus.RuckusCode.serviceHelpers.rootPath">
             <summary>
-            The application's root path
+            The application's root path.
             </summary>
         </member>
     </members>

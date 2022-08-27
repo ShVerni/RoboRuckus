@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.SignalR;
 using System.Security.Cryptography;
 using RoboRuckus.RuckusCode.Movement;
 using RoboRuckus.Hubs;
+using System.IO;
+using System.Collections.Generic;
 
 namespace RoboRuckus.RuckusCode
 {
@@ -68,14 +70,59 @@ namespace RoboRuckus.RuckusCode
                     }
                     timerStarted = false;
 
+                    // Log board state and submitted moves to log file
+                    List<string> Lines = new List<string>();
+                    Lines.Add("---- Start Round ----");
+                    foreach (Player player in gameStatus.players)
+                    {
+                        Lines.Add("Player: " + player.playerNumber.ToString());
+                        Lines.Add("X: " + player.playerRobot.x_pos.ToString());
+                        Lines.Add("Y: " + player.playerRobot.y_pos.ToString());
+                        Lines.Add("Facing: " + player.playerRobot.currentDirection.ToString());
+                        Lines.Add("Damage: " + player.playerRobot.damage.ToString());
+                        Lines.Add("Flags: " + player.playerRobot.flags.ToString());
+                        Lines.Add("Moves: ");
+                        foreach (cardModel card in player.move)
+                        {
+                            Lines.Add(card.ToString());
+                        }
+                        Lines.Add("");
+                    }
+
                     // Execute player moves                  
                     moveCalculator.executeRegisters();
+
+                    Lines.Add("---- Final State ----");
+                    foreach (Player player in gameStatus.players)
+                    {
+                        Lines.Add("Player: " + player.playerNumber.ToString());
+                        Lines.Add("X: " + player.playerRobot.x_pos.ToString());
+                        Lines.Add("Y: " + player.playerRobot.y_pos.ToString());
+                        Lines.Add("Facing: " + player.playerRobot.currentDirection.ToString());
+                        Lines.Add("Damage: " + player.playerRobot.damage.ToString());
+                        Lines.Add("Flags: " + player.playerRobot.flags.ToString());
+                        Lines.Add("Moves: ");
+                        foreach (cardModel card in player.move)
+                        {
+                            Lines.Add(card.ToString());
+                        }
+                        Lines.Add("");
+                    }
+                    Lines.Add("---- End Round ----");
 
                     // Reset for next round
                     if (!gameStatus.winner)
                     {
                         nextRound();
                     }
+                    else
+                    {
+                        // Log end of game
+                        Lines.Add("---- Game End ----");
+                    }
+
+                    // Write log file
+                    File.AppendAllLines(serviceHelpers.rootPath + serviceHelpers.logfile, Lines.ToArray());
                 }
             }
             // Checks is a timer needs to be started right away
