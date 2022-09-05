@@ -1,7 +1,31 @@
 {
   "profiles": {
-    "Kestrel": {
+    "Default Debug": {
       "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:8082/"
+    },
+    "Botless Debug": {
+      "commandName": "Project",
+      "commandLineArgs": "--options=botless",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:8082/"
+    },
+    "Logging Debug": {
+      "commandName": "Project",
+      "commandLineArgs": "--options=logging",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:8082/"
+    },
+    "Botless and Logging": {
+      "commandName": "Project",
+      "commandLineArgs": "--options=logging,botless",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

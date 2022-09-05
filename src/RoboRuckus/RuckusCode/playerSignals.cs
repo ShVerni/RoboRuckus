@@ -70,55 +70,72 @@ namespace RoboRuckus.RuckusCode
                     }
                     timerStarted = false;
 
-                    // Log board state and submitted moves to log file
+                    // List for logging, if enabled
                     List<string> Lines = new List<string>();
-                    Lines.Add("---- Start Round ----");
-                    foreach (Player player in gameStatus.players)
+                    if (serviceHelpers.logging)
                     {
-                        Lines.Add("Player: " + player.playerNumber.ToString());
-                        Lines.Add("X: " + player.playerRobot.x_pos.ToString());
-                        Lines.Add("Y: " + player.playerRobot.y_pos.ToString());
-                        Lines.Add("Facing: " + player.playerRobot.currentDirection.ToString());
-                        Lines.Add("Damage: " + player.playerRobot.damage.ToString());
-                        Lines.Add("Flags: " + player.playerRobot.flags.ToString());
-                        Lines.Add("Moves: ");
-                        foreach (cardModel card in player.move)
+                        // Log board state and submitted moves to log file
+                        Lines.Add("---- Start Round ----");
+                        foreach (Player player in gameStatus.players)
                         {
-                            Lines.Add(card.ToString());
+                            Lines.Add("Player: " + (player.playerNumber + 1).ToString());
+                            if (player.shutdown == false)
+                            {
+                                Lines.Add("X: " + player.playerRobot.x_pos.ToString());
+                                Lines.Add("Y: " + player.playerRobot.y_pos.ToString());
+                                Lines.Add("Facing: " + player.playerRobot.currentDirection.ToString());
+                                Lines.Add("Damage: " + player.playerRobot.damage.ToString());
+                                Lines.Add("Flags: " + player.playerRobot.flags.ToString());
+                                Lines.Add("Moves: ");
+                                foreach (cardModel card in player.move)
+                                {
+                                    Lines.Add(card.ToString());
+                                }
+                            }
+                            else
+                            {
+                                Lines.Add("Player is shutdown.");
+                            }
+                            Lines.Add("");
                         }
-                        Lines.Add("");
                     }
 
                     // Execute player moves                  
                     moveCalculator.executeRegisters();
 
-                    Lines.Add("---- Final State ----");
-                    foreach (Player player in gameStatus.players)
+                    if (serviceHelpers.logging)
                     {
-                        Lines.Add("Player: " + player.playerNumber.ToString());
-                        Lines.Add("X: " + player.playerRobot.x_pos.ToString());
-                        Lines.Add("Y: " + player.playerRobot.y_pos.ToString());
-                        Lines.Add("Facing: " + player.playerRobot.currentDirection.ToString());
-                        Lines.Add("Damage: " + player.playerRobot.damage.ToString());
-                        Lines.Add("Flags: " + player.playerRobot.flags.ToString());
-                        Lines.Add("Moves: ");
-                        Lines.Add("");
+                        Lines.Add("---- Final State ----");
+                        foreach (Player player in gameStatus.players)
+                        {
+                            Lines.Add("Player: " + (player.playerNumber + 1).ToString());
+                            Lines.Add("X: " + player.playerRobot.x_pos.ToString());
+                            Lines.Add("Y: " + player.playerRobot.y_pos.ToString());
+                            Lines.Add("Facing: " + player.playerRobot.currentDirection.ToString());
+                            Lines.Add("Damage: " + player.playerRobot.damage.ToString());
+                            Lines.Add("Flags: " + player.playerRobot.flags.ToString());
+                            Lines.Add("Moves: ");
+                            Lines.Add("");
+                        }
+                        Lines.Add("---- End Round ----");
                     }
-                    Lines.Add("---- End Round ----");
 
                     // Reset for next round
                     if (!gameStatus.winner)
                     {
                         nextRound();
                     }
-                    else
+                    else if (serviceHelpers.logging)
                     {
                         // Log end of game
                         Lines.Add("---- Game End ----");
                     }
 
-                    // Write log file
-                    File.AppendAllLines(serviceHelpers.rootPath + serviceHelpers.logfile, Lines.ToArray());
+                    if (serviceHelpers.logging)
+                    {
+                        // Write log file
+                        File.AppendAllLines(serviceHelpers.rootPath + serviceHelpers.logfile, Lines.ToArray());
+                    }
                 }
             }
             // Checks is a timer needs to be started right away
