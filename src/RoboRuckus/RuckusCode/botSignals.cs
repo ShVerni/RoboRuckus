@@ -115,6 +115,7 @@ namespace RoboRuckus.RuckusCode
         /// Adds a bot using Bluetooth
         /// </summary>
         /// <param name="BTAddress">The IP address of the robot</param>
+        /// <param name="name">The robot's name</param>
         /// <returns>True acknowledging the accepted robot</returns>
         public static bool addBot(string BTAddress, string name)
         {

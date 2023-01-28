@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,11 +77,7 @@ namespace RoboRuckus.RuckusCode.Movement
                         {
                             foreach (Robot bot in healed)
                             {
-                                // Heal only on the last register
-                                if (i == 4)
-                                {
-                                    bot.damage--;
-                                }
+                                bot.damage--;
                                 // Update "archive marker" (a.k.a. new respawn location)
                                 if (!bot.controllingPlayer.shutdown)
                                 {
@@ -88,11 +85,8 @@ namespace RoboRuckus.RuckusCode.Movement
                                     bot.lastLocation[1] = bot.y_pos;
                                 }
                             }
-                            if (i == 4)
-                            {
-                                serviceHelpers.signals.updateHealth();
-                                Thread.Sleep(1650);
-                            }
+                            serviceHelpers.signals.updateHealth();
+                            Thread.Sleep(1650);                            
                         }
                         
                         Robot winner = null;
